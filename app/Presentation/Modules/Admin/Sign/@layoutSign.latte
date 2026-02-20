@@ -1,0 +1,11 @@
+{varType Nette\Security\User $user}
+
+{layout '../../Base/@layout.latte'}
+
+{block #title}Autentizace{/block}
+
+{block #body}
+    <h1>{ifset #pageTitle}{include #pageTitle}{/ifset}</h1>
+
+    {include #content}
+{/block}

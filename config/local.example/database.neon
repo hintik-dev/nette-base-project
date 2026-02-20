@@ -1,4 +1,4 @@
 database:
-	dsn: 'sqlite::memory:'
-	user:
-	password:
+	dsn: 'mysql:host=database;dbname=database'
+	user: root
+	password: root_pristup_123

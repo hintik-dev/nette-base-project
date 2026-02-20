@@ -7,7 +7,7 @@ application:
 	errorPresenter:
 		4xx: Error:Error4xx
 		5xx: Error:Error5xx
-	mapping: App\Presentation\*\**Presenter
+	mapping: App\Presentation\Modules\*\**Presenter
 
 latte:
 	strictParsing: yes
@@ -27,5 +27,13 @@ di:
 		parameters: no
 		tags: no
 
-include:
-    - config/local/*.neon
+session:
+	autoStart: smart
+	cookieHttponly: true
+	cookieSamesite: Lax
+	debugger: false
+	expiration: 1 year
+	name: SID
+	useCookies: true
+	useOnlyCookies: true
+	useStrictMode: true

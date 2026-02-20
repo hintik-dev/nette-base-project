@@ -1,0 +1,45 @@
+services:
+  php-apache-environment:
+    container_name: "${COMPOSE_PROJECT_NAME}_apache"
+    image: thecodingmachine/php:8.5-v5-apache
+    volumes:
+      - ./../:/var/www/html
+    ports:
+      - "${PORT_APACHE}:80"   # http
+    links:
+      - database
+    depends_on:
+      - database
+    env_file:
+      - php.env
+
+  database:
+    image: mariadb:latest
+    container_name: "${COMPOSE_PROJECT_NAME}_mariadb"
+    ports:
+      - "${PORT_MARIADB}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pristup_123
+      MYSQL_DATABASE: database
+    volumes:
+      - ./../db/database_init_state.sql:/docker-entrypoint-initdb.d/dump.sql
+
+  phpmyadmin:
+    container_name: "${COMPOSE_PROJECT_NAME}_phpmyadmin"
+    image: phpmyadmin:latest
+    depends_on:
+      - database
+    links:
+      - database
+    ports:
+      - "${PORT_PHP_MY_ADMIN}:8080"
+    environment:
+      PMA_HOST: database
+
+  nodejs:
+    container_name: "${COMPOSE_PROJECT_NAME}_nodejs"
+    image: node:24
+    working_dir: /app
+    volumes:
+      - ./../:/app
+    command: tail -f /dev/null
