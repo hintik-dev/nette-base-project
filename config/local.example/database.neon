@@ -1,0 +1,4 @@
+database:
+	dsn: 'sqlite::memory:'
+	user:
+	password:
