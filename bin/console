@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$container = (new App\Bootstrap())->bootConsoleApplication();
+
+$application = new Symfony\Component\Console\Application('App Console', '1.0.0');
+
+$commands = $container->findByType(Symfony\Component\Console\Command\Command::class);
+foreach ($commands as $serviceName) {
+    $application->add($container->getService($serviceName));
+}
+
+$application->run();

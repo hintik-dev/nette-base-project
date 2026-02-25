@@ -25,6 +25,9 @@ search:
 			- *Repository
 			- *Service
 			- *Mapper
+	-	in: %appDir%/Command
+		classes:
+			- *Command
 
 decorator:
     App\Core\Database\ExplorerRepository:
