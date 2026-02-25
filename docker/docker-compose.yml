@@ -32,9 +32,11 @@ services:
     links:
       - database
     ports:
-      - "${PORT_PHP_MY_ADMIN}:8080"
+      - "${PORT_PHP_MY_ADMIN}:80"
     environment:
       PMA_HOST: database
+      PMA_USER: root
+      PMA_PASSWORD: root_pristup_123
 
   nodejs:
     container_name: "${COMPOSE_PROJECT_NAME}_nodejs"
