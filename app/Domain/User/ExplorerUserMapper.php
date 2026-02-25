@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Domain\User;
 
 use App\Domain\UserRole\UserRole;
@@ -7,7 +6,6 @@ use Nette\Database\Table\ActiveRow;
 
 class ExplorerUserMapper
 {
-
     public function mapUser(ActiveRow $row): User
     {
         return new User(

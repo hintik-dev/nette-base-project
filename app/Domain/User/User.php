@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Domain\User;
 
 use App\Domain\UserRole\UserRole;
@@ -17,9 +16,7 @@ readonly class User implements Resource
         public UserRole $role,
         public bool $active,
         public ?DateTime $lastLogin,
-    )
-    {
-
+    ) {
     }
 
 

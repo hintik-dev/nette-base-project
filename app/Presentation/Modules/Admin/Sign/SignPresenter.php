@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Presentation\Modules\Admin\Sign;
 
 use App\Presentation\Components\Admin\Sign\SignInForm\SignInForm;
@@ -13,8 +12,7 @@ class SignPresenter extends BaseAdminPresenter
 {
     public function __construct(
         private readonly SignInFormFactory $signInFormFactory,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -26,8 +24,7 @@ class SignPresenter extends BaseAdminPresenter
 
     public function createComponentSignInForm(): SignInForm
     {
-        return $this->signInFormFactory->create([function ()
-        {
+        return $this->signInFormFactory->create([function () {
             $this->redirect(':Admin:Home:');
         }]);
     }
@@ -41,16 +38,12 @@ class SignPresenter extends BaseAdminPresenter
     #[Override]
     public function checkRequirements(ReflectionMethod|ReflectionClass $element): void
     {
-        if ($this->action === 'out' && $this->user->isLoggedIn())
-        {
+        if ($this->action === 'out' && $this->user->isLoggedIn()) {
             return;
         }
 
-        if ($this->user->isLoggedIn())
-        {
+        if ($this->user->isLoggedIn()) {
             $this->redirect('Admin:Home:');
         }
     }
-
-
 }

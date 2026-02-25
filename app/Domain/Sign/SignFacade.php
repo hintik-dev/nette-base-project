@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Domain\Sign;
 
 use App\Model\Security\SecurityUser;
@@ -11,8 +10,7 @@ class SignFacade
     public function __construct(
         private readonly SecurityUser $securityUser,
         private readonly SignService $signService,
-    )
-    {
+    ) {
     }
 
     /**
@@ -20,8 +18,7 @@ class SignFacade
      */
     public function signUserIn(SignInFormData $signFormData): void
     {
-        if($this->securityUser->isLoggedIn())
-        {
+        if ($this->securityUser->isLoggedIn()) {
             throw new InvalidStateException('User is already logged in.');
         }
 

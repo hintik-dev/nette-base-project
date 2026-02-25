@@ -23,3 +23,42 @@ delete-cache dc: # Smazání cache
 
 chmod cm: # Nastavení práv na čtení a zápis pro celou složku projektu
 	docker exec -it "${PHP_CONTAINER_NAME}" bash -c 'chmod a+rw /var/www/html -R'
+
+all: # Spustí všechny testy aplikace.
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "composer run all"
+
+all-fix: # Automatická oprava chyb.
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "composer run all:fix"
+
+rector: # Zobrazí navrhované Rector změny - smazání unused use (dry-run)
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "composer rector"
+
+rector-fix rf: # Automaticky aplikuje Rector změny - smazání unused use
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "composer rector:fix"
+
+strict-types: # Zobrazí soubory bez <?php declare(strict_types=1); (dry-run)
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "composer strict-types"; true
+
+strict-types-fix sf: # Přidá <?php declare(strict_types=1); do všech PHP souborů
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "composer strict-types:fix"
+
+phpstan ps: # Spustí PHPStan statickou analýzu
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && composer phpstan"
+
+phpcs: # Spustí PHPCS kontrolu coding standardu
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && composer phpcs"
+
+phpcs-fix pf: # Automaticky opraví chyby coding standardu (PHPCBF)
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && composer phpcs:fix"
+
+latte-lint ll: # Spustí latte-lint kontrolu šablon
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && composer latte-lint"
+
+neon-lint nl: # Spustí neon-lint kontrolu konfiguračních souborů
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && composer neon-lint"
+
+tester t: # Spustí Nette Tester testy
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && composer tester"
+
+lint: # Spustí všechny lintovací nástroje a testy
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && composer lint"

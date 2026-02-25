@@ -1,11 +1,9 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Core\Database;
 
 use Nette\Database\Explorer;
 use Nette\Database\Table\ActiveRow;
 use Nette\Database\Table\Selection;
-use Nette\InvalidStateException;
 
 class ExplorerRepository
 {
@@ -31,6 +29,7 @@ class ExplorerRepository
     }
 
 
+    /** @return Selection<ActiveRow> */
     protected function findAll(): Selection
     {
         return $this->getTable();
@@ -54,15 +53,14 @@ class ExplorerRepository
      * @param array<string, mixed>|null $orderBy
      * @param int<0, max>|null $limit
      * @param int<0, max>|null $offset
-     * @return Selection
+     * @return Selection<ActiveRow>
      */
     protected function findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): Selection
     {
         $selection = $this->findAll()
             ->where($criteria);
 
-        foreach ($orderBy ?? [] as $column => $order)
-        {
+        foreach ($orderBy ?? [] as $column => $order) {
             $selection->order($column . ' ' . $order);
         }
 
@@ -72,18 +70,9 @@ class ExplorerRepository
     }
 
 
+    /** @return Selection<ActiveRow> */
     protected function getTable(?string $tableName = null): Selection
     {
-        if ($tableName === null)
-        {
-            if (!isset($this->tableName))
-            {
-                throw new InvalidStateException('Table name is not set.');
-            }
-
-            $tableName = $this->tableName;
-        }
-
-        return $this->database->table($tableName);
+        return $this->database->table($tableName ?? $this->tableName);
     }
 }

@@ -24,6 +24,9 @@
 	"require-dev": {
 		"nette/tester": "^2.6",
 		"phpstan/phpstan-nette": "^2",
+		"rector/rector": "^2.0",
+		"slevomat/coding-standard": "^8.0",
+		"squizlabs/php_codesniffer": "^3.0",
 		"symfony/thanks": "^1"
 	},
 	"autoload": {
@@ -32,12 +35,41 @@
 		}
 	},
 	"scripts": {
-		"phpstan": "phpstan analyse",
-		"tester": "tester tests -s"
+        "all": [
+          "Composer\\Config::disableProcessTimeout",
+          "vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=2048M -a vendor/squizlabs/php_codesniffer/autoload.php",
+          "php -d 'disable_functions=\"\"' vendor/bin/phpcs --parallel=$(nproc --all) --standard=.phpcs.xml app/ tests/ -s --colors -p",
+          "@latte-lint",
+          "@neon-lint",
+          "@rector"
+        ],
+        "all:fix": [
+          "Composer\\Config::disableProcessTimeout",
+          "php -d 'disable_functions=\"\"' vendor/bin/phpcbf --parallel=$(nproc --all) --standard=.phpcs.xml app/ tests/ -s --colors -p",
+          "php bin/strict-types"
+        ],
+		"phpstan": "vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=2048M -a vendor/squizlabs/php_codesniffer/autoload.php",
+		"phpcs": "php -d 'disable_functions=\"\"' vendor/bin/phpcs --parallel=$(nproc --all) --standard=.phpcs.xml app/ tests/ -s --colors -p",
+		"phpcs:fix": "php -d 'disable_functions=\"\"' vendor/bin/phpcbf --parallel=$(nproc --all) --standard=.phpcs.xml app/ tests/ -s --colors -p",
+		"rector": "rector process app --dry-run",
+		"rector:fix": "rector process app",
+		"strict-types": "php bin/strict-types --dry-run",
+		"strict-types:fix": "php bin/strict-types",
+		"latte-lint": "php latte-lint",
+		"neon-lint": "php vendor/bin/neon-lint config",
+		"tester": "tester tests -s",
+		"lint": [
+			"@phpstan",
+			"@phpcs",
+			"@latte-lint",
+			"@neon-lint",
+			"@tester"
+		]
 	},
 	"minimum-stability": "stable",
 	"config": {
 		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
 			"symfony/thanks": true
 		}
 	}

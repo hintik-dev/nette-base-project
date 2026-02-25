@@ -1,5 +1,4 @@
-<?php declare(strict_types = 1);
-
+<?php declare(strict_types=1);
 namespace App\Model\Latte;
 
 use App\Model\Security\SecurityUser;
@@ -12,40 +11,38 @@ use Nette\Http\IRequest;
 
 final class TemplateFactory extends NetteTemplateFactory
 {
+    /** @var LatteFactory */
+    private $latteFactory;
 
-	/** @var LatteFactory */
-	private $latteFactory;
+    /** @var SecurityUser */
+    private $user;
 
-	/** @var SecurityUser */
-	private $user;
+    public function __construct(
+        LatteFactory $latteFactory,
+        IRequest $httpRequest,
+        SecurityUser $user,
+        Storage $cacheStorage,
+        ?string $templateClass = null
+    ) {
+        parent::__construct($latteFactory, $httpRequest, $user, $cacheStorage, $templateClass);
+        $this->latteFactory = $latteFactory;
+        $this->user = $user;
+    }
 
-	public function __construct(
-		LatteFactory $latteFactory,
-		IRequest $httpRequest,
-		SecurityUser $user,
-		Storage $cacheStorage,
-		?string $templateClass = null
-	)
-	{
-		parent::__construct($latteFactory, $httpRequest, $user, $cacheStorage, $templateClass);
-		$this->latteFactory = $latteFactory;
-		$this->user = $user;
-	}
+    public function createTemplate(?Control $control = null, ?string $class = null): Template
+    {
+        /** @var Template $template */
+        $template = parent::createTemplate($control);
 
-	public function createTemplate(?Control $control = null, ?string $class = null): Template
-	{
-		/** @var Template $template */
-		$template = parent::createTemplate($control);
+        // Remove default $template->user for prevent misused
+        unset($template->user);
 
-		// Remove default $template->user for prevent misused
-		unset($template->user);
+        // Assign new variables
+        $template->_user = $this->user;
+        $template->_template = $template;
+        $template->_filters = new FilterExecutor($this->latteFactory->create());
 
-		// Assign new variables
-		$template->_user = $this->user;
-		$template->_template = $template;
-		$template->_filters = new FilterExecutor($this->latteFactory->create());
-
-		return $template;
-	}
-
+        /** @phpstan-ignore return.type */
+        return $template;
+    }
 }

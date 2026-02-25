@@ -1,0 +1,56 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$dryRun = in_array('--dry-run', $argv, true);
+$paths = array_values(array_filter($argv, fn($a) => !str_starts_with($a, '-') && $a !== $argv[0]));
+
+if ($paths === []) {
+	$paths = [__DIR__ . '/../app', __DIR__ . '/../tests'];
+}
+
+$changed = 0;
+$checked = 0;
+
+foreach ($paths as $path) {
+	$files = new RecursiveIteratorIterator(
+		new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS),
+		RecursiveIteratorIterator::LEAVES_ONLY,
+	);
+
+	foreach ($files as $file) {
+		if ($file->getExtension() !== 'php') {
+			continue;
+		}
+
+		$checked++;
+		$filepath = $file->getPathname();
+		$content = file_get_contents($filepath);
+
+		// Already correct format
+		if (preg_match('~^<\?php declare\(strict_types=1\);~', $content)) {
+			continue;
+		}
+
+		// Normalize: remove existing declare(strict_types) in any format, then re-add on first line
+		$content = preg_replace('~^<\?php\s+declare\s*\(\s*strict_types\s*=\s*1\s*\)\s*;\s*\n~', "<?php\n", $content);
+
+		// Add declare on the same line as <?php
+		$content = preg_replace('~^<\?php~', '<?php declare(strict_types=1);', $content, 1);
+
+		$changed++;
+		$relativePath = ltrim(str_replace(dirname(__DIR__), '', $filepath), '/');
+
+		if ($dryRun) {
+			echo " [dry-run] Would update: $relativePath\n";
+		} else {
+			file_put_contents($filepath, $content);
+			echo " [updated] $relativePath\n";
+		}
+	}
+}
+
+$mode = $dryRun ? '(dry-run) ' : '';
+echo "\nDone {$mode}— checked $checked files, " . ($dryRun ? "would change" : "changed") . " $changed files.\n";
+exit($changed > 0 && $dryRun ? 1 : 0);

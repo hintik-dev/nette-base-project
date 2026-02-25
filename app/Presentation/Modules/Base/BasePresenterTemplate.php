@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Presentation\Modules\Base;
 
 use Nette\Application\UI\Control;
@@ -30,9 +29,6 @@ abstract class BasePresenterTemplate extends Template
 
     /** @var string */
     public string $basePath;
-
-    /** @var array{message: string, type: string}|array{} */
-    public array $flashes = [];
 
 
     /**
@@ -76,16 +72,13 @@ abstract class BasePresenterTemplate extends Template
     {
         $uninitializedProps = [];
 
-        foreach (new ReflectionObject($this)->getProperties(ReflectionProperty::IS_PUBLIC) as $prop)
-        {
-            if (!$prop->isInitialized($this))
-            {
+        foreach (new ReflectionObject($this)->getProperties(ReflectionProperty::IS_PUBLIC) as $prop) {
+            if (!$prop->isInitialized($this)) {
                 $uninitializedProps[] = $prop->getName();
             }
         }
 
-        if ($uninitializedProps)
-        {
+        if ($uninitializedProps) {
             throw new RuntimeException(
                 sprintf('Template has uninitialized public variables: %s.', implode(', ', $uninitializedProps)),
             );

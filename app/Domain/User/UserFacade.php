@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Domain\User;
 
 use App\Model\Security\Authorizator\InsufficientPrivilegesException;
@@ -10,8 +9,7 @@ class UserFacade
     public function __construct(
         private readonly UserService $userService,
         private readonly SecurityUser $securityUser,
-    )
-    {
+    ) {
     }
 
 
@@ -20,8 +18,7 @@ class UserFacade
      */
     public function getUserById(int $id): User
     {
-        if (!$this->securityUser->isAllowed('user', 'detail'))
-        {
+        if (!$this->securityUser->isAllowed('user', 'detail')) {
             throw new InsufficientPrivilegesException();
         }
 
@@ -34,8 +31,7 @@ class UserFacade
      */
     public function getUserByEmail(string $email): User
     {
-        if (!$this->securityUser->isAllowed('user', 'detail'))
-        {
+        if (!$this->securityUser->isAllowed('user', 'detail')) {
             throw new InsufficientPrivilegesException();
         }
 

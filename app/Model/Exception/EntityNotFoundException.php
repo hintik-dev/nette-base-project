@@ -1,6 +1,5 @@
-<?php
-
-namespace App\Core\Exception;
+<?php declare(strict_types=1);
+namespace App\Model\Exception;
 
 use RuntimeException;
 use Throwable;

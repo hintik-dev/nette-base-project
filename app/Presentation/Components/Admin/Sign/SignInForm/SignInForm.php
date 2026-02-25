@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Presentation\Components\Admin\Sign\SignInForm;
 
 use App\Domain\Sign\SignFacade;
@@ -19,8 +18,7 @@ class SignInForm extends BaseComponent
     public function __construct(
         private readonly SignFacade $signFacade,
         private readonly array $onLogIn,
-    )
-    {
+    ) {
     }
 
 
@@ -42,18 +40,16 @@ class SignInForm extends BaseComponent
 
     private function saveForm(BaseForm $form, SignInFormData $formData): void
     {
-        try
-        {
+        try {
             $this->signFacade->signUserIn($formData);
 
             $this->presenter->flashMessage('Uživatel úspěšně přihlášen');
 
-            ($this->onLogIn)();
-        }
-        catch (AuthenticationException $e)
-        {
-            if ($e->getCode() === Authenticator::NotApproved)
-            {
+            foreach ($this->onLogIn as $callback) {
+                $callback();
+            }
+        } catch (AuthenticationException $e) {
+            if ($e->getCode() === Authenticator::NotApproved) {
                 $this->presenter->flashMessage('Uživatelský účet je blokován, není možné přihlášení', 'error');
                 $form->addError('Uživatelský účet je blokován, není možné přihlášení');
                 return;
@@ -61,9 +57,7 @@ class SignInForm extends BaseComponent
 
             $this->presenter->flashMessage('Zadaná kombinace údajů neodpovídá žádnému uživateli', 'error');
             $form->addError('Zadaná kombinace údajů neodpovídá žádnému uživateli');
-        }
-        catch (Throwable)
-        {
+        } catch (Throwable) {
             $this->presenter->flashMessage('Při přihlášení se vyskytla chyba', 'error');
             $form->addError('Při přihlášení se vyskytla chyba');
         }

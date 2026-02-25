@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Presentation\Modules\Admin;
 
 use App\Presentation\Modules\Base\BasePresenter;
@@ -17,8 +16,7 @@ class BaseAdminPresenter extends BasePresenter
     #[Override]
     public function checkRequirements(ReflectionMethod|ReflectionClass $element): void
     {
-        if (!$this->user->isLoggedIn())
-        {
+        if (!$this->user->isLoggedIn()) {
             $this->redirect(
                 destination: ':Admin:Sign:in',
                 args: ['key' => $this->storeRequest()]

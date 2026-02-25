@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<ruleset name="App">
+	<file>app</file>
+	<file>tests</file>
+
+	<arg name="extensions" value="php"/>
+	<arg name="encoding" value="utf-8"/>
+	<arg value="sp"/>
+
+	<config name="php_version" value="80500"/>
+
+	<rule ref="PSR12">
+		<!-- Allows <?php declare(strict_types=1); on a single line -->
+		<exclude name="PSR12.Files.OpenTag.NotAlone"/>
+		<exclude name="PSR12.Files.FileHeader.SpacingAfterBlock"/>
+		<!-- Allows Allman style braces ({ on new line) for control structures -->
+		<exclude name="Squiz.ControlStructures.ControlSignature"/>
+	</rule>
+
+	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+		<properties>
+			<!-- Also consider @throws, @param, @return etc. as usage -->
+			<property name="searchAnnotations" value="true"/>
+		</properties>
+	</rule>
+
+	<rule ref="Generic.Files.LineLength">
+		<properties>
+			<property name="lineLimit" value="140"/>
+			<property name="absoluteLineLimit" value="140"/>
+		</properties>
+	</rule>
+</ruleset>

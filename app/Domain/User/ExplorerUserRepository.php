@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Domain\User;
 
 use App\Core\Database\ExplorerRepository;
@@ -20,8 +19,7 @@ class ExplorerUserRepository extends ExplorerRepository
 
     public function __construct(
         private readonly ExplorerUserMapper $userMapper,
-    )
-    {
+    ) {
         parent::__construct(self::TABLE_NAME);
     }
 
@@ -35,8 +33,7 @@ class ExplorerUserRepository extends ExplorerRepository
             ->where(self::COLUMN_ID, $id)
             ->fetch();
 
-        if ($userRow === null)
-        {
+        if ($userRow === null) {
             throw new UserNotFoundException();
         }
 
@@ -53,8 +50,7 @@ class ExplorerUserRepository extends ExplorerRepository
             ->where(self::COLUMN_EMAIL, $email)
             ->fetch();
 
-        if ($userRow === null)
-        {
+        if ($userRow === null) {
             throw new UserNotFoundException();
         }
 

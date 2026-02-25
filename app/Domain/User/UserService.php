@@ -1,23 +1,14 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Domain\User;
 
-use App\Domain\DataSource\DataSourceInterface;
-use App\Model\Security\Authorizator\InsufficientPrivilegesException;
-use App\Model\Security\Passwords;
-use App\Model\Security\SecurityUser;
-use Cake\Datasource\EntityInterface;
 use DateTimeImmutable;
 use DateTimeInterface;
 
 readonly class UserService
 {
-
     public function __construct(
         private ExplorerUserRepository $userRepository,
-    )
-    {
-
+    ) {
     }
 
 
@@ -35,8 +26,7 @@ readonly class UserService
 
     public function updateUserLastLogin(int $id, ?DateTimeInterface $lastLogin = null): void
     {
-        if($lastLogin === null)
-        {
+        if ($lastLogin === null) {
             $lastLogin = new DateTimeImmutable();
         }
 

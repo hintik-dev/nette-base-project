@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Domain\Sign;
 
 use App\Model\Security\SecurityUser;
@@ -9,9 +8,7 @@ class SignService
 {
     public function __construct(
         private readonly SecurityUser $securityUser,
-    )
-    {
-
+    ) {
     }
 
 

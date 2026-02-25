@@ -1,5 +1,4 @@
-<?php declare(strict_types = 1);
-
+<?php declare(strict_types=1);
 namespace App\Presentation\Control;
 
 use App\Model\Latte\TemplateProperty;
@@ -12,5 +11,4 @@ use Nette\Application\UI\Control;
  */
 abstract class BaseControl extends Control
 {
-
 }
