@@ -5,12 +5,10 @@ require __DIR__ . '/vendor/autoload.php';
 
 $path = $argv[1] ?? 'app';
 
-$bootstrap = new App\Bootstrap;
-$container = $bootstrap->bootConsoleApplication();
-$latte = $container->getByType(Nette\Bridges\ApplicationLatte\TemplateFactory::class)
-	->createTemplate()
-	->getLatte();
-
+$latte = new Latte\Engine;
+$latte->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(null));
+$latte->addExtension(new Nette\Bridges\AssetsLatte\LatteExtension(new Nette\Assets\Registry));
+$latte->addExtension(new App\Presentation\Accessory\LatteExtension);
 $latte->addExtension(new Latte\Tools\LinterExtension);
 
 $linter = new Latte\Tools\Linter($latte, strict: true);
