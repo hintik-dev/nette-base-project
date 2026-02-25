@@ -1,9 +1,21 @@
 {
-	"name": "nette/web-project",
-	"description": "Nette: Standard Web Project",
-	"keywords": ["nette"],
+	"name": "hintik/nette-base-project",
+	"description": "Base Nette Project",
+	"keywords": ["nette", "php", "skeleton", "project"],
 	"type": "project",
-	"license": ["MIT", "BSD-3-Clause", "GPL-2.0-only", "GPL-3.0-only"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Jan Hinterholzinger",
+			"email": "jan@hinterholzinger.cz",
+			"homepage": "https://github.com/hintik-dev"
+		}
+	],
+	"homepage": "https://github.com/hintik-dev/nette-base-project",
+	"support": {
+		"issues": "https://github.com/hintik-dev/nette-base-project/issues",
+		"source": "https://github.com/hintik-dev/nette-base-project"
+	},
 	"require": {
 		"php": ">= 8.5",
 		"nette/application": "^3.2.9",
