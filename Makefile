@@ -34,10 +34,10 @@ chmod cm: # Nastavení práv na čtení a zápis pro celou složku projektu
 	docker exec -it "${PHP_CONTAINER_NAME}" bash -c 'chmod a+rw /var/www/html -R'
 
 all: # Spustí všechny testy aplikace.
-	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "composer run all"
+	docker exec -i "${PHP_CONTAINER_NAME}" bash -c "composer run all"
 
 all-fix: # Automatická oprava chyb.
-	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "composer run all:fix"
+	docker exec -i "${PHP_CONTAINER_NAME}" bash -c "composer run all:fix"
 
 rector: # Zobrazí navrhované Rector změny - smazání unused use (dry-run)
 	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "composer rector"
@@ -66,7 +66,7 @@ latte-lint ll: # Spustí latte-lint kontrolu šablon
 neon-lint nl: # Spustí neon-lint kontrolu konfiguračních souborů
 	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && composer neon-lint"
 
-tester t: # Spustí Nette Tester testy
+nette-tester nt: # Spustí Nette Tester testy
 	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && composer tester"
 
 lint: # Spustí všechny lintovací nástroje a testy

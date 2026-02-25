@@ -17,6 +17,11 @@
 		<exclude name="Squiz.ControlStructures.ControlSignature"/>
 	</rule>
 
+	<!-- Nette Tester test files require both class definitions and side effects (require/run) -->
+	<rule ref="PSR1.Files.SideEffects">
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
+
 	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
 		<properties>
 			<!-- Also consider @throws, @param, @return etc. as usage -->
