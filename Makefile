@@ -62,3 +62,17 @@ tester t: # Spustí Nette Tester testy
 
 lint: # Spustí všechny lintovací nástroje a testy
 	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && composer lint"
+
+migrate m: # Spustí databázové migrace
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && vendor/bin/phinx migrate"
+
+migrate-rollback mr: # Vrátí poslední migraci
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && vendor/bin/phinx rollback"
+
+migrate-status ms: # Zobrazí stav migrací
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && vendor/bin/phinx status"
+
+migrate-create mc: # Spustí phinx create - uživatel je vyzván k zadání názvu migrace ve formátu CamelCase
+	@echo "Zadejte název nové migrace ve formátu CamelCase: "; \
+	read n; \
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c "cd /var/www/html && vendor/bin/phinx create $$n && LATEST_FILE=\$$(ls -t db/migrations | head -1) && echo \$$LATEST_FILE && chown --reference=db/migrations db/migrations/\$$LATEST_FILE"

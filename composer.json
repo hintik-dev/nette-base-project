@@ -19,7 +19,8 @@
 		"nette/security": "^3.2",
 		"nette/utils": "^4.1",
 		"latte/latte": "^3.1",
-		"tracy/tracy": "^2.11"
+		"tracy/tracy": "^2.11",
+		"robmorgan/phinx": "^0.16.10"
 	},
 	"require-dev": {
 		"nette/tester": "^2.6",
