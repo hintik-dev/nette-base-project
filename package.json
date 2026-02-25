@@ -5,10 +5,12 @@
 	},
 	"devDependencies": {
 		"@nette/vite-plugin": "^1.0.1",
+		"sass": "^1.89.0",
 		"vite": "^6.3.5"
 	},
 	"scripts": {
-		"dev": "vite",
-		"build": "vite build"
+		"build": "vite build",
+		"build:dev": "vite build --mode development",
+		"watch": "vite build --watch --mode development"
 	}
 }

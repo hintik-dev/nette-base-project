@@ -16,7 +16,16 @@ bash b: # Otevřít bash v PHP kontejneru
 	cd "${DIR_DOCKER}" && docker exec -it "${PHP_CONTAINER_NAME}" bash -c "umask 000 && bash"
 
 node-bash nb: # Otevřít bash v NodeJS kontejneru
-	cd "${DIR_DOCKER}" && docker compose run --rm "${NODEJS_CONTAINER_NAME}" "bash"
+	cd "${DIR_DOCKER}" && docker exec -it "${NODEJS_CONTAINER_NAME}" bash
+
+node-build build: # Sestavení JS/CSS assetů (produkční)
+	cd "${DIR_DOCKER}" && docker exec -it "${NODEJS_CONTAINER_NAME}" npm run build
+
+node-build-dev bd: # Sestavení JS/CSS assetů (vývojové, rychlejší)
+	cd "${DIR_DOCKER}" && docker exec -it "${NODEJS_CONTAINER_NAME}" npm run build:dev
+
+node-watch watch: # Sledování změn a průběžné sestavování assetů
+	cd "${DIR_DOCKER}" && docker exec -it "${NODEJS_CONTAINER_NAME}" npm run watch
 
 delete-cache dc: # Smazání cache
 	find temp -mindepth 1 ! -name '.gitignore' -type f,d -exec rm -rf {} +

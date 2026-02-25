@@ -4,6 +4,8 @@
 
 {block #title}Web{/block}
 
+{block #head}{asset? 'web/main.js'}{/block}
+
 {block #body}
     <h1>{ifset #pageTitle}{include #pageTitle}{/ifset}</h1>
 

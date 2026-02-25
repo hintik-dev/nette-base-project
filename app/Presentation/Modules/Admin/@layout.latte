@@ -4,6 +4,8 @@
 
 {block #title}Administrace{/block}
 
+{block #head}{asset? 'admin/main.js'}{/block}
+
 {block #body}
     <h1>{ifset #pageTitle}{include #pageTitle}{/ifset}</h1>
 
