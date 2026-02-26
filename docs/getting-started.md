@@ -31,7 +31,7 @@ cp docker/php.env_example docker/php.env
 Upravte `docker/.env` podle potřeby:
 
 ```dotenv
-COMPOSE_PROJECT_NAME="hintik-base-web"
+COMPOSE_PROJECT_NAME="nette-base-project"
 PORT_APACHE=10000        # Port pro webový server (http://localhost:10000)
 PORT_MARIADB=20000       # Port pro MariaDB
 PORT_PHP_MY_ADMIN=30000  # Port pro phpMyAdmin (http://localhost:30000)
@@ -42,8 +42,9 @@ PORT_PHP_MY_ADMIN=30000  # Port pro phpMyAdmin (http://localhost:30000)
 Zkopírujte vzorový konfigurační soubor databáze:
 
 ```bash
-cp config/local.example/database.neon config/local/database.neon
+cp config/local.example/ config/local -r
 ```
+Případně vyplníme údaje k databázi v `config/local/database.neon`, pokud nepoužíváme vývojovou databázi v kontejneru.
 
 ---
 
@@ -81,7 +82,14 @@ make migrate
 
 ---
 
-## 6. Build assetů
+## 6. Nainstalování NPM závislostí
+```bash
+make npm-install
+```
+
+---
+
+## 7. Build assetů
 
 ### Vývojový build (rychlejší)
 

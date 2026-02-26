@@ -37,7 +37,9 @@ cd nette-base-project
 # Konfigurace prostředí
 cp docker/.env_example docker/.env
 cp docker/php.env_example docker/php.env
-cp config/local.example/database.neon config/local/database.neon
+cp config/local.example/ config/local -r
+
+# Vyplníme nastavení připojení do databáze v config/local/database.neon (při použití jiné než vývojové databáze v kontejneru).
 
 # Spuštění
 make up
@@ -48,11 +50,14 @@ make chmod
 # Databázové migrace
 make migrate
 
+# Instalace NPM závislostí
+make ni
+
 # Build assetů
 make node-build-dev
 ```
 
-Aplikace bude dostupná na `http://localhost:10000`.
+Aplikace bude dostupná na `http://localhost:10000` (port určen dle obsahu souboru `docker/.env`).
 
 Podrobný návod: [docs/getting-started.md](docs/getting-started.md)
 

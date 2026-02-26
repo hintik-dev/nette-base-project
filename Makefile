@@ -15,6 +15,9 @@ down stop: # Zastavení aplikace
 bash b: # Otevřít bash v PHP kontejneru
 	cd "${DIR_DOCKER}" && docker exec -it "${PHP_CONTAINER_NAME}" bash -c "umask 000 && bash"
 
+npm-install ni: # Spustit npm install v NodeJS kontejneru
+	cd "${DIR_DOCKER}" && docker exec -it "${NODEJS_CONTAINER_NAME}" npm install
+
 node-bash nb: # Otevřít bash v NodeJS kontejneru
 	cd "${DIR_DOCKER}" && docker exec -it "${NODEJS_CONTAINER_NAME}" bash
 
@@ -31,7 +34,7 @@ delete-cache dc: # Smazání cache
 	find temp -mindepth 1 ! -name '.gitignore' -type f,d -exec rm -rf {} +
 
 chmod cm: # Nastavení práv na čtení a zápis pro celou složku projektu
-	docker exec -it "${PHP_CONTAINER_NAME}" bash -c 'chmod a+rw /var/www/html -R'
+	docker exec -it "${PHP_CONTAINER_NAME}" bash -c 'sudo chmod a+rw /var/www/html -R'
 
 all: # Spustí všechny testy aplikace.
 	docker exec -i "${PHP_CONTAINER_NAME}" bash -c "composer run all"
