@@ -43,7 +43,7 @@ class SignPresenter extends BaseAdminPresenter
         }
 
         if ($this->user->isLoggedIn()) {
-            $this->redirect('Admin:Home:');
+            $this->redirect(':Admin:Home:');
         }
     }
 }
