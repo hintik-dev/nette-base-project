@@ -28,6 +28,9 @@ search:
 	-	in: %appDir%/Command
 		classes:
 			- *Command
+	-	in: %appDir%/Presentation/Modules/Api
+		classes:
+			- *Controller
 
 decorator:
     App\Core\Database\ExplorerRepository:

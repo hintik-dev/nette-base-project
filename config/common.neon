@@ -7,7 +7,13 @@ application:
 	errorPresenter:
 		4xx: Error:Error4xx
 		5xx: Error:Error5xx
-	mapping: App\Presentation\Modules\*\**Presenter
+	mapping:
+	    Web: App\Presentation\Modules\Web\**Presenter
+	    Admin: App\Presentation\Modules\Admin\**Presenter
+	    Api: App\Presentation\Modules\Api\**Controller
+
+extensions:
+    api: Apitte\Core\DI\ApiExtension
 
 latte:
 	strictParsing: yes
@@ -37,3 +43,7 @@ session:
 	useCookies: true
 	useOnlyCookies: true
 	useStrictMode: true
+
+api:
+    debug: %debugMode%
+    catchException: true
