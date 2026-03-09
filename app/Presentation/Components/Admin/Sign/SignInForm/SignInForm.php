@@ -5,6 +5,7 @@ use App\Domain\Sign\SignFacade;
 use App\Domain\Sign\SignInFormData;
 use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\Form\BaseForm;
+use Nette\Application\AbortException;
 use Nette\Security\AuthenticationException;
 use Nette\Security\Authenticator;
 use Throwable;
@@ -57,6 +58,8 @@ class SignInForm extends BaseComponent
 
             $this->presenter->flashMessage('Zadaná kombinace údajů neodpovídá žádnému uživateli', 'error');
             $form->addError('Zadaná kombinace údajů neodpovídá žádnému uživateli');
+        } catch (AbortException $e) {
+            throw $e;
         } catch (Throwable) {
             $this->presenter->flashMessage('Při přihlášení se vyskytla chyba', 'error');
             $form->addError('Při přihlášení se vyskytla chyba');
