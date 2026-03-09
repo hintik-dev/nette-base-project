@@ -2,7 +2,10 @@
 namespace App\Domain\User;
 
 use App\Core\Database\ExplorerRepository;
+use App\Domain\UserRole\UserRole;
 use DateTimeInterface;
+use Nette\Database\Table\ActiveRow;
+use RuntimeException;
 
 class ExplorerUserRepository extends ExplorerRepository
 {
@@ -55,6 +58,44 @@ class ExplorerUserRepository extends ExplorerRepository
         }
 
         return $this->userMapper->mapUser($userRow);
+    }
+
+
+    public function createUser(string $email, string $passwordHash, UserRole $role, bool $active): User
+    {
+        $row = $this->getTable()->insert([
+            self::COLUMN_EMAIL => $email,
+            self::COLUMN_PASSWORD_HASH => $passwordHash,
+            self::COLUMN_ROLE => $role->value,
+            self::COLUMN_ACTIVE => $active,
+        ]);
+
+        if (!($row instanceof ActiveRow))
+        {
+            throw new RuntimeException(
+                'Failed to create user',
+            );
+        }
+
+        return $this->userMapper->mapUser($row);
+    }
+
+
+    public function userExistsByEmail(string $email): bool
+    {
+        return $this->getTable()
+            ->where(self::COLUMN_EMAIL, $email)
+            ->count() > 0;
+    }
+
+
+    public function updateUserPasswordHash(int $id, string $passwordHash): void
+    {
+        $this->getTable()
+            ->where(self::COLUMN_ID, $id)
+            ->update([
+                self::COLUMN_PASSWORD_HASH => $passwordHash,
+            ]);
     }
 
 

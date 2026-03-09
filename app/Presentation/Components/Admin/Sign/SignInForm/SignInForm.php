@@ -57,7 +57,8 @@ class SignInForm extends BaseComponent
 
             $this->presenter->flashMessage('Zadaná kombinace údajů neodpovídá žádnému uživateli', 'error');
             $form->addError('Zadaná kombinace údajů neodpovídá žádnému uživateli');
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            bdump($e);
             $this->presenter->flashMessage('Při přihlášení se vyskytla chyba', 'error');
             $form->addError('Při přihlášení se vyskytla chyba');
         }

@@ -137,9 +137,11 @@ Stačí tedy vytvořit třídu v `app/Command/` — není potřeba žádná manu
 
 ---
 
-## Ukázkový příkaz v projektu
+## Dostupné příkazy
 
-Projekt obsahuje demonstrační příkaz `HelloWorldCommand`:
+### `app:hello-world`
+
+Demonstrační příkaz.
 
 ```bash
 php bin/console app:hello-world
@@ -147,3 +149,39 @@ php bin/console app:hello-world
 ```
 
 Zdrojový kód: `app/Command/HelloWorldCommand.php`
+
+---
+
+### `app:create-admin`
+
+Vytvoří nového admin uživatele nebo aktualizuje heslo existujícího. Určeno pro první spuštění aplikace nebo obnovu přístupu.
+
+```bash
+# Vytvoření nového admina
+php bin/console app:create-admin admin@firma.cz
+
+# Aktualizace hesla existujícího admina
+php bin/console app:create-admin admin@firma.cz --update
+```
+
+Příkaz interaktivně požádá o zadání hesla (vstup je skrytý) a jeho potvrzení.
+
+**Argumenty:**
+
+| Argument | Popis                        |
+|----------|------------------------------|
+| `email`  | E-mail administrátora        |
+
+**Volby:**
+
+| Volba              | Zkratka | Popis                                              |
+|--------------------|---------|----------------------------------------------------|
+| `--update`         | `-u`    | Aktualizovat heslo, pokud uživatel již existuje    |
+
+**Validace:**
+- E-mail musí být ve správném formátu
+- Heslo nesmí být prázdné a musí mít alespoň 8 znaků
+- Zadané heslo a jeho potvrzení se musí shodovat
+- Bez `--update` příkaz selže, pokud uživatel s daným e-mailem již existuje
+
+Zdrojový kód: `app/Command/CreateAdminCommand.php`
