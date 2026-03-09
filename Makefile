@@ -1,6 +1,7 @@
 DIR_DOCKER=docker
-PHP_CONTAINER_NAME=nette-base-project_apache
-NODEJS_CONTAINER_NAME=nette-base-project_nodejs
+PROJECT_NAME=nette-base-project
+PHP_CONTAINER_NAME=${PROJECT_NAME}_apache
+NODEJS_CONTAINER_NAME=${PROJECT_NAME}_nodejs
 
 .PHONY: help
 help: # Zobrazí nápovědu
