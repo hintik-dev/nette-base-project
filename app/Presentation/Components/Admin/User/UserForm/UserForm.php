@@ -71,6 +71,7 @@ class UserForm extends BaseComponent
     public function render(mixed $params = null): void
     {
         $this->getTemplate()->editId = $this->editId;
+        $this->getTemplate()->backLink = $this->presenter->link('User:list');
         parent::render($params);
     }
 
