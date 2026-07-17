@@ -12,7 +12,7 @@
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
 
                 <li class="nav-item">
-                    <a n:href="Home:default" class="nav-link {if $presenter->name === 'Admin:Home'}active{/if}">
+                    <a n:href="Home:default" class="nav-link {if isLinkCurrent(':Admin:Home:default')}active{/if}">
                         <i class="nav-icon bi bi-house-fill"></i>
                         <p>Dashboard</p>
                     </a>
