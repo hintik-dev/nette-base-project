@@ -60,9 +60,9 @@ readonly class ScheduledJobService
     }
 
 
-    public function toggleActive(int $id): void
+    public function setActive(int $id, bool $active): void
     {
-        $this->repository->toggleActive($id);
+        $this->repository->setActive($id, $active);
     }
 
 

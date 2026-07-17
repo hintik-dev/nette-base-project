@@ -61,12 +61,22 @@ class ScheduledJobGrid extends BaseGridComponent
             });
 
         $grid->addActionCallback(
-            'toggle',
-            'Aktivovat/Deaktivovat',
+            'deactivate',
+            'Deaktivovat',
             function (string $id): void {
-                $this->presenter->redirect('toggle!', ['id' => (int) $id]);
+                $this->presenter->redirect('setActive!', ['id' => (int) $id, 'active' => false]);
             },
-        )->setIcon('power')->setClass('btn btn-sm btn-outline-secondary');
+        )->setIcon('power')->setClass('btn btn-sm btn-outline-secondary')
+            ->setRenderCondition(fn($row) => (bool) $row[ExplorerScheduledJobRepository::COLUMN_IS_ACTIVE]);
+
+        $grid->addActionCallback(
+            'activate',
+            'Aktivovat',
+            function (string $id): void {
+                $this->presenter->redirect('setActive!', ['id' => (int) $id, 'active' => true]);
+            },
+        )->setIcon('power')->setClass('btn btn-sm btn-outline-secondary')
+            ->setRenderCondition(fn($row) => !$row[ExplorerScheduledJobRepository::COLUMN_IS_ACTIVE]);
 
         $grid->addActionCallback(
             'runNow',

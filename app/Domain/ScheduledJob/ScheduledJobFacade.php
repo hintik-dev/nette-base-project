@@ -53,9 +53,9 @@ class ScheduledJobFacade
     }
 
 
-    public function toggleActive(int $id): void
+    public function setActive(int $id, bool $active): void
     {
-        $this->service->toggleActive($id);
+        $this->service->setActive($id, $active);
     }
 
 

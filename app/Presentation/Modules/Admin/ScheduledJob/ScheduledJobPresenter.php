@@ -42,9 +42,9 @@ class ScheduledJobPresenter extends BaseAdminPresenter
     }
 
 
-    public function handleToggle(int $id): void
+    public function handleSetActive(int $id, bool $active): void
     {
-        $this->facade->toggleActive($id);
+        $this->facade->setActive($id, $active);
         $this->flashSuccess('Stav úlohy byl změněn.');
         $this->redirect('this');
     }

@@ -76,12 +76,12 @@ class ExplorerScheduledJobRepository extends SchedulerExplorerRepository
     }
 
 
-    public function toggleActive(int $id): void
+    public function setActive(int $id, bool $active): void
     {
         $this->getTable()
             ->where(self::COLUMN_ID, $id)
             ->update([
-                self::COLUMN_IS_ACTIVE => new \Nette\Database\SqlLiteral('NOT ' . self::COLUMN_IS_ACTIVE),
+                self::COLUMN_IS_ACTIVE => $active,
             ]);
     }
 }
