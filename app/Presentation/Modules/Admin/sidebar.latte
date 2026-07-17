@@ -59,11 +59,29 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a n:href="Email:list" class="nav-link {if isLinkCurrent(':Admin:Email:*')}active{/if}">
+                {var $emailActive = isLinkCurrent(':Admin:Email:*')}
+                <li class="nav-item {if $emailActive}menu-open{/if}">
+                    <a href="#" class="nav-link {if $emailActive}active{/if}">
                         <i class="nav-icon bi bi-envelope-fill"></i>
-                        <p>E-maily</p>
+                        <p>
+                            E-maily
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a n:href="Email:list" class="nav-link ps-4 {if isLinkCurrent(':Admin:Email:list')}active{/if}">
+                                <i class="nav-icon bi bi-send-fill"></i>
+                                <p>Odeslané e-maily</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a n:href="Email:compose" class="nav-link ps-4 {if isLinkCurrent(':Admin:Email:compose')}active{/if}">
+                                <i class="nav-icon bi bi-pencil-square"></i>
+                                <p>Nový e-mail</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
             </ul>
