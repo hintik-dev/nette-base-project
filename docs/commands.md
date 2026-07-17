@@ -125,6 +125,8 @@ search:
 
 Stačí tedy vytvořit třídu v `app/Command/` — není potřeba žádná manuální registrace.
 
+> Přes `bin/console` jsou kromě vlastních příkazů z `app/Command/` dostupné i příkazy dodané knihovnami — např. `scheduler:run`, `scheduler:list`, `scheduler:force-run` z job systému. Viz [Job systém](scheduler.md).
+
 ---
 
 ## Návratové kódy
