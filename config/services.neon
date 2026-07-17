@@ -19,6 +19,9 @@ services:
 	# Scheduler – přepsání výchozí implementace na DB-driven
 	scheduler.scheduler: App\Scheduler\DatabaseScheduler
 
+	# Email
+	- App\Domain\Email\EmailSenderService(fromAddress: %email.from.address%, fromName: %email.from.name%)
+
 	# API Security ================
 	api.authDecorator:
 	    factory: App\Presentation\Modules\Api\Security\AuthenticationDecorator

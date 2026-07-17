@@ -1,0 +1,19 @@
+{form form}
+<div class="mb-3">
+    <label class="form-label">{label recipients /}</label>
+    {input recipients, class: 'form-control'}
+    <div class="form-text text-muted">Více adres oddělte čárkou.</div>
+    {inputError recipients}
+</div>
+<div class="mb-3">
+    <label class="form-label">{label subject /}</label>
+    {input subject, class: 'form-control'}
+    {inputError subject}
+</div>
+<div class="mb-3">
+    <label class="form-label">{label bodyHtml /}</label>
+    {input bodyHtml, class: 'form-control font-monospace'}
+    {inputError bodyHtml}
+</div>
+{input submit, class: 'btn btn-primary'}
+{/form}

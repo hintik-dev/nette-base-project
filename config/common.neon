@@ -52,6 +52,15 @@ api:
     plugins:
         Apitte\Core\DI\Plugin\CoreDecoratorPlugin:
 
+mail:
+    smtp: true
+    host: %email.smtp.host%
+    port: %email.smtp.port%
+    username: %email.smtp.username%
+    password: %email.smtp.password%
+    secure: %email.smtp.secure%
+    timeout: 10
+
 scheduler:
     path: '%tempDir%/scheduler'
     jobs: []

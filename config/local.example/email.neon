@@ -1,0 +1,11 @@
+parameters:
+    email:
+        smtp:
+            host: 'smtp.example.com'
+            port: 587
+            username: 'user@example.com'
+            password: 'your-password'
+            secure: 'tls'         # tls / ssl / '' (prázdné = bez šifrování)
+        from:
+            address: 'noreply@example.com'
+            name: 'Administrace'
