@@ -34,6 +34,7 @@ final class StaticAuthorizator extends Permission
     protected function addResources(): void
     {
         $this->addResource(User::RESOURCE_ID);
+        $this->addResource('value-storage');
     }
 
     /**
