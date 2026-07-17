@@ -14,6 +14,7 @@ application:
 
 extensions:
     api: Apitte\Core\DI\ApiExtension
+    scheduler: Contributte\Scheduler\DI\SchedulerExtension
 
 latte:
 	strictParsing: yes
@@ -47,3 +48,7 @@ session:
 api:
     debug: %debugMode%
     catchException: true
+
+scheduler:
+    path: '%tempDir%/scheduler'
+    jobs: []

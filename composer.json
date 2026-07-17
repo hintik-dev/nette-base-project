@@ -35,6 +35,7 @@
 		"robmorgan/phinx": "^0.16.10",
 		"symfony/console": "^7.4",
 		"contributte/apitte": "^0.14.0",
+		"contributte/scheduler": "^0.9.0",
 		"ublaboo/datagrid": "7.2.x-dev"
 	},
 	"require-dev": {

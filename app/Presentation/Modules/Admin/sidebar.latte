@@ -25,6 +25,31 @@
                     </a>
                 </li>
 
+                {var $scheduledJobActive = isLinkCurrent(':Admin:ScheduledJob:*')}
+                <li class="nav-item {if $scheduledJobActive}menu-open{/if}">
+                    <a href="#" class="nav-link {if $scheduledJobActive}active{/if}">
+                        <i class="nav-icon bi bi-clock-fill"></i>
+                        <p>
+                            Plánované úlohy
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a n:href="ScheduledJob:default" class="nav-link ps-4 {if isLinkCurrent(':Admin:ScheduledJob:default')}active{/if}">
+                                <i class="nav-icon bi bi-list-task"></i>
+                                <p>Definice úloh</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a n:href="ScheduledJob:runs" class="nav-link ps-4 {if isLinkCurrent(':Admin:ScheduledJob:runs')}active{/if}">
+                                <i class="nav-icon bi bi-journal-text"></i>
+                                <p>Historie běhů</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
         </nav>
     </div>
