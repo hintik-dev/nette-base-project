@@ -47,7 +47,7 @@ final class UserAuthenticator implements Authenticator
 
     protected function createIdentity(User $user): IIdentity
     {
-        return new Identity($user->id, [$user->role], [
+        return new Identity($user->id, [$user->role->value], [
             'email' => $user->email,
         ]);
     }
