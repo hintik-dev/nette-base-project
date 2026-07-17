@@ -63,7 +63,7 @@ class CreateSuperAdminCommand extends BaseCommand
             $this->userService->updateUserPasswordHash($user->id, $passwordHash);
             $output->writeln('<info>Heslo uživatele "' . $email . '" bylo aktualizováno.</info>');
         } else {
-            $user = $this->userService->createUser($email, $passwordHash, UserRole::SUPERADMIN);
+            $user = $this->userService->createUser($email, $passwordHash, UserRole::SuperAdmin);
             $output->writeln('<info>Superadmin uživatel "' . $email . '" byl úspěšně vytvořen (ID: ' . $user->id . ').</info>');
         }
 

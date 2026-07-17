@@ -23,9 +23,9 @@ final class StaticAuthorizator extends Permission
     protected function addRoles(): void
     {
         $this->addRole('guest');
-        $this->addRole(UserRole::USER->value, 'guest');
-        $this->addRole(UserRole::ADMIN->value, 'user');
-        $this->addRole(UserRole::SUPERADMIN->value, 'admin');
+        $this->addRole(UserRole::User->value, 'guest');
+        $this->addRole(UserRole::Admin->value, 'user');
+        $this->addRole(UserRole::SuperAdmin->value, 'admin');
     }
 
     /**
