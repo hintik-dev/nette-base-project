@@ -11,6 +11,10 @@ if (group) {
 
         document.documentElement.setAttribute('data-bs-theme', resolved);
 
+        // Drží AdminLTE vlastní perzistenci motivu (localStorage "lte-theme") v souladu
+        // s náhledem, aby ji AdminLTE nepřebilo zpět na systémové preference.
+        try { localStorage.setItem('lte-theme', resolved); } catch (e) {}
+
         const sidebar = document.querySelector('.app-sidebar');
         if (sidebar) {
             sidebar.setAttribute('data-bs-theme', resolved);
