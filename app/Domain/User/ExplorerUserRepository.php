@@ -89,11 +89,16 @@ class ExplorerUserRepository extends ExplorerRepository
     }
 
 
-    public function userExistsByEmail(string $email): bool
+    public function userExistsByEmail(string $email, ?int $excludeId = null): bool
     {
-        return $this->getTable()
-            ->where(self::COLUMN_EMAIL, $email)
-            ->count() > 0;
+        $selection = $this->getTable()
+            ->where(self::COLUMN_EMAIL, $email);
+
+        if ($excludeId !== null) {
+            $selection->where(self::COLUMN_ID . ' != ?', $excludeId);
+        }
+
+        return $selection->count() > 0;
     }
 
 
@@ -103,6 +108,28 @@ class ExplorerUserRepository extends ExplorerRepository
             ->where(self::COLUMN_ID, $id)
             ->update([
                 self::COLUMN_PASSWORD_HASH => $passwordHash,
+            ]);
+    }
+
+
+    public function updateUser(int $id, string $email, UserRole $role, bool $active): void
+    {
+        $this->getTable()
+            ->where(self::COLUMN_ID, $id)
+            ->update([
+                self::COLUMN_EMAIL => $email,
+                self::COLUMN_ROLE => $role->value,
+                self::COLUMN_ACTIVE => $active,
+            ]);
+    }
+
+
+    public function setActive(int $id, bool $active): void
+    {
+        $this->getTable()
+            ->where(self::COLUMN_ID, $id)
+            ->update([
+                self::COLUMN_ACTIVE => $active,
             ]);
     }
 

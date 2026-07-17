@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">{if $editId !== null}Upravit uživatele{else}Nový uživatel{/if}</h3>
+    </div>
+    <div class="card-body">
+        {form form}
+        <div class="mb-3">
+            <label n:name="email" class="form-label">E-mail</label>
+            {input email, class: 'form-control'}
+            {inputError email}
+        </div>
+        <div class="mb-3">
+            <label n:name="password" class="form-label">{label password /}</label>
+            {input password, class: 'form-control'}
+            <div n:if="$form['password']->getOption('description')" class="form-text">{$form['password']->getOption('description')}</div>
+            {inputError password}
+        </div>
+        <div class="mb-3">
+            <label n:name="role" class="form-label">Role</label>
+            {input role, class: 'form-select'}
+            {inputError role}
+        </div>
+        <div class="mb-3">
+            {input active}
+            {label active /}
+        </div>
+        <div class="d-flex gap-2">
+            {input submit, class: 'btn btn-primary'}
+            <a n:href="list" class="btn btn-secondary">Zpět</a>
+        </div>
+        {/form}
+    </div>
+</div>

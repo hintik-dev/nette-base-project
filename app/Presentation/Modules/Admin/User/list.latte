@@ -2,8 +2,11 @@
 
 {block #content}
     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Uživatelé</h3>
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h3 class="card-title mb-0">Uživatelé</h3>
+            <a n:href="create" class="btn btn-sm btn-primary ms-auto">
+                <i class="bi bi-plus-lg"></i> Nový uživatel
+            </a>
         </div>
         <div class="card-body p-0">
             {control userListGrid}
