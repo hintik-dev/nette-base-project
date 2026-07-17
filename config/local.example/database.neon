@@ -1,4 +1,9 @@
 database:
-	dsn: 'mysql:host=database;dbname=database'
-	user: root
-	password: root_pristup_123
+	default:
+		dsn: 'mysql:host=database;dbname=database'
+		user: root
+		password: root_pristup_123
+	scheduler:
+		dsn: 'mysql:host=database;dbname=database'
+		user: root
+		password: root_pristup_123

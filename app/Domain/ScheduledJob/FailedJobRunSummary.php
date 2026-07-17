@@ -7,7 +7,6 @@ readonly class FailedJobRunSummary
     public function __construct(
         public string $jobName,
         public \DateTimeImmutable $finishedAt,
-        public ?string $error,
     ) {
     }
 }

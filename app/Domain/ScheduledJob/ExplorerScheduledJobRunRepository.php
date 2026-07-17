@@ -2,10 +2,10 @@
 
 namespace App\Domain\ScheduledJob;
 
-use App\Core\Database\ExplorerRepository;
+use App\Core\Database\SchedulerExplorerRepository;
 use Nette\Database\Table\Selection;
 
-class ExplorerScheduledJobRunRepository extends ExplorerRepository
+class ExplorerScheduledJobRunRepository extends SchedulerExplorerRepository
 {
     public const string COLUMN_ID = 'id';
     public const string COLUMN_SCHEDULED_JOB_ID = 'scheduled_job_id';
@@ -14,7 +14,6 @@ class ExplorerScheduledJobRunRepository extends ExplorerRepository
     public const string COLUMN_STARTED_AT = 'started_at';
     public const string COLUMN_FINISHED_AT = 'finished_at';
     public const string COLUMN_DURATION_MS = 'duration_ms';
-    public const string COLUMN_ERROR = 'error';
 
     public const string TABLE_NAME = 'scheduled_job_run';
 
@@ -80,7 +79,7 @@ class ExplorerScheduledJobRunRepository extends ExplorerRepository
     }
 
 
-    public function finishError(int $runId, \DateTimeImmutable $finishedAt, int $durationMs, string $error): void
+    public function finishError(int $runId, \DateTimeImmutable $finishedAt, int $durationMs): void
     {
         $this->getTable()
             ->where(self::COLUMN_ID, $runId)
@@ -88,7 +87,6 @@ class ExplorerScheduledJobRunRepository extends ExplorerRepository
                 self::COLUMN_STATUS      => ScheduledJobRunStatus::Failed->value,
                 self::COLUMN_FINISHED_AT => $finishedAt->format('Y-m-d H:i:s'),
                 self::COLUMN_DURATION_MS => $durationMs,
-                self::COLUMN_ERROR       => $error,
             ]);
     }
 

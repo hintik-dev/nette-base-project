@@ -4,7 +4,6 @@ namespace App\Scheduler;
 
 use App\Domain\ScheduledJob\ExplorerScheduledJobRepository;
 use App\Domain\ScheduledJob\ExplorerScheduledJobRunRepository;
-use App\Domain\ScheduledJob\ScheduledJobRunTrigger;
 use App\Domain\ScheduledJob\ScheduledJobService;
 use Contributte\Scheduler\IJob;
 use Contributte\Scheduler\IScheduler;
@@ -54,7 +53,7 @@ class DatabaseScheduler implements IScheduler
                 continue;
             }
 
-            $this->runRepository->createScheduled($record->id, ScheduledJobRunTrigger::Scheduler, new \DateTimeImmutable());
+            $this->jobService->planRun($record->id);
         }
     }
 

@@ -41,4 +41,7 @@ search:
 decorator:
     App\Core\Database\ExplorerRepository:
         setup:
-            - injectBaseDependencies
+            - injectBaseDependencies(@database.default.explorer)
+    App\Core\Database\SchedulerExplorerRepository:
+        setup:
+            - injectSchedulerDependencies(@database.scheduler.explorer)

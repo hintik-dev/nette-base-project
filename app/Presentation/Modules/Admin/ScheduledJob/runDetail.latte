@@ -34,11 +34,6 @@
                     {if $run->durationMs >= 1000}{round($run->durationMs / 1000, 2)} s{else}{$run->durationMs} ms{/if}
                 {else}—{/if}
             </dd>
-
-            {if $run->error !== null}
-            <dt class="col-sm-3 text-danger">Chyba</dt>
-            <dd class="col-sm-9"><code class="text-danger">{$run->error}</code></dd>
-            {/if}
         </dl>
     </div>
 </div>

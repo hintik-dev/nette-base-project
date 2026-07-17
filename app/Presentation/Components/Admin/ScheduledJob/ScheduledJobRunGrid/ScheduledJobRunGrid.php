@@ -74,18 +74,6 @@ class ScheduledJobRunGrid extends BaseComponent
                     : $ms . ' ms';
             });
 
-        $grid->addColumnText(ExplorerScheduledJobRunRepository::COLUMN_ERROR, 'Chyba')
-            ->setRenderer(function ($row): Html {
-                $error = $row[ExplorerScheduledJobRunRepository::COLUMN_ERROR];
-                if ($error === null) {
-                    return Html::el('span')->setText('—');
-                }
-                return Html::el('code')
-                    ->setAttribute('title', $error)
-                    ->setAttribute('style', 'max-width:300px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')
-                    ->setText($error);
-            });
-
         $grid->addActionCallback(
             'detail',
             'Detail',

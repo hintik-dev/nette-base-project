@@ -12,7 +12,6 @@ readonly class ScheduledJobRun
         public \DateTimeImmutable $startedAt,
         public ?\DateTimeImmutable $finishedAt,
         public ?int $durationMs,
-        public ?string $error,
     ) {
     }
 }

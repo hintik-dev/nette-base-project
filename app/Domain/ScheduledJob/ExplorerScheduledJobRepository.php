@@ -2,10 +2,10 @@
 
 namespace App\Domain\ScheduledJob;
 
-use App\Core\Database\ExplorerRepository;
+use App\Core\Database\SchedulerExplorerRepository;
 use Nette\Database\Table\Selection;
 
-class ExplorerScheduledJobRepository extends ExplorerRepository
+class ExplorerScheduledJobRepository extends SchedulerExplorerRepository
 {
     public const string COLUMN_ID = 'id';
     public const string COLUMN_NAME = 'name';

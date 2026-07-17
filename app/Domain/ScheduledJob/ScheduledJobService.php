@@ -102,16 +102,39 @@ readonly class ScheduledJobService
             fn(ScheduledJobRun $run) => new FailedJobRunSummary(
                 jobName:    $jobNames[$run->scheduledJobId] ?? sprintf('Úloha #%d', $run->scheduledJobId),
                 finishedAt: $run->finishedAt ?? $run->startedAt,
-                error:      $run->error,
             ),
             $runs,
         );
     }
 
 
+    /** Ruční naplánování běhu (tlačítko "Spustit hned"). */
     public function scheduleRun(int $id, ScheduledJobRunTrigger $trigger): void
     {
-        $this->runRepository->createScheduled($id, $trigger, new \DateTimeImmutable());
+        $this->registerRun($id, $trigger);
+    }
+
+
+    /**
+     * PLAN — Zaregistruje a naplánuje běh úlohy (voláno DatabaseSchedulerem pro "due" úlohy).
+     */
+    public function planRun(int $id): void
+    {
+        $this->registerRun($id, ScheduledJobRunTrigger::Scheduler);
+    }
+
+
+    /** Vytvoří záznam běhu a rovnou zaloguje jeho registraci a naplánování. */
+    private function registerRun(int $id, ScheduledJobRunTrigger $trigger): int
+    {
+        $runId = $this->runRepository->createScheduled($id, $trigger, new \DateTimeImmutable());
+
+        $this->outputRepository->insertMany($runId, [
+            ['message' => 'Běh byl zaregistrován.', 'createdAt' => new \DateTimeImmutable()],
+            ['message' => 'Běh byl naplánován ke spuštění.', 'createdAt' => new \DateTimeImmutable()],
+        ]);
+
+        return $runId;
     }
 
 
@@ -125,6 +148,9 @@ readonly class ScheduledJobService
         $job = $this->resolveJobInstance($record->class);
 
         $this->runRepository->markRunning($runId);
+        $this->outputRepository->insertMany($runId, [
+            ['message' => 'Běh byl spuštěn.', 'createdAt' => new \DateTimeImmutable()],
+        ]);
 
         $output = new DatabaseOutput();
         $startMs = (int) round(microtime(true) * 1000);
@@ -135,13 +161,17 @@ readonly class ScheduledJobService
             $finishedAt = new \DateTimeImmutable();
             $durationMs = (int) round(microtime(true) * 1000) - $startMs;
 
+            $output->writeln('Úloha byla dokončena.');
+
             $this->runRepository->finishSuccess($runId, $finishedAt, $durationMs);
             $this->outputRepository->insertMany($runId, $output->getEntries());
         } catch (\Throwable $e) {
             $finishedAt = new \DateTimeImmutable();
             $durationMs = (int) round(microtime(true) * 1000) - $startMs;
 
-            $this->runRepository->finishError($runId, $finishedAt, $durationMs, $e->getMessage());
+            $output->writeln('Chyba: ' . $e->getMessage());
+
+            $this->runRepository->finishError($runId, $finishedAt, $durationMs);
             $this->outputRepository->insertMany($runId, $output->getEntries());
             Debugger::log($e, 'scheduler');
 

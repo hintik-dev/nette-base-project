@@ -21,7 +21,6 @@ class ExplorerScheduledJobRunMapper
                 ? \DateTimeImmutable::createFromMutable(DateTime::from($row[ExplorerScheduledJobRunRepository::COLUMN_FINISHED_AT]))
                 : null,
             durationMs:     $row[ExplorerScheduledJobRunRepository::COLUMN_DURATION_MS],
-            error:          $row[ExplorerScheduledJobRunRepository::COLUMN_ERROR],
         );
     }
 }
