@@ -15,6 +15,10 @@ services:
 	security.user: App\Model\Security\SecurityUser
 	security.authenticator: App\Model\Security\Authenticator\UserAuthenticator
 	security.authorizator: App\Model\Security\Authorizator\StaticAuthorizator
+	security.userStorage:
+		factory: App\Model\Security\Storage\DbUserStorage
+		setup:
+			- setInactivityTimeout(%session.inactivityTimeout%)
 
 	# Scheduler – přepsání výchozí implementace na DB-driven
 	scheduler.scheduler: App\Scheduler\DatabaseScheduler

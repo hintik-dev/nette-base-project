@@ -22,6 +22,6 @@ class SignFacade
             throw new InvalidStateException('User is already logged in.');
         }
 
-        $this->signService->signUserIn($signFormData->login, $signFormData->password);
+        $this->signService->signUserIn($signFormData->login, $signFormData->password, $signFormData->remember);
     }
 }

@@ -33,6 +33,8 @@ class SignInForm extends BaseComponent
         $form->addPassword(SignInFormData::PARAM_PASSWORD, 'Heslo')
             ->setRequired();
 
+        $form->addCheckbox(SignInFormData::PARAM_REMEMBER, 'Zapamatovat si mě');
+
         $form->addSubmit('submit', 'Přihlásit se');
 
         $form->onSuccess[] = fn(BaseForm $form, SignInFormData $values) => $this->saveForm($form, $values);

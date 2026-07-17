@@ -1,6 +1,8 @@
 # see https://doc.nette.org/en/configuring
 
 parameters:
+	session:
+		inactivityTimeout: null
 
 
 application:
