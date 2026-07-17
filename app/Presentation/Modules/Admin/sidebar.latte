@@ -18,6 +18,8 @@
                     </a>
                 </li>
 
+                <li class="nav-header">Správa</li>
+
                 <li class="nav-item">
                     <a n:href="User:list" class="nav-link {if isLinkCurrent(':Admin:User:*')}active{/if}">
                         <i class="nav-icon bi bi-people-fill"></i>
@@ -25,32 +27,12 @@
                     </a>
                 </li>
 
-                {var $scheduledJobActive = isLinkCurrent(':Admin:ScheduledJob:*')}
-                <li class="nav-item {if $scheduledJobActive}menu-open{/if}">
-                    <a href="#" class="nav-link {if $scheduledJobActive}active{/if}">
-                        <i class="nav-icon bi bi-clock-fill"></i>
-                        <p>
-                            Plánované úlohy
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
+                <li class="nav-item">
+                    <a n:href="UserSession:default" class="nav-link {if isLinkCurrent(':Admin:UserSession:default')}active{/if}">
+                        <i class="nav-icon bi bi-person-badge-fill"></i>
+                        <p>Session uživatelů</p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a n:href="ScheduledJob:default" class="nav-link ps-4 {if isLinkCurrent(':Admin:ScheduledJob:default')}active{/if}">
-                                <i class="nav-icon bi bi-list-task"></i>
-                                <p>Definice úloh</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a n:href="ScheduledJob:runs" class="nav-link ps-4 {if isLinkCurrent(':Admin:ScheduledJob:runs')}active{/if}">
-                                <i class="nav-icon bi bi-journal-text"></i>
-                                <p>Historie běhů</p>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
-
-                <li class="nav-header">Správa</li>
 
                 <li class="nav-item">
                     <a n:href="ApiUser:default" class="nav-link {if isLinkCurrent(':Admin:ApiUser:*')}active{/if}">
@@ -84,11 +66,29 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a n:href="UserSession:default" class="nav-link {if isLinkCurrent(':Admin:UserSession:default')}active{/if}">
-                        <i class="nav-icon bi bi-person-badge-fill"></i>
-                        <p>Session uživatelů</p>
+                {var $scheduledJobActive = isLinkCurrent(':Admin:ScheduledJob:*')}
+                <li class="nav-item {if $scheduledJobActive}menu-open{/if}">
+                    <a href="#" class="nav-link {if $scheduledJobActive}active{/if}">
+                        <i class="nav-icon bi bi-clock-fill"></i>
+                        <p>
+                            Plánované úlohy
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a n:href="ScheduledJob:default" class="nav-link ps-4 {if isLinkCurrent(':Admin:ScheduledJob:default')}active{/if}">
+                                <i class="nav-icon bi bi-list-task"></i>
+                                <p>Definice úloh</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a n:href="ScheduledJob:runs" class="nav-link ps-4 {if isLinkCurrent(':Admin:ScheduledJob:runs')}active{/if}">
+                                <i class="nav-icon bi bi-journal-text"></i>
+                                <p>Historie běhů</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="nav-item">
