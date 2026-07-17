@@ -5,6 +5,7 @@
 		"admin-lte": "^4.0.0-rc6",
 		"bootstrap": "^5.3.8",
 		"flatpickr": "^4.6.13",
+		"icheck-bootstrap": "^3.0.1",
 		"naja": "^3.3.3",
 		"nette-forms": "^3.3",
 		"sortablejs": "^1.15.7",

@@ -7,7 +7,22 @@
 // 3. AdminLTE 4 (Bootstrap 5 + AdminLTE komponenty)
 @import 'admin-lte/src/scss/adminlte.scss';
 
+// 4. icheck-bootstrap (musí být po adminlte, ale před naším overridem)
+@import 'icheck-bootstrap/icheck-bootstrap.css';
+
 // Admin custom overrides
+
+// icheck-bootstrap používá hardcoded barvy – přebijeme .icheck-primary naší $primary
+.icheck-primary > input:first-child:not(:checked):not(:disabled):hover + label::before,
+.icheck-primary > input:first-child:not(:checked):not(:disabled):hover + input[type="hidden"] + label::before {
+    border-color: darken($primary, 10%);
+}
+
+.icheck-primary > input:first-child:checked + label::before,
+.icheck-primary > input:first-child:checked + input[type="hidden"] + label::before {
+    background-color: $primary;
+    border-color: darken($primary, 10%);
+}
 
 [data-bs-theme="light"] .app-sidebar {
     background-color: #ffffff;
