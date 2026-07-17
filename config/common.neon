@@ -49,6 +49,8 @@ session:
 api:
     debug: %debugMode%
     catchException: true
+    plugins:
+        Apitte\Core\DI\Plugin\CoreDecoratorPlugin:
 
 scheduler:
     path: '%tempDir%/scheduler'

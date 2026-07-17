@@ -1,0 +1,44 @@
+{varType App\Domain\ApiUser\ApiUser $apiUser}
+
+{block #pageTitle}Upravit API uživatele{/block}
+
+{block #content}
+
+<div class="row">
+    <div class="col-lg-5">
+        {control apiUserForm}
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h3 class="card-title mb-0">API Token</h3>
+                <a n:href="regenerateToken!, id: $apiUser->id"
+                   class="btn btn-sm btn-outline-warning"
+                   data-confirm="Přegenerovat token? Starý token přestane okamžitě fungovat.">
+                    <i class="bi bi-arrow-clockwise"></i> Přegenerovat token
+                </a>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small mb-2">
+                    Tento token předávejte v hlavičce <code>Authorization: Bearer &lt;token&gt;</code>.
+                    Po přegenerování starý token okamžitě přestane fungovat.
+                </p>
+                <div class="input-group">
+                    <input type="text"
+                           class="form-control font-monospace"
+                           value="{$apiUser->token}"
+                           id="apiToken"
+                           readonly>
+                    <button class="btn btn-outline-secondary"
+                            type="button"
+                            onclick="navigator.clipboard.writeText(document.getElementById('apiToken').value).then(() => this.textContent = 'Zkopírováno!').catch(() => {}); setTimeout(() => this.textContent = 'Kopírovat', 1500)">
+                        Kopírovat
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}

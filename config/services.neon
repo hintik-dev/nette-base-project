@@ -19,6 +19,11 @@ services:
 	# Scheduler – přepsání výchozí implementace na DB-driven
 	scheduler.scheduler: App\Scheduler\DatabaseScheduler
 
+	# API Security ================
+	api.authDecorator:
+	    factory: App\Presentation\Modules\Api\Security\AuthenticationDecorator
+	    tags: [apitte.core.decorator: [priority: 10]]
+
 
 search:
 	-	in: %appDir%
