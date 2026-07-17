@@ -1,0 +1,32 @@
+<aside class="app-sidebar sidebar-light-primary" data-bs-theme="light">
+
+    <div class="sidebar-brand">
+        <a n:href="Home:default" class="brand-link">
+            <img src="{$basePath}/favicon.ico" alt="logo" width="33" height="33" class="brand-image">
+            <span class="brand-text"><strong>Nette</strong> Admin</span>
+        </a>
+    </div>
+
+    <div class="sidebar-wrapper">
+        <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
+
+                <li class="nav-item">
+                    <a n:href="Home:default" class="nav-link {if $presenter->name === 'Admin:Home'}active{/if}">
+                        <i class="nav-icon bi bi-house-fill"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a n:href="User:list" class="nav-link {if isLinkCurrent(':Admin:User:*')}active{/if}">
+                        <i class="nav-icon bi bi-people-fill"></i>
+                        <p>Uživatelé</p>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+
+</aside>

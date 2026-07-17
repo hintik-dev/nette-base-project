@@ -5,6 +5,7 @@ use App\Core\Database\ExplorerRepository;
 use App\Domain\UserRole\UserRole;
 use DateTimeInterface;
 use Nette\Database\Table\ActiveRow;
+use Nette\Database\Table\Selection;
 use RuntimeException;
 
 class ExplorerUserRepository extends ExplorerRepository
@@ -24,6 +25,13 @@ class ExplorerUserRepository extends ExplorerRepository
         private readonly ExplorerUserMapper $userMapper,
     ) {
         parent::__construct(self::TABLE_NAME);
+    }
+
+
+    /** @return Selection<ActiveRow> */
+    public function getAllDataSource(): Selection
+    {
+        return $this->findAll();
     }
 
 

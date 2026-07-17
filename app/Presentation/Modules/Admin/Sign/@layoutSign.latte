@@ -1,13 +1,17 @@
-{varType Nette\Security\User $user}
+<!DOCTYPE html>
+<html lang="cs" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{ifset #title}{include #title|stripHtml} | {/ifset}Administrace</title>
+    <link rel="icon" href="{$basePath}/favicon.ico">
+    {asset? 'admin/main.js'}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1/font/bootstrap-icons.min.css">
+</head>
+<body class="login-page bg-body-secondary">
 
-{layout '../../Base/@layout.latte'}
+    {block #content}{/block}
 
-{block #title}Autentizace{/block}
-
-{block #head}{asset? 'admin/main.js'}{/block}
-
-{block #body}
-    <h1>{ifset #pageTitle}{include #pageTitle}{/ifset}</h1>
-
-    {include #content}
-{/block}
+{include '../flashes.latte'}
+</body>
+</html>

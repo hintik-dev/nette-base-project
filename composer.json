@@ -34,7 +34,8 @@
 		"tracy/tracy": "^2.11",
 		"robmorgan/phinx": "^0.16.10",
 		"symfony/console": "^7.4",
-		"contributte/apitte": "^0.14.0"
+		"contributte/apitte": "^0.14.0",
+		"ublaboo/datagrid": "7.2.x-dev"
 	},
 	"require-dev": {
 		"nette/tester": "^2.6",
@@ -82,7 +83,8 @@
 		]
 	},
 	"bin": ["bin/console"],
-	"minimum-stability": "stable",
+	"minimum-stability": "dev",
+	"prefer-stable": true,
 	"config": {
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true,

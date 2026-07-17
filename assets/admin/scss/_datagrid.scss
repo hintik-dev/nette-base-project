@@ -1,0 +1,82 @@
+// Datagrid – pouze funkčně nezbytné styly (vendor datagrid.css se neimportuje)
+
+// Spinner overlay při AJAX načítání
+[data-datagrid-name] {
+    position: relative;
+}
+
+.datagrid-spinner-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+[data-bs-theme="dark"] .datagrid-spinner-overlay {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+@keyframes datagrid-edited {
+    0%   { background-color: #A6E2A9 }
+    100% { background-color: transparent }
+}
+@keyframes datagrid-edited-error {
+    0%   { background-color: #E8AAA4 }
+    100% { background-color: transparent }
+}
+
+.datagrid--content-row:not(.is-active) > td { display: none; }
+
+[data-datagrid-name] .hidden { display: none !important; }
+[data-datagrid-name] .datagrid-row-inline-add.datagrid-row-inline-add-hidden { display: none; }
+[data-datagrid-name] .datagrid-per-page-submit { position: absolute; visibility: hidden; width: 0; top: -200px; }
+[data-datagrid-name] .col-checkbox { user-select: none; }
+[data-datagrid-name] .datagrid-column-status-option-icon { float: right; }
+
+[data-datagrid-name] table tbody tr td.edited       { animation: datagrid-edited       1.2s; }
+[data-datagrid-name] table tbody tr td.edited-error { animation: datagrid-edited-error 1.6s; }
+
+[data-datagrid-name] table thead tr th a { text-decoration: none; }
+
+[data-datagrid-name] table thead tr th .datagrid-column-header-additions { float: right; }
+[data-datagrid-name] table thead tr th .datagrid-column-header-additions .column-settings-menu { opacity: 0; cursor: pointer; margin-left: 0.3em; display: inline-block; }
+[data-datagrid-name] table thead tr th:hover .column-settings-menu { opacity: 1; }
+[data-datagrid-name] table thead tr th .datagrid-column-header-additions .column-settings-menu .dropdown-toggle::after { display: none !important; }
+[data-datagrid-name] table thead tr th .datagrid-column-header-additions a[data-datagrid-reset-filter-by-column] { margin-left: 0.3em; color: #858585; }
+
+[data-datagrid-name] table tbody tr .datagrid-inline-edit .form-control { margin: -3px; padding-bottom: 4px; padding-top: 4px; height: 28px; }
+[data-datagrid-name] table tbody tr td[data-datagrid-editable-url].editing textarea { padding: 2px; margin: -3px; }
+
+[data-datagrid-name] table th.col-action, [data-datagrid-name] table td.col-action { white-space: nowrap; width: 10px; }
+[data-datagrid-name] table th.col-action { text-align: center; }
+[data-datagrid-name] table td.col-action { text-align: right; }
+[data-datagrid-name] table th.col-checkbox, [data-datagrid-name] table td.col-checkbox { padding: 0; width: 2.1em; text-align: center; vertical-align: middle; }
+[data-datagrid-name] table th.datagrid-fit-content, [data-datagrid-name] table td.datagrid-fit-content { width: 1%; white-space: nowrap; }
+
+// Tlačítko pro vymazání hodnoty datetime filtru – absolutně pozicované uvnitř input-group.
+// Button je posledním dítětem input-group (za .form-control), takže right: 0 jej překryje zprava.
+.input-group:has(.flatpickr-clear-btn) {
+    .flatpickr-clear-btn {
+        position: absolute;
+        right: 3px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: none;
+        padding: 0;
+        line-height: 1;
+        color: #adb5bd;
+        cursor: pointer;
+        z-index: 5;
+
+        &:hover { color: #495057; }
+    }
+}
+
+// Fallback: v gridu nikdy nezobrazuj kalendář inline, pouze po otevření.
+[data-datagrid-name] .flatpickr-calendar { display: none; }
+[data-datagrid-name] .flatpickr-calendar.open,
+[data-datagrid-name] .flatpickr-calendar.inline { display: inline-block; }
