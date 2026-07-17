@@ -2,10 +2,13 @@
 
 namespace App\Presentation\Components\Base;
 
+use App\Presentation\Control\TComponentFlashMessage;
 use Nette\Application\UI\Control;
 
 class BaseComponent extends Control
 {
+    use TComponentFlashMessage;
+
     protected ?string $latteFile = null;
 
     private ?string $componentName = null;
