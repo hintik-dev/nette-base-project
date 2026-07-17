@@ -7,25 +7,24 @@ use App\Domain\ScheduledJob\ExplorerScheduledJobRunRepository;
 use App\Domain\ScheduledJob\ScheduledJobFacade;
 use App\Domain\ScheduledJob\ScheduledJobRunStatus;
 use App\Domain\ScheduledJob\ScheduledJobRunTrigger;
-use App\Presentation\Components\Base\BaseComponent;
+use App\Presentation\Components\Base\BaseGridComponent;
 use App\Presentation\Control\DataGrid\BaseGrid;
-use Contributte\Translation\Translator;
+use App\Presentation\Control\DataGrid\BaseGridFactory;
 use Nette\Utils\Html;
 
-class ScheduledJobRunGrid extends BaseComponent
+class ScheduledJobRunGrid extends BaseGridComponent
 {
     public function __construct(
         private readonly ScheduledJobFacade $facade,
-        private readonly Translator $translator,
         private readonly ?int $scheduledJobId,
+        BaseGridFactory $baseGridFactory,
     ) {
+        parent::__construct($baseGridFactory);
     }
 
 
-    public function createComponentGrid(): BaseGrid
+    protected function configureGrid(BaseGrid $grid): void
     {
-        $grid = new BaseGrid();
-
         $dataSource = $this->scheduledJobId !== null
             ? $this->facade->getRunsDataSourceForJob($this->scheduledJobId)
             : $this->facade->getAllRunsDataSource();
@@ -85,9 +84,5 @@ class ScheduledJobRunGrid extends BaseComponent
         )->setIcon('eye-fill')->setClass('btn btn-sm btn-outline-secondary');
 
         $grid->setDefaultSort([ExplorerScheduledJobRunRepository::COLUMN_STARTED_AT => 'DESC']);
-
-        $grid->setTranslator($this->translator);
-
-        return $grid;
     }
 }

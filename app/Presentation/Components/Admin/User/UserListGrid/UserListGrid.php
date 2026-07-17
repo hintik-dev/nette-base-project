@@ -5,22 +5,21 @@ namespace App\Presentation\Components\Admin\User\UserListGrid;
 use App\Domain\User\ExplorerUserRepository;
 use App\Domain\User\UserFacade;
 use App\Domain\UserRole\UserRole;
-use App\Presentation\Components\Base\BaseComponent;
+use App\Presentation\Components\Base\BaseGridComponent;
 use App\Presentation\Control\DataGrid\BaseGrid;
-use Contributte\Translation\Translator;
+use App\Presentation\Control\DataGrid\BaseGridFactory;
 
-class UserListGrid extends BaseComponent
+class UserListGrid extends BaseGridComponent
 {
     public function __construct(
         private readonly UserFacade $userFacade,
-        private readonly Translator $translator,
+        BaseGridFactory $baseGridFactory,
     ) {
+        parent::__construct($baseGridFactory);
     }
 
-    public function createComponentGrid(): BaseGrid
+    protected function configureGrid(BaseGrid $grid): void
     {
-        $grid = new BaseGrid();
-
         $grid->setDataSource($this->userFacade->getAllUsersDataSource());
 
         $grid->addColumnNumber(ExplorerUserRepository::COLUMN_ID, 'ID')
@@ -48,9 +47,5 @@ class UserListGrid extends BaseComponent
             ->setFitContent();
 
         $grid->setDefaultSort([ExplorerUserRepository::COLUMN_ID => 'ASC']);
-
-        $grid->setTranslator($this->translator);
-
-        return $grid;
     }
 }

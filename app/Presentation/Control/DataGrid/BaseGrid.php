@@ -24,11 +24,12 @@ class BaseGrid extends Datagrid
 
     private ?string $aggregationRowLabel = null;
 
-    public function __construct()
+    public function __construct(Translator $translator)
     {
         parent::__construct();
         $this->setTemplateFile(__DIR__ . '/templates/datagrid.latte');
         $this->setRememberState(false);
+        $this->setTranslator($translator);
     }
 
     public function addColumnText(string $key, string $name, ?string $column = null): ColumnText

@@ -4,25 +4,24 @@ namespace App\Presentation\Components\Admin\ScheduledJob\ScheduledJobGrid;
 
 use App\Domain\ScheduledJob\ExplorerScheduledJobRepository;
 use App\Domain\ScheduledJob\ScheduledJobFacade;
-use App\Presentation\Components\Base\BaseComponent;
+use App\Presentation\Components\Base\BaseGridComponent;
 use App\Presentation\Control\DataGrid\BaseGrid;
-use Contributte\Translation\Translator;
+use App\Presentation\Control\DataGrid\BaseGridFactory;
 use Cron\CronExpression;
 use Nette\Utils\Html;
 
-class ScheduledJobGrid extends BaseComponent
+class ScheduledJobGrid extends BaseGridComponent
 {
     public function __construct(
         private readonly ScheduledJobFacade $facade,
-        private readonly Translator $translator,
+        BaseGridFactory $baseGridFactory,
     ) {
+        parent::__construct($baseGridFactory);
     }
 
 
-    public function createComponentGrid(): BaseGrid
+    protected function configureGrid(BaseGrid $grid): void
     {
-        $grid = new BaseGrid();
-
         $grid->setDataSource($this->facade->getAllDataSource());
 
         $grid->addColumnNumber(ExplorerScheduledJobRepository::COLUMN_ID, 'ID')
@@ -84,9 +83,5 @@ class ScheduledJobGrid extends BaseComponent
                 $this->presenter->redirect('runs', ['jobId' => (int) $id]);
             },
         )->setIcon('journal-text')->setClass('btn btn-sm btn-outline-info');
-
-        $grid->setTranslator($this->translator);
-
-        return $grid;
     }
 }

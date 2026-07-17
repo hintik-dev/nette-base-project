@@ -4,24 +4,23 @@ namespace App\Presentation\Components\Admin\ScheduledJob\ScheduledJobRunOutputGr
 
 use App\Domain\ScheduledJob\ExplorerScheduledJobRunOutputRepository;
 use App\Domain\ScheduledJob\ScheduledJobFacade;
-use App\Presentation\Components\Base\BaseComponent;
+use App\Presentation\Components\Base\BaseGridComponent;
 use App\Presentation\Control\DataGrid\BaseGrid;
-use Contributte\Translation\Translator;
+use App\Presentation\Control\DataGrid\BaseGridFactory;
 
-class ScheduledJobRunOutputGrid extends BaseComponent
+class ScheduledJobRunOutputGrid extends BaseGridComponent
 {
     public function __construct(
         private readonly ScheduledJobFacade $facade,
-        private readonly Translator $translator,
         private readonly int $runId,
+        BaseGridFactory $baseGridFactory,
     ) {
+        parent::__construct($baseGridFactory);
     }
 
 
-    public function createComponentGrid(): BaseGrid
+    protected function configureGrid(BaseGrid $grid): void
     {
-        $grid = new BaseGrid();
-
         $grid->setDataSource($this->facade->getOutputDataSourceForRun($this->runId));
 
         $grid->addColumnNumber(ExplorerScheduledJobRunOutputRepository::COLUMN_ID, '#')
@@ -32,9 +31,5 @@ class ScheduledJobRunOutputGrid extends BaseComponent
             ->setFormat('H:i:s.u');
 
         $grid->addColumnText(ExplorerScheduledJobRunOutputRepository::COLUMN_MESSAGE, 'Zpráva');
-
-        $grid->setTranslator($this->translator);
-
-        return $grid;
     }
 }
