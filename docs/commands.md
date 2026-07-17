@@ -152,16 +152,16 @@ Zdrojový kód: `app/Command/HelloWorldCommand.php`
 
 ---
 
-### `app:create-admin`
+### `app:create-superadmin`
 
-Vytvoří nového admin uživatele nebo aktualizuje heslo existujícího. Určeno pro první spuštění aplikace nebo obnovu přístupu.
+Vytvoří nového superadmin uživatele (role `superadmin`) nebo aktualizuje heslo existujícího. Určeno pro první spuštění aplikace nebo obnovu přístupu.
 
 ```bash
-# Vytvoření nového admina
-php bin/console app:create-admin admin@firma.cz
+# Vytvoření nového superadmina
+php bin/console app:create-superadmin admin@firma.cz
 
-# Aktualizace hesla existujícího admina
-php bin/console app:create-admin admin@firma.cz --update
+# Aktualizace hesla existujícího uživatele
+php bin/console app:create-superadmin admin@firma.cz --update
 ```
 
 Příkaz interaktivně požádá o zadání hesla (vstup je skrytý) a jeho potvrzení.
@@ -170,7 +170,7 @@ Příkaz interaktivně požádá o zadání hesla (vstup je skrytý) a jeho potv
 
 | Argument | Popis                        |
 |----------|------------------------------|
-| `email`  | E-mail administrátora        |
+| `email`  | E-mail superadministrátora   |
 
 **Volby:**
 
@@ -184,4 +184,6 @@ Příkaz interaktivně požádá o zadání hesla (vstup je skrytý) a jeho potv
 - Zadané heslo a jeho potvrzení se musí shodovat
 - Bez `--update` příkaz selže, pokud uživatel s daným e-mailem již existuje
 
-Zdrojový kód: `app/Command/CreateAdminCommand.php`
+**Poznámka:** Role `superadmin` se přiřazuje pouze nově vytvářenému uživateli. Volba `--update` mění existujícímu uživateli jen heslo, jeho roli ponechává beze změny.
+
+Zdrojový kód: `app/Command/CreateSuperAdminCommand.php`

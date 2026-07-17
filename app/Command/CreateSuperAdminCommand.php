@@ -13,8 +13,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-#[AsCommand(name: 'app:create-admin', description: 'Vytvoří nového admin uživatele nebo aktualizuje heslo existujícího')]
-class CreateAdminCommand extends BaseCommand
+#[AsCommand(name: 'app:create-superadmin', description: 'Vytvoří nového superadmin uživatele nebo aktualizuje heslo existujícího')]
+class CreateSuperAdminCommand extends BaseCommand
 {
     public function __construct(
         private readonly UserService $userService,
@@ -27,7 +27,7 @@ class CreateAdminCommand extends BaseCommand
     protected function configure(): void
     {
         $this
-            ->addArgument('email', InputArgument::REQUIRED, 'E-mail administrátora')
+            ->addArgument('email', InputArgument::REQUIRED, 'E-mail superadministrátora')
             ->addOption('update', 'u', InputOption::VALUE_NONE, 'Aktualizovat heslo, pokud uživatel již existuje');
     }
 
@@ -63,8 +63,8 @@ class CreateAdminCommand extends BaseCommand
             $this->userService->updateUserPasswordHash($user->id, $passwordHash);
             $output->writeln('<info>Heslo uživatele "' . $email . '" bylo aktualizováno.</info>');
         } else {
-            $user = $this->userService->createUser($email, $passwordHash, UserRole::ADMIN);
-            $output->writeln('<info>Admin uživatel "' . $email . '" byl úspěšně vytvořen (ID: ' . $user->id . ').</info>');
+            $user = $this->userService->createUser($email, $passwordHash, UserRole::SUPERADMIN);
+            $output->writeln('<info>Superadmin uživatel "' . $email . '" byl úspěšně vytvořen (ID: ' . $user->id . ').</info>');
         }
 
         return self::SUCCESS;
