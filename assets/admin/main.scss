@@ -44,6 +44,26 @@
     border-bottom: 1px solid #e9ecef;
 }
 
+[data-bs-theme="dark"] .app-sidebar {
+    background-color: var(--bs-body-bg);
+    border-right: 1px solid rgba(255, 255, 255, .1);
+}
+
+[data-bs-theme="dark"] .app-sidebar .sidebar-menu > .nav-item.menu-open {
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    > .nav-treeview {
+        background-color: transparent;
+    }
+}
+
+[data-bs-theme="dark"] .app-sidebar .sidebar-brand {
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
 @import 'scss/datagrid';
 
 // Barva textu uvnitř primary prvků (bílá, dokud běžíme jen ve světlém tématu)

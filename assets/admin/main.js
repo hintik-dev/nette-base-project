@@ -15,3 +15,4 @@ import './js/datagrid-flatpickr.js';
 
 import './js/toastr-shim.js';
 import './js/confirm.js';
+import './js/theme-preview.js';

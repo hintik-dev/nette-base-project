@@ -1,4 +1,4 @@
-<aside class="app-sidebar sidebar-light-primary" data-bs-theme="light">
+<aside class="app-sidebar {if $adminTheme === \App\Domain\UserSettings\AppearanceTheme::Dark}sidebar-dark-primary{else}sidebar-light-primary{/if}" data-bs-theme="{if $adminTheme === \App\Domain\UserSettings\AppearanceTheme::Dark}dark{else}light{/if}">
 
     <div class="sidebar-brand">
         <a n:href="Home:default" class="brand-link">
