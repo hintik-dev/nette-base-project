@@ -7,11 +7,13 @@ use App\Domain\User\UserFacade;
 use App\Domain\UserRole\UserRole;
 use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\DataGrid\BaseGrid;
+use Contributte\Translation\Translator;
 
 class UserListGrid extends BaseComponent
 {
     public function __construct(
         private readonly UserFacade $userFacade,
+        private readonly Translator $translator,
     ) {
     }
 
@@ -46,6 +48,8 @@ class UserListGrid extends BaseComponent
             ->setFitContent();
 
         $grid->setDefaultSort([ExplorerUserRepository::COLUMN_ID => 'ASC']);
+
+        $grid->setTranslator($this->translator);
 
         return $grid;
     }

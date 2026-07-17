@@ -6,11 +6,13 @@ use App\Domain\ScheduledJob\ExplorerScheduledJobRunOutputRepository;
 use App\Domain\ScheduledJob\ScheduledJobFacade;
 use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\DataGrid\BaseGrid;
+use Contributte\Translation\Translator;
 
 class ScheduledJobRunOutputGrid extends BaseComponent
 {
     public function __construct(
         private readonly ScheduledJobFacade $facade,
+        private readonly Translator $translator,
         private readonly int $runId,
     ) {
     }
@@ -30,6 +32,8 @@ class ScheduledJobRunOutputGrid extends BaseComponent
             ->setFormat('H:i:s.u');
 
         $grid->addColumnText(ExplorerScheduledJobRunOutputRepository::COLUMN_MESSAGE, 'Zpráva');
+
+        $grid->setTranslator($this->translator);
 
         return $grid;
     }

@@ -6,6 +6,7 @@ use App\Domain\ScheduledJob\ExplorerScheduledJobRepository;
 use App\Domain\ScheduledJob\ScheduledJobFacade;
 use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\DataGrid\BaseGrid;
+use Contributte\Translation\Translator;
 use Cron\CronExpression;
 use Nette\Utils\Html;
 
@@ -13,6 +14,7 @@ class ScheduledJobGrid extends BaseComponent
 {
     public function __construct(
         private readonly ScheduledJobFacade $facade,
+        private readonly Translator $translator,
     ) {
     }
 
@@ -82,6 +84,8 @@ class ScheduledJobGrid extends BaseComponent
                 $this->presenter->redirect('runs', ['jobId' => (int) $id]);
             },
         )->setIcon('journal-text')->setClass('btn btn-sm btn-outline-info');
+
+        $grid->setTranslator($this->translator);
 
         return $grid;
     }

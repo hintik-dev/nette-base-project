@@ -15,6 +15,7 @@ application:
 extensions:
     api: Apitte\Core\DI\ApiExtension
     scheduler: Contributte\Scheduler\DI\SchedulerExtension
+    translation: Contributte\Translation\DI\TranslationExtension
 
 latte:
 	strictParsing: yes
@@ -52,3 +53,12 @@ api:
 scheduler:
     path: '%tempDir%/scheduler'
     jobs: []
+
+translation:
+    locales:
+        whitelist: [cs_CZ]
+        default: cs_CZ
+        fallback: [cs_CZ]
+    dirs:
+        - %appDir%/Lang
+    returnOriginalMessage: true

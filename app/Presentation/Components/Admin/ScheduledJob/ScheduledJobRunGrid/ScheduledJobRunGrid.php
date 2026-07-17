@@ -9,12 +9,14 @@ use App\Domain\ScheduledJob\ScheduledJobRunStatus;
 use App\Domain\ScheduledJob\ScheduledJobRunTrigger;
 use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\DataGrid\BaseGrid;
+use Contributte\Translation\Translator;
 use Nette\Utils\Html;
 
 class ScheduledJobRunGrid extends BaseComponent
 {
     public function __construct(
         private readonly ScheduledJobFacade $facade,
+        private readonly Translator $translator,
         private readonly ?int $scheduledJobId,
     ) {
     }
@@ -83,6 +85,8 @@ class ScheduledJobRunGrid extends BaseComponent
         )->setIcon('eye-fill')->setClass('btn btn-sm btn-outline-secondary');
 
         $grid->setDefaultSort([ExplorerScheduledJobRunRepository::COLUMN_STARTED_AT => 'DESC']);
+
+        $grid->setTranslator($this->translator);
 
         return $grid;
     }
