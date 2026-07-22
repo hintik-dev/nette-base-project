@@ -6,9 +6,6 @@ use App\Presentation\Components\Admin\ApiUser\ApiUserForm\ApiUserFormFactory;
 use App\Presentation\Components\Admin\ApiUser\ApiUserGrid\ApiUserGridFactory;
 use App\Presentation\Modules\Admin\BaseAdminPresenter;
 
-/**
- * @property-read ApiUserTemplate $template
- */
 class ApiUserPresenter extends BaseAdminPresenter
 {
     public function __construct(
@@ -34,7 +31,9 @@ class ApiUserPresenter extends BaseAdminPresenter
 
     public function actionEdit(int $id): void
     {
-        $this->template->apiUser = $this->apiUserFacade->getById($id);
+        /** @var ApiUserEditTemplate $template */
+        $template = $this->template;
+        $template->apiUser = $this->apiUserFacade->getById($id);
         $this->addComponent($this->apiUserFormFactory->create($id), 'apiUserForm');
     }
 

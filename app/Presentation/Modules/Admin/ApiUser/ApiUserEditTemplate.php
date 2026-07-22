@@ -4,7 +4,7 @@ namespace App\Presentation\Modules\Admin\ApiUser;
 use App\Domain\ApiUser\ApiUser;
 use App\Model\Latte\BaseTemplate;
 
-final class ApiUserTemplate extends BaseTemplate
+final class ApiUserEditTemplate extends BaseTemplate
 {
-    public ?ApiUser $apiUser = null;
+    public ApiUser $apiUser;
 }

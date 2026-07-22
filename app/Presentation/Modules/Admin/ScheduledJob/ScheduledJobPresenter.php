@@ -8,9 +8,6 @@ use App\Presentation\Components\Admin\ScheduledJob\ScheduledJobRunGrid\Scheduled
 use App\Presentation\Components\Admin\ScheduledJob\ScheduledJobRunOutputGrid\ScheduledJobRunOutputGridFactory;
 use App\Presentation\Modules\Admin\BaseAdminPresenter;
 
-/**
- * @property-read ScheduledJobTemplate $template
- */
 class ScheduledJobPresenter extends BaseAdminPresenter
 {
     public function __construct(
@@ -31,7 +28,9 @@ class ScheduledJobPresenter extends BaseAdminPresenter
 
     public function actionRuns(?int $jobId = null): void
     {
-        $this->template->job = $jobId !== null ? $this->facade->getById($jobId) : null;
+        /** @var ScheduledJobRunsTemplate $template */
+        $template = $this->template;
+        $template->job = $jobId !== null ? $this->facade->getById($jobId) : null;
         $this->addComponent($this->runGridFactory->create($jobId), 'scheduledJobRunGrid');
     }
 
@@ -39,8 +38,11 @@ class ScheduledJobPresenter extends BaseAdminPresenter
     public function actionRunDetail(int $id): void
     {
         $run = $this->facade->getRunById($id);
-        $this->template->run = $run;
-        $this->template->job = $this->facade->getById($run->scheduledJobId);
+
+        /** @var ScheduledJobRunDetailTemplate $template */
+        $template = $this->template;
+        $template->run = $run;
+        $template->job = $this->facade->getById($run->scheduledJobId);
         $this->addComponent($this->outputGridFactory->create($id), 'scheduledJobRunOutputGrid');
     }
 

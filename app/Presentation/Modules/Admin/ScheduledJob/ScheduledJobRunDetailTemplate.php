@@ -5,9 +5,9 @@ use App\Domain\ScheduledJob\ScheduledJob;
 use App\Domain\ScheduledJob\ScheduledJobRun;
 use App\Model\Latte\BaseTemplate;
 
-final class ScheduledJobTemplate extends BaseTemplate
+final class ScheduledJobRunDetailTemplate extends BaseTemplate
 {
-    public ?ScheduledJob $job = null;
+    public ScheduledJob $job;
 
-    public ?ScheduledJobRun $run = null;
+    public ScheduledJobRun $run;
 }
