@@ -6,6 +6,9 @@ use App\Domain\ApiUser\ApiUserFormData;
 use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\Form\BaseForm;
 
+/**
+ * @property-read ApiUserFormTemplate $template
+ */
 class ApiUserForm extends BaseComponent
 {
     public function __construct(
@@ -57,7 +60,7 @@ class ApiUserForm extends BaseComponent
 
     public function render(mixed $params = null): void
     {
-        $this->getTemplate()->editId = $this->editId;
+        $this->template->editId = $this->editId;
         parent::render($params);
     }
 

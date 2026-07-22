@@ -7,6 +7,9 @@ use App\Presentation\Components\Admin\Email\ComposeEmailForm\ComposeEmailFormFac
 use App\Presentation\Components\Admin\Email\SentEmailGrid\SentEmailGridFactory;
 use App\Presentation\Modules\Admin\BaseAdminPresenter;
 
+/**
+ * @property-read EmailTemplate $template
+ */
 class EmailPresenter extends BaseAdminPresenter
 {
     public function __construct(

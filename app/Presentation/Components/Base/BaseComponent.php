@@ -2,9 +2,13 @@
 
 namespace App\Presentation\Components\Base;
 
+use App\Model\Latte\BaseTemplate;
 use App\Presentation\Control\TComponentFlashMessage;
 use Nette\Application\UI\Control;
 
+/**
+ * @property-read BaseTemplate $template
+ */
 class BaseComponent extends Control
 {
     use TComponentFlashMessage;
@@ -49,8 +53,8 @@ class BaseComponent extends Control
             $this->latteFile = $this->getComponentNameWithPath();
         }
 
-        $this->getTemplate()->setFile($this->latteFile . '.latte');
-        $this->getTemplate()->componentName = $this->getComponentName();
-        $this->getTemplate()->render();
+        $this->template->setFile($this->latteFile . '.latte');
+        $this->template->componentName = $this->getComponentName();
+        $this->template->render();
     }
 }

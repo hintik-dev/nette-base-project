@@ -54,7 +54,8 @@ class UserListGrid extends BaseGridComponent
         $grid->addActionCallback('deactivate', 'Deaktivovat', function (string $id): void {
             $this->presenter->redirect('setActive!', ['id' => (int) $id, 'active' => false]);
         })->setIcon('slash-circle')->setClass('btn btn-sm btn-outline-danger')
-            ->setRenderCondition(fn($row) => (bool) $row[ExplorerUserRepository::COLUMN_ACTIVE] && !$this->userFacade->isCurrentUser((int) $row[ExplorerUserRepository::COLUMN_ID]))
+            ->setRenderCondition(fn($row) => (bool) $row[ExplorerUserRepository::COLUMN_ACTIVE]
+                && !$this->userFacade->isCurrentUser((int) $row[ExplorerUserRepository::COLUMN_ID]))
             ->setConfirmation(new StringConfirmation('Opravdu chcete deaktivovat tohoto uživatele?'));
 
         $grid->addActionCallback('activate', 'Aktivovat', function (string $id): void {

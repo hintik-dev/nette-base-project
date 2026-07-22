@@ -1,12 +1,16 @@
 <?php declare(strict_types=1);
 namespace App\Presentation\Modules\Base;
 
+use App\Model\Latte\BaseTemplate;
 use App\Model\Utils\FlashMessage;
 use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\TFlashMessage;
 use Nette\Application\UI\Presenter;
 use Nette\ComponentModel\IComponent;
 
+/**
+ * @property-read BaseTemplate $template
+ */
 class BasePresenter extends Presenter
 {
     use TFlashMessage;

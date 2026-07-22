@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Presentation\Modules\Api\V1\Hello;
 

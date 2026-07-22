@@ -1,39 +1,46 @@
 <?php declare(strict_types=1);
-namespace App\Presentation\Modules\Base;
+namespace App\Model\Latte;
 
+use App\Model\Security\SecurityUser;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Presenter;
 use Nette\Bridges\ApplicationLatte\Template;
-use Nette\Security\User;
 use Nette\Utils\Arrays;
 use Override;
-use ReflectionException;
 use ReflectionObject;
 use ReflectionProperty;
 use RuntimeException;
 use Throwable;
 
-abstract class BasePresenterTemplate extends Template
+/**
+ * Společný základ pro typované šablony presenterů i komponent.
+ * Konkrétní presentery/komponenty, kterým se do šablony předávají
+ * specifická data, dědí a přidávají vlastní typované vlastnosti.
+ */
+class BaseTemplate extends Template
 {
-    /** @var Presenter $presenter */
     public Presenter $presenter;
 
-    /** @var Control $control */
     public Control $control;
 
-    /** @var User */
-    public User $user;
+    public SecurityUser $_user;
 
-    /** @var string */
     public string $baseUrl;
 
-    /** @var string */
     public string $basePath;
+
+    /** @var array<array{message: string, type: string}> */
+    public array $flashes = [];
+
+    public ?string $componentName = null;
+
+    public self $_template;
+
+    public FilterExecutor $_filters;
 
 
     /**
      * Vykreslení šablony.
-     * @param string|null $file
      * @param array<string, mixed> $params
      */
     #[Override]
@@ -48,10 +55,7 @@ abstract class BasePresenterTemplate extends Template
 
     /**
      * Vykreslení šablony do řetězce.
-     * @param string|null $file
      * @param array<string, mixed> $params
-     * @return string
-     * @throws ReflectionException
      */
     #[Override]
     final public function renderToString(?string $file = null, array $params = []): string
@@ -64,9 +68,8 @@ abstract class BasePresenterTemplate extends Template
 
 
     /**
-     * Zkontroluje, zda jsou všechny proměnné třídy inicializované,
-     * pokud ne vyhazuje výjímku.
-     * @throws RuntimeException
+     * Zkontroluje, zda jsou všechny public vlastnosti šablony inicializované,
+     * pokud ne vyhazuje výjimku.
      */
     final protected function checkIfPropertiesIsFilled(): void
     {
@@ -88,7 +91,6 @@ abstract class BasePresenterTemplate extends Template
 
     /**
      * Vykreslení instance šablony jako řetězec.
-     * @return string
      * @throws Throwable
      */
     #[Override]

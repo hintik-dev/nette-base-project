@@ -8,6 +8,9 @@ use App\Presentation\Components\Admin\ScheduledJob\ScheduledJobRunGrid\Scheduled
 use App\Presentation\Components\Admin\ScheduledJob\ScheduledJobRunOutputGrid\ScheduledJobRunOutputGridFactory;
 use App\Presentation\Modules\Admin\BaseAdminPresenter;
 
+/**
+ * @property-read ScheduledJobTemplate $template
+ */
 class ScheduledJobPresenter extends BaseAdminPresenter
 {
     public function __construct(

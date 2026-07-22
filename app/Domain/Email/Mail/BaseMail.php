@@ -29,7 +29,8 @@ abstract class BaseMail implements Mail
 
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f2f5;padding:32px 16px;">
         <tr><td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:10px;overflow:hidden;">
+        <table width="600" cellpadding="0" cellspacing="0" border="0"
+               style="max-width:600px;width:100%;background:#ffffff;border-radius:10px;overflow:hidden;">
 
             <!-- SUBJECT BAR -->
             <tr>

@@ -9,6 +9,9 @@ use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\Form\BaseForm;
 use Nette\Forms\Control;
 
+/**
+ * @property-read UserFormTemplate $template
+ */
 class UserForm extends BaseComponent
 {
     public function __construct(
@@ -70,8 +73,8 @@ class UserForm extends BaseComponent
 
     public function render(mixed $params = null): void
     {
-        $this->getTemplate()->editId = $this->editId;
-        $this->getTemplate()->backLink = $this->presenter->link('User:list');
+        $this->template->editId = $this->editId;
+        $this->template->backLink = $this->presenter->link('User:list');
         parent::render($params);
     }
 
