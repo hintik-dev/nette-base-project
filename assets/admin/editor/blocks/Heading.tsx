@@ -1,10 +1,11 @@
 import { createElement } from 'react';
 import type { ComponentConfig } from '@puckeditor/core';
+import { alignField, type Align } from '../alignField';
 
 export type HeadingProps = {
     text: string;
     level: '1' | '2' | '3' | '4' | '5' | '6';
-    align: 'left' | 'center' | 'right';
+    align: Align;
 };
 
 export const Heading: ComponentConfig<HeadingProps> = {
@@ -23,15 +24,7 @@ export const Heading: ComponentConfig<HeadingProps> = {
                 { label: 'H6', value: '6' },
             ],
         },
-        align: {
-            type: 'radio',
-            label: 'Zarovnání',
-            options: [
-                { label: 'Doleva', value: 'left' },
-                { label: 'Na střed', value: 'center' },
-                { label: 'Doprava', value: 'right' },
-            ],
-        },
+        align: alignField,
     },
     defaultProps: {
         text: 'Nadpis',
