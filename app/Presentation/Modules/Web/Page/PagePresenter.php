@@ -30,5 +30,10 @@ class PagePresenter extends BaseWebPresenter
         $template = $this->template;
         $template->page = $page;
         $template->contentHtml = $this->blockRenderer->render($page->content['content'] ?? []);
+
+        // Nadpis stránky v editoru (root.props.title) je volitelný SEO titulek
+        // pro <title> prohlížeče, nezávislý na interním názvu z adminu.
+        $seoTitle = (string) ($page->content['root']['props']['title'] ?? '');
+        $template->browserTitle = $seoTitle !== '' ? $seoTitle : $page->title;
     }
 }

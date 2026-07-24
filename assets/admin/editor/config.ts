@@ -22,9 +22,9 @@ type Props = {
 export const config: Config<Props> = {
     root: {
         fields: {
-            // Bez vlastního `root.fields` by Puck zobrazoval jedno defaultní
-            // (neužívané) pole "title" bez českého popisku.
-            title: { type: 'text', label: 'Název' },
+            // Volitelný SEO titulek pro <title> veřejné stránky — čte ho
+            // Web\Page\PagePresenter, s fallbackem na interní název z adminu.
+            title: { type: 'text', label: 'Název (titulek prohlížeče)' },
         },
     },
     categories: {

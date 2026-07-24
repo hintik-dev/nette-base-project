@@ -9,4 +9,6 @@ final class PageDefaultTemplate extends BaseTemplate
     public Page $page;
 
     public string $contentHtml;
+
+    public string $browserTitle;
 }
