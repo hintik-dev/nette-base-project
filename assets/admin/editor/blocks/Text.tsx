@@ -1,7 +1,7 @@
-import type { ComponentConfig } from '@puckeditor/core';
+import type { ComponentConfig, RichText } from '@puckeditor/core';
 
 export type TextProps = {
-    text: string;
+    text: RichText;
 };
 
 export const Text: ComponentConfig<TextProps> = {
@@ -14,7 +14,8 @@ export const Text: ComponentConfig<TextProps> = {
     defaultProps: {
         text: '<p>Text odstavce</p>',
     },
-    render: ({ text }) => (
-        <div dangerouslySetInnerHTML={{ __html: typeof text === 'string' ? text : '' }} />
-    ),
+    // Puck předává hodnotu richtext pole do render() už jako vyrenderovaný
+    // ReactNode (ne holý HTML string) — vlastní dangerouslySetInnerHTML
+    // způsobovalo pád komponenty hned po vložení (viz .scratch-repro.mjs).
+    render: ({ text }) => <div>{text}</div>,
 };
