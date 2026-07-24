@@ -26,6 +26,8 @@ $linkStubs = new class extends Latte\Extension {
 };
 
 $latte = new Latte\Engine;
+$latte->addFilter('neon', App\Model\Latte\Filters::neon(...));
+$latte->addFilter('json', App\Model\Latte\Filters::json(...));
 $latte->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(null));
 $latte->addExtension($linkStubs);
 $latte->addExtension(new Nette\Bridges\AssetsLatte\LatteExtension(new Nette\Assets\Registry));

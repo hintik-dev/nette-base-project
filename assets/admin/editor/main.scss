@@ -1,0 +1,25 @@
+// Editor běží ve vlastním layoutu bez AdminLTE navbaru/sidebaru (viz
+// @layoutEdit.latte), Puck tak dostane celou výšku okna.
+#puck-root {
+    height: 100vh;
+}
+
+// Přebarvení Puck editoru na téma administrace (Bootstrap proměnné jsou
+// dostupné díky {asset 'admin/main.js'} načtenému ve stejném layoutu).
+// Kompletní seznam tokenů: https://puckeditor.com/docs/api-reference/theming/global
+:root {
+    --puck-font-family: var(--bs-body-font-family);
+
+    --puck-color-interactive: var(--bs-primary);
+    --puck-color-interactive-hover: color-mix(in srgb, var(--bs-primary) 85%, black);
+    --puck-color-interactive-active: color-mix(in srgb, var(--bs-primary) 70%, black);
+    --puck-color-interactive-subtle: color-mix(in srgb, var(--bs-primary) 12%, white);
+    --puck-color-interactive-soft: color-mix(in srgb, var(--bs-primary) 6%, white);
+    --puck-color-interactive-soft-hover: color-mix(in srgb, var(--bs-primary) 10%, white);
+    --puck-color-focus-ring: var(--bs-primary);
+    --puck-color-insertion-indicator: var(--bs-primary);
+
+    --puck-radius-s: var(--bs-border-radius-sm);
+    --puck-radius-m: var(--bs-border-radius);
+    --puck-radius-l: var(--bs-border-radius-lg);
+}
