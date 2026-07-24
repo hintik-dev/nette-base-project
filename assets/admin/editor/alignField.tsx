@@ -1,4 +1,4 @@
-import type { CustomField } from '@puckeditor/core';
+import { FieldLabel, type CustomField } from '@puckeditor/core';
 
 export type Align = 'left' | 'center' | 'right';
 
@@ -35,32 +35,36 @@ function AlignIcon({ align, lineWidths }: { align: Align; lineWidths: [number, n
 export const alignField: CustomField<Align> = {
     type: 'custom',
     label: 'Zarovnání',
-    render: ({ value, onChange }) => (
-        <div style={{ display: 'flex', gap: 4 }}>
-            {ALIGN_OPTIONS.map((option) => (
-                <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => onChange(option.value)}
-                    title={option.label}
-                    aria-label={option.label}
-                    aria-pressed={value === option.value}
-                    style={{
-                        flex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '6px 0',
-                        cursor: 'pointer',
-                        border: '1px solid var(--puck-color-border)',
-                        borderRadius: 'var(--puck-radius-s)',
-                        background: value === option.value ? 'var(--puck-color-interactive-subtle)' : 'var(--puck-color-surface)',
-                        color: value === option.value ? 'var(--puck-color-interactive)' : 'var(--puck-color-text)',
-                    }}
-                >
-                    <AlignIcon align={option.value} lineWidths={option.lines} />
-                </button>
-            ))}
-        </div>
+    render: ({ field, value, onChange }) => (
+        // Puck u type: "custom" polí popisek nevykresluje sám (na rozdíl od
+        // vestavěných typů) — FieldLabel je potřeba obalit ručně.
+        <FieldLabel label={field.label ?? 'Zarovnání'}>
+            <div style={{ display: 'flex', gap: 4 }}>
+                {ALIGN_OPTIONS.map((option) => (
+                    <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => onChange(option.value)}
+                        title={option.label}
+                        aria-label={option.label}
+                        aria-pressed={value === option.value}
+                        style={{
+                            flex: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '6px 0',
+                            cursor: 'pointer',
+                            border: '1px solid var(--puck-color-border)',
+                            borderRadius: 'var(--puck-radius-s)',
+                            background: value === option.value ? 'var(--puck-color-interactive-subtle)' : 'var(--puck-color-surface)',
+                            color: value === option.value ? 'var(--puck-color-interactive)' : 'var(--puck-color-text)',
+                        }}
+                    >
+                        <AlignIcon align={option.value} lineWidths={option.lines} />
+                    </button>
+                ))}
+            </div>
+        </FieldLabel>
     ),
 };
