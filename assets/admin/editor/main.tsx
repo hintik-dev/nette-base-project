@@ -2,7 +2,7 @@ import '@puckeditor/core/no-external.css';
 import './main.scss';
 
 import { createRoot } from 'react-dom/client';
-import { Puck, type Data } from '@puckeditor/core';
+import { Puck, Button, type Data } from '@puckeditor/core';
 import { config } from './config';
 import { csDictionary } from './dictionary.cs';
 
@@ -38,9 +38,9 @@ if (mountEl) {
             overrides={{
                 headerActions: ({ children }) => (
                     <>
-                        <a href={backUrl} className="btn btn-sm btn-secondary">
+                        <Button href={backUrl} variant="secondary">
                             Zpět do administrace
-                        </a>
+                        </Button>
                         {children}
                     </>
                 ),

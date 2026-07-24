@@ -1,2 +1,6 @@
-{* Zrcadlí assets/admin/editor/blocks/Text.tsx *}
-<p>{$props['text'] ?? ''}</p>
+{**
+ * Zrcadlí assets/admin/editor/blocks/Text.tsx — text je HTML z rich-text
+ * editoru (Tiptap), autorem je vždy přihlášený redaktor s oprávněním
+ * Page:publish, proto se vypisuje bez escapování.
+ *}
+<div>{($props['text'] ?? '')|noescape}</div>

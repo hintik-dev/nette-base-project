@@ -7,10 +7,14 @@ export type TextProps = {
 export const Text: ComponentConfig<TextProps> = {
     label: 'Odstavec',
     fields: {
-        text: { type: 'textarea', label: 'Text' },
+        // Vestavěný toolbar: tučné, kurzíva, podtržení, přeškrtnutí, odkaz,
+        // citace, kód, seznamy, zarovnání — bez vlastní konfigurace extension.
+        text: { type: 'richtext', label: 'Text' },
     },
     defaultProps: {
-        text: 'Text odstavce',
+        text: '<p>Text odstavce</p>',
     },
-    render: ({ text }) => <p>{text}</p>,
+    render: ({ text }) => (
+        <div dangerouslySetInnerHTML={{ __html: typeof text === 'string' ? text : '' }} />
+    ),
 };
