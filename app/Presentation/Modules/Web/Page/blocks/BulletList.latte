@@ -1,4 +1,9 @@
-{* Zrcadlí assets/admin/editor/blocks/BulletList.tsx *}
-<ul>
-    <li n:foreach="$props['items'] ?? [] as $item">{$item['text'] ?? ''}</li>
+{**
+ * Zrcadlí assets/admin/editor/blocks/BulletList.tsx — text položky je HTML
+ * z rich-text editoru (viz Text.latte, stejné zdůvodnění pro |noescape).
+ *}
+{var $size = \App\Domain\Page\BlockFontSize::fromProps($props['size'] ?? null)}
+{* |noescape viz Text.latte — Latte v CSS kontextu jinak escapuje tečku v čísle *}
+<ul style="font-size: {$size->toRem()|noescape}">
+    <li n:foreach="$props['items'] ?? [] as $item">{($item['text'] ?? '')|noescape}</li>
 </ul>

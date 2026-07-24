@@ -6,6 +6,15 @@ import { Puck, Button, type Data } from '@puckeditor/core';
 import { config } from './config';
 import { csDictionary } from './dictionary.cs';
 
+declare global {
+    interface Window {
+        toastr?: {
+            success: (msg: string) => void;
+            error: (msg: string) => void;
+        };
+    }
+}
+
 const mountEl = document.getElementById('puck-root');
 
 if (mountEl) {
@@ -16,14 +25,20 @@ if (mountEl) {
     const initialData: Data = JSON.parse(mountEl.dataset.initialContent ?? '{"content":[],"root":{}}');
 
     const publish = async (data: Data): Promise<void> => {
-        const response = await fetch(saveUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        });
+        try {
+            const response = await fetch(saveUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
 
-        if (!response.ok) {
-            window.alert('Uložení se nezdařilo.');
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            window.toastr?.success('Stránka byla publikována.');
+        } catch {
+            window.toastr?.error('Uložení se nezdařilo. Zkuste to prosím znovu.');
         }
     };
 

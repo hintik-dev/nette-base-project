@@ -1,8 +1,12 @@
-import type { ComponentConfig } from '@puckeditor/core';
+import type { ComponentConfig, RichText } from '@puckeditor/core';
+import { FONT_SIZE_PX, fontSizeField, type FontSize } from '../fontSize';
 
 export type BulletListProps = {
-    items: { text: string }[];
+    items: { text: RichText }[];
+    size: FontSize;
 };
+
+const stripHtml = (html: string): string => html.replace(/<[^>]*>/g, '');
 
 export const BulletList: ComponentConfig<BulletListProps> = {
     label: 'Nečíslovaný seznam',
@@ -11,16 +15,19 @@ export const BulletList: ComponentConfig<BulletListProps> = {
             type: 'array',
             label: 'Položky',
             arrayFields: {
-                text: { type: 'text', label: 'Text' },
+                text: { type: 'richtext', label: 'Text' },
             },
-            getItemSummary: (item, index) => item.text || `Položka č. ${(index ?? 0) + 1}`,
+            getItemSummary: (item, index) =>
+                (typeof item.text === 'string' ? stripHtml(item.text) : '') || `Položka č. ${(index ?? 0) + 1}`,
         },
+        size: fontSizeField,
     },
     defaultProps: {
-        items: [{ text: 'Položka 1' }],
+        items: [{ text: '<p>Položka 1</p>' }],
+        size: 'normal',
     },
-    render: ({ items }) => (
-        <ul>
+    render: ({ items, size }) => (
+        <ul style={{ fontSize: FONT_SIZE_PX[size] }}>
             {items.map((item, i) => (
                 <li key={i}>{item.text}</li>
             ))}
