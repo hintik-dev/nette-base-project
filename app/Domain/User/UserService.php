@@ -31,15 +31,27 @@ readonly class UserService
     }
 
 
-    public function userExistsByEmail(string $email): bool
+    public function userExistsByEmail(string $email, ?int $excludeId = null): bool
     {
-        return $this->userRepository->userExistsByEmail($email);
+        return $this->userRepository->userExistsByEmail($email, $excludeId);
     }
 
 
     public function updateUserPasswordHash(int $id, string $passwordHash): void
     {
         $this->userRepository->updateUserPasswordHash($id, $passwordHash);
+    }
+
+
+    public function updateUser(int $id, string $email, UserRole $role, bool $active): void
+    {
+        $this->userRepository->updateUser($id, $email, $role, $active);
+    }
+
+
+    public function setActive(int $id, bool $active): void
+    {
+        $this->userRepository->setActive($id, $active);
     }
 
 

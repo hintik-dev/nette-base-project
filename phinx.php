@@ -9,7 +9,7 @@ if (!file_exists($neonFile)) {
 }
 
 $config = \Nette\Neon\Neon::decodeFile($neonFile);
-$db = $config['database'];
+$db = $config['database']['default'];
 
 // Parsování DSN: mysql:host=...;dbname=...
 $dsn = $db['dsn'];

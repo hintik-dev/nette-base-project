@@ -9,12 +9,17 @@ Skeleton Nette aplikace připravený pro okamžitý vývoj. Obsahuje předkonfig
 - **Docker prostředí** — PHP 8.5 + Apache, MariaDB, phpMyAdmin, Node.js
 - **Třívrstvá MVP architektura** — oddělení prezentační, doménové a datové vrstvy
 - **Modulární struktura** — samostatný Admin a Web modul
+- **Admin design systém** — AdminLTE 4 + Bootstrap 5 (layout, sidebar, přihlášení)
+- **DataGrid** — vlastní vrstva nad ublaboo/datagrid s jednotným vzhledem a znovupoužitelnou `BaseGridComponent`
+- **Job systém** — DB-driven plánované úlohy (contributte/scheduler) s historií běhů a detailním logováním
+- **Jazykové mutace** — contributte/translation pro texty generované knihovnami (např. DataGrid)
 - **Autentizace a autorizace** — přihlašování uživatelů, role-based access control
+- **Flash zprávy** — typované `flashSuccess`/`flashError`/`flashWarning`/`flashInfo` v presenterech i komponentách
 - **Databázové migrace** — Phinx pro verzování databázové struktury
 - **CLI příkazy** — Symfony Console pro konzolové operace
 - **Frontend build** — Vite pro moderní správu CSS a JS assetů
 - **Formuláře jako komponenty** — znovupoužitelné UI komponenty s BaseComponent
-- **Automatická registrace služeb** — Facade, Service, Repository, Mapper, Factory, Command
+- **Automatická registrace služeb** — Facade, Service, Repository, Mapper, Factory, Command, Job
 - **Kompletní code quality toolchain** — PHPStan, PHPCS, Rector, Latte lint, Neon lint
 - **Testování** — Nette Tester připraven k použití
 
@@ -69,8 +74,11 @@ Podrobný návod: [docs/getting-started.md](docs/getting-started.md)
 |---|---|
 | [Spuštění projektu](docs/getting-started.md) | Konfigurace prostředí, Docker, první spuštění |
 | [Struktura projektu](docs/project-structure.md) | Architektura, vrstvy, typy souborů, kontejnery |
-| [Komponenty](docs/components.md) | Tvorba komponent, factory, registrace |
+| [Komponenty](docs/components.md) | Tvorba komponent, factory, registrace, flash zprávy |
 | [Formuláře](docs/forms.md) | Formuláře v komponentách, validace, DTO |
+| [DataGrid](docs/datagrid.md) | Tvorba grid komponent, sloupce, filtry, akce |
+| [Job systém](docs/scheduler.md) | Plánované úlohy, logování běhu, cron |
+| [Jazykové mutace](docs/translations.md) | contributte/translation, překladové soubory |
 | [CLI Příkazy](docs/commands.md) | Psaní a spouštění konzolových příkazů |
 | [Migrace](docs/migrations.md) | Správa databázové struktury přes Phinx |
 | [Testování](docs/testing.md) | Psaní a spouštění testů (Nette Tester) |
@@ -121,6 +129,10 @@ Kompletní přehled příkazů: [docs/workflow.md](docs/workflow.md)
 | Databáze | MariaDB (Nette Database Explorer) |
 | Migrace | [Phinx 0.16](https://phinx.org) |
 | CLI | [Symfony Console 7](https://symfony.com/doc/current/console.html) |
+| Job systém | [contributte/scheduler](https://github.com/contributte/scheduler) |
+| DataGrid | [ublaboo/datagrid (contributte)](https://github.com/contributte/datagrid) |
+| Jazykové mutace | [contributte/translation](https://github.com/contributte/translation) |
+| Admin design | [AdminLTE 4](https://adminlte.io) + [Bootstrap 5](https://getbootstrap.com) |
 | Frontend | [Vite](https://vitejs.dev) |
 | Statická analýza | [PHPStan 2](https://phpstan.org) |
 | Coding standard | [PHP_CodeSniffer 3](https://github.com/PHPCSStandards/PHP_CodeSniffer) |

@@ -1,0 +1,17 @@
+{block #pageTitle}API uživatelé{/block}
+
+{block #content}
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h3 class="card-title mb-0">Přehled API uživatelů</h3>
+        <a n:href="create" class="btn btn-sm btn-primary ms-auto">
+            <i class="bi bi-plus-lg"></i> Nový API uživatel
+        </a>
+    </div>
+    <div class="card-body p-0">
+        {control apiUserGrid}
+    </div>
+</div>
+
+{/block}

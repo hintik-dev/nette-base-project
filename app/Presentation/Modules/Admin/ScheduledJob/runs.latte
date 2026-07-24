@@ -1,0 +1,24 @@
+{templateType App\Presentation\Modules\Admin\ScheduledJob\ScheduledJobRunsTemplate}
+
+{block #pageTitle}Historie běhů{/block}
+
+{block #content}
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <div>
+            <h3 class="card-title mb-0">Historie běhů</h3>
+            {if $job !== null}
+                <small class="text-muted">{$job->name}</small>
+            {/if}
+        </div>
+        {if $job !== null}
+            <a href="{link runs}" class="btn btn-sm btn-outline-secondary ms-auto">Všechny běhy</a>
+        {/if}
+    </div>
+    <div class="card-body p-0">
+        {control scheduledJobRunGrid}
+    </div>
+</div>
+
+{/block}

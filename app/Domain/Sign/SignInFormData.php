@@ -9,8 +9,11 @@ class SignInFormData
 
     public const string PARAM_LOGIN = 'login';
     public const string PARAM_PASSWORD = 'password';
+    public const string PARAM_REMEMBER = 'remember';
 
     public string $login;
 
     public string $password;
+
+    public bool $remember = false;
 }

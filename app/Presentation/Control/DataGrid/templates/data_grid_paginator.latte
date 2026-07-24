@@ -1,0 +1,47 @@
+{*
+ * @param Paginator $paginator
+ * @param array     $steps
+ * @param string    $iconPrefix
+ *}
+
+{var $link = [$control->getParent(), link]}
+
+<nav n:if="$paginator->pageCount > 1" aria-label="Stránkování">
+	<ul class="pagination pagination-sm mb-0">
+		{if $paginator->isFirst()}
+			<li class="page-item disabled">
+				<span class="page-link"><i class="bi bi-chevron-left"></i></span>
+			</li>
+		{else}
+			<li class="page-item">
+				<a class="page-link ajax" href="{$link('page!', ['page' => $paginator->page - 1])}" rel="prev" aria-label="{='contributte_datagrid.previous'|translate}">
+					<i class="bi bi-chevron-left"></i>
+				</a>
+			</li>
+		{/if}
+
+		{foreach $steps as $step}
+			{if $step == $paginator->page}
+				<li class="page-item active" aria-current="page"><span class="page-link">{$step}</span></li>
+			{else}
+				<li class="page-item"><a class="page-link ajax" href="{$link('page!', ['page' => $step])}">{$step}</a></li>
+			{/if}
+
+			{if $iterator->nextValue > $step + 1}
+				<li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+			{/if}
+		{/foreach}
+
+		{if $paginator->isLast()}
+			<li class="page-item disabled">
+				<span class="page-link"><i class="bi bi-chevron-right"></i></span>
+			</li>
+		{else}
+			<li class="page-item">
+				<a class="page-link ajax" href="{$link('page!', ['page' => $paginator->page + 1])}" rel="next" aria-label="{='contributte_datagrid.next'|translate}">
+					<i class="bi bi-chevron-right"></i>
+				</a>
+			</li>
+		{/if}
+	</ul>
+</nav>

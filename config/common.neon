@@ -1,6 +1,8 @@
 # see https://doc.nette.org/en/configuring
 
 parameters:
+	session:
+		inactivityTimeout: null
 
 
 application:
@@ -14,6 +16,8 @@ application:
 
 extensions:
     api: Apitte\Core\DI\ApiExtension
+    scheduler: Contributte\Scheduler\DI\SchedulerExtension
+    translation: Contributte\Translation\DI\TranslationExtension
 
 latte:
 	strictParsing: yes
@@ -47,3 +51,27 @@ session:
 api:
     debug: %debugMode%
     catchException: true
+    plugins:
+        Apitte\Core\DI\Plugin\CoreDecoratorPlugin:
+
+mail:
+    smtp: true
+    host: %email.smtp.host%
+    port: %email.smtp.port%
+    username: %email.smtp.username%
+    password: %email.smtp.password%
+    secure: %email.smtp.secure%
+    timeout: 10
+
+scheduler:
+    path: '%tempDir%/scheduler'
+    jobs: []
+
+translation:
+    locales:
+        whitelist: [cs_CZ]
+        default: cs_CZ
+        fallback: [cs_CZ]
+    dirs:
+        - %appDir%/Lang
+    returnOriginalMessage: true

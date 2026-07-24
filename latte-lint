@@ -5,9 +5,32 @@ require __DIR__ . '/vendor/autoload.php';
 
 $path = $argv[1] ?? 'app';
 
+$noopTranslator = new class implements Nette\Localization\Translator {
+    public function translate(string|Stringable $message, mixed ...$parameters): string
+    {
+        return (string) $message;
+    }
+};
+
+// isLinkCurrent()/isModuleCurrent() jsou reálné Nette funkce (Nette\Bridges\ApplicationLatte\UIExtension),
+// ale bez plně nastaveného Presenteru (router, LinkGenerator) nejdou v lintu vyhodnotit.
+// Stuby zde jen deklarují jejich existenci pro linter, nic neověřují.
+$linkStubs = new class extends Latte\Extension {
+    public function getFunctions(): array
+    {
+        return [
+            'isLinkCurrent' => fn(?string $destination = null, mixed ...$args): bool => false,
+            'isModuleCurrent' => fn(string $module): bool => false,
+        ];
+    }
+};
+
 $latte = new Latte\Engine;
 $latte->addExtension(new Nette\Bridges\ApplicationLatte\UIExtension(null));
+$latte->addExtension($linkStubs);
 $latte->addExtension(new Nette\Bridges\AssetsLatte\LatteExtension(new Nette\Assets\Registry));
+$latte->addExtension(new Nette\Bridges\FormsLatte\FormsExtension);
+$latte->addExtension(new Contributte\Translation\Latte\TranslatorExtension($noopTranslator));
 $latte->addExtension(new App\Presentation\Accessory\LatteExtension);
 $latte->addExtension(new Latte\Tools\LinterExtension);
 

@@ -203,7 +203,7 @@ class ContactForm extends BaseComponent
     private function saveForm(BaseForm $form, ContactFormData $formData): void
     {
         $this->contactFacade->sendContact($formData);
-        $this->presenter->flashMessage('Zpráva odeslána', 'success');
+        $this->flashSuccess('Zpráva odeslána');
         $this->presenter->redirect('this');
     }
 }
@@ -226,6 +226,27 @@ V šabloně komponenty (`ContactForm.latte`) pak vykreslíte formulář:
     <button n:name="submit">Odeslat</button>
 </form>
 ```
+
+---
+
+## Flash zprávy
+
+`BaseComponent` obsahuje `flashSuccess()`, `flashError()`, `flashWarning()` a `flashInfo()` (přes trait `App\Presentation\Control\TComponentFlashMessage`). Uvnitř komponenty je vždy volejte místo `$this->presenter->flashMessage(...)`:
+
+```php
+$this->flashSuccess('Uloženo.');
+$this->flashError('Uložení se nezdařilo.');
+```
+
+Komponenta nemá přímý přístup k presenteru dřív, než je do něj přidána — zpráva se proto zpožděně předá přes událost `onFlash`, kterou `BasePresenter::addComponent()` automaticky napojí na `flashMessage()` presenteru. Stejné metody (`flashSuccess`, ...) jsou dostupné i přímo v presenterech přes `App\Presentation\Control\TFlashMessage`.
+
+Presenter i komponenta tak mají shodné API — v presenteru je ale rozdíl minimální, protože `$this->flashMessage(...)` je vždy dostupné napřímo.
+
+---
+
+## Grid komponenty
+
+Komponenty zobrazující datagrid (`*Grid`, `*ListGrid`) mají vlastní základní třídu `App\Presentation\Components\Base\BaseGridComponent` místo `BaseComponent` — viz [DataGrid](datagrid.md).
 
 ---
 

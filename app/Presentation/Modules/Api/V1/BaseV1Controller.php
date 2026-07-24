@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Presentation\Modules\Api\V1;
 
@@ -8,5 +8,4 @@ use Apitte\Core\UI\Controller\IController;
 #[Path("/api/v1")]
 abstract class BaseV1Controller implements IController
 {
-
 }

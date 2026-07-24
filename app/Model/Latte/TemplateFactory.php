@@ -31,18 +31,12 @@ final class TemplateFactory extends NetteTemplateFactory
 
     public function createTemplate(?Control $control = null, ?string $class = null): Template
     {
-        /** @var Template $template */
-        $template = parent::createTemplate($control);
+        $template = parent::createTemplate($control, $class);
 
-        // Remove default $template->user for prevent misused
-        unset($template->user);
-
-        // Assign new variables
         $template->_user = $this->user;
         $template->_template = $template;
         $template->_filters = new FilterExecutor($this->latteFactory->create());
 
-        /** @phpstan-ignore return.type */
         return $template;
     }
 }
