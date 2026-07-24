@@ -3,14 +3,16 @@ namespace App\Domain\UserRole;
 
 enum UserRole: string
 {
-    case ADMIN = 'admin';
-    case USER = 'user';
+    case SuperAdmin = 'superadmin';
+    case Admin = 'admin';
+    case User = 'user';
 
     public function toLabel(): string
     {
         return match ($this) {
-            self::ADMIN => 'Administrátor',
-            self::USER => 'Uživatel',
+            self::SuperAdmin => 'Superadministrátor',
+            self::Admin => 'Administrátor',
+            self::User => 'Uživatel',
         };
     }
 }

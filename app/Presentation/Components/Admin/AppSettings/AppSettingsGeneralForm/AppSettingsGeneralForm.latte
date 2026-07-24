@@ -1,0 +1,13 @@
+{form form}
+<div class="mb-3">
+    <label n:name="siteName" class="form-label">Název aplikace</label>
+    {input siteName, class: 'form-control'}
+    {inputError siteName}
+</div>
+<div class="mb-3">
+    <label n:name="contactEmail" class="form-label">Kontaktní e-mail</label>
+    {input contactEmail, class: 'form-control'}
+    {inputError contactEmail}
+</div>
+{input submit, class: 'btn btn-primary'}
+{/form}

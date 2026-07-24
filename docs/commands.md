@@ -125,6 +125,8 @@ search:
 
 Stačí tedy vytvořit třídu v `app/Command/` — není potřeba žádná manuální registrace.
 
+> Přes `bin/console` jsou kromě vlastních příkazů z `app/Command/` dostupné i příkazy dodané knihovnami — např. `scheduler:run`, `scheduler:list`, `scheduler:force-run` z job systému. Viz [Job systém](scheduler.md).
+
 ---
 
 ## Návratové kódy
@@ -137,9 +139,11 @@ Stačí tedy vytvořit třídu v `app/Command/` — není potřeba žádná manu
 
 ---
 
-## Ukázkový příkaz v projektu
+## Dostupné příkazy
 
-Projekt obsahuje demonstrační příkaz `HelloWorldCommand`:
+### `app:hello-world`
+
+Demonstrační příkaz.
 
 ```bash
 php bin/console app:hello-world
@@ -147,3 +151,41 @@ php bin/console app:hello-world
 ```
 
 Zdrojový kód: `app/Command/HelloWorldCommand.php`
+
+---
+
+### `app:create-superadmin`
+
+Vytvoří nového superadmin uživatele (role `superadmin`) nebo aktualizuje heslo existujícího. Určeno pro první spuštění aplikace nebo obnovu přístupu.
+
+```bash
+# Vytvoření nového superadmina
+php bin/console app:create-superadmin admin@firma.cz
+
+# Aktualizace hesla existujícího uživatele
+php bin/console app:create-superadmin admin@firma.cz --update
+```
+
+Příkaz interaktivně požádá o zadání hesla (vstup je skrytý) a jeho potvrzení.
+
+**Argumenty:**
+
+| Argument | Popis                        |
+|----------|------------------------------|
+| `email`  | E-mail superadministrátora   |
+
+**Volby:**
+
+| Volba              | Zkratka | Popis                                              |
+|--------------------|---------|----------------------------------------------------|
+| `--update`         | `-u`    | Aktualizovat heslo, pokud uživatel již existuje    |
+
+**Validace:**
+- E-mail musí být ve správném formátu
+- Heslo nesmí být prázdné a musí mít alespoň 8 znaků
+- Zadané heslo a jeho potvrzení se musí shodovat
+- Bez `--update` příkaz selže, pokud uživatel s daným e-mailem již existuje
+
+**Poznámka:** Role `superadmin` se přiřazuje pouze nově vytvářenému uživateli. Volba `--update` mění existujícímu uživateli jen heslo, jeho roli ponechává beze změny.
+
+Zdrojový kód: `app/Command/CreateSuperAdminCommand.php`

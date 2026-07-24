@@ -9,12 +9,29 @@ services:
 
 	latte.templateFactory:
 	    class: App\Model\Latte\TemplateFactory
+	    arguments:
+	        templateClass: App\Model\Latte\DefaultTemplate
 
 	# Security ================
 	security.passwords: App\Model\Security\Passwords
 	security.user: App\Model\Security\SecurityUser
 	security.authenticator: App\Model\Security\Authenticator\UserAuthenticator
 	security.authorizator: App\Model\Security\Authorizator\StaticAuthorizator
+	security.userStorage:
+		factory: App\Model\Security\Storage\DbUserStorage
+		setup:
+			- setInactivityTimeout(%session.inactivityTimeout%)
+
+	# Scheduler – přepsání výchozí implementace na DB-driven
+	scheduler.scheduler: App\Scheduler\DatabaseScheduler
+
+	# Email
+	- App\Domain\Email\EmailSenderService(fromAddress: %email.from.address%, fromName: %email.from.name%)
+
+	# API Security ================
+	api.authDecorator:
+	    factory: App\Presentation\Modules\Api\Security\AuthenticationDecorator
+	    tags: [apitte.core.decorator: [priority: 10]]
 
 
 search:
@@ -28,8 +45,17 @@ search:
 	-	in: %appDir%/Command
 		classes:
 			- *Command
+	-	in: %appDir%/Scheduler
+		classes:
+			- *Job
+	-	in: %appDir%/Presentation/Modules/Api
+		classes:
+			- *Controller
 
 decorator:
     App\Core\Database\ExplorerRepository:
         setup:
-            - injectBaseDependencies
+            - injectBaseDependencies(@database.default.explorer)
+    App\Core\Database\SchedulerExplorerRepository:
+        setup:
+            - injectSchedulerDependencies(@database.scheduler.explorer)

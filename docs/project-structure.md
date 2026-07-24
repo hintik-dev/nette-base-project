@@ -88,11 +88,20 @@ app/
 ├── Bootstrap.php                        # Inicializace aplikace (DI kontejner)
 ├── Command/                             # CLI příkazy (Symfony Console)
 │   ├── BaseCommand.php                  # Abstraktní základ pro příkazy
-│   └── HelloWorldCommand.php            # Ukázkový příkaz
+│   ├── HelloWorldCommand.php            # Ukázkový příkaz
+│   └── CreateSuperAdminCommand.php      # Vytvoření/aktualizace superadmina
 ├── Core/                                # Technické jádro frameworku
 │   ├── RouterFactory.php                # Definice URL routování
 │   └── Database/
-│       └── ExplorerRepository.php       # Základní třída pro repozitáře
+│       ├── ExplorerRepository.php       # Základní třída pro repozitáře (database.default)
+│       └── SchedulerExplorerRepository.php  # Repozitáře job systému (database.scheduler)
+├── Scheduler/                           # Job systém — viz docs/scheduler.md
+│   ├── IScheduledJob.php                # Interface pro plánované úlohy
+│   ├── BaseJob.php                      # Abstraktní základ pro úlohy
+│   ├── HelloWorldJob.php                # Ukázková úloha (výchozí neaktivní)
+│   ├── DatabaseScheduler.php            # DB-driven implementace IScheduler
+│   ├── DbJobWrapper.php                 # Adaptér pro contributte/scheduler CLI
+│   └── DatabaseOutput.php               # Zachytává výstup běhu do DB
 ├── Domain/                              # Doménová business logika
 │   ├── User/                            # Doména uživatelů
 │   │   ├── User.php                     # Entita uživatele
@@ -101,6 +110,17 @@ app/
 │   │   ├── ExplorerUserRepository.php   # Přístup k datům
 │   │   ├── ExplorerUserMapper.php       # Mapování DB řádků na entity
 │   │   └── UserNotFoundException.php    # Doménová výjimka
+│   ├── UserRole/
+│   │   └── UserRole.php                 # Enum rolí (superadmin/admin/user)
+│   ├── ScheduledJob/                    # Doména job systému — viz docs/scheduler.md
+│   │   ├── ScheduledJob.php             # Entita definice úlohy
+│   │   ├── ScheduledJobRun.php          # Entita běhu úlohy
+│   │   ├── ScheduledJobRunOutput.php    # Entita řádku výpisu
+│   │   ├── ScheduledJobRunStatus.php    # Enum stavů běhu
+│   │   ├── ScheduledJobRunTrigger.php   # Enum spouštěčů (scheduler/manual)
+│   │   ├── ScheduledJobFacade.php
+│   │   ├── ScheduledJobService.php
+│   │   └── Explorer*Repository.php      # Repozitáře (dědí SchedulerExplorerRepository)
 │   └── Sign/                            # Doména přihlašování
 │       ├── SignFacade.php
 │       ├── SignService.php
@@ -118,30 +138,53 @@ app/
 │   │   ├── Filters.php
 │   │   └── TemplateFactory.php
 │   └── Utils/
-│       └── DateTimeFormat.php
+│       ├── DateTimeFormat.php
+│       ├── DateTimeFactory.php          # Konverze timestampů (timezone-aware)
+│       └── FlashMessage.php             # Hodnotový objekt pro flash zprávy
+├── Lang/                                # Překlady (contributte/translation) — viz docs/translations.md
+│   └── contributte_datagrid.cs_CZ.neon
 └── Presentation/                        # Prezentační vrstva (MVP)
     ├── Accessory/
     │   └── LatteExtension.php           # Rozšíření pro Latte
     ├── Control/
-    │   └── Form/
-    │       └── BaseForm.php             # Základní třída formulářů
+    │   ├── TFlashMessage.php            # Trait pro flashSuccess/flashError/... (presenter)
+    │   ├── TComponentFlashMessage.php   # Totéž pro komponenty (probublává přes onFlash)
+    │   ├── Form/
+    │   │   └── BaseForm.php             # Základní třída formulářů
+    │   └── DataGrid/                    # Vrstva nad ublaboo/datagrid — viz docs/datagrid.md
+    │       ├── BaseGrid.php             # Rozšířený Contributte\Datagrid\Datagrid
+    │       ├── BaseGridFactory.php      # Factory (autowiring translatoru)
+    │       ├── Column/                  # Vlastní sloupce (kopírovací tlačítko, min-width, ...)
+    │       └── templates/               # AdminLTE/Bootstrap 5 šablony gridu
     ├── Components/                      # Znovupoužitelné UI komponenty
     │   ├── Base/
-    │   │   └── BaseComponent.php        # Základ pro všechny komponenty
+    │   │   ├── BaseComponent.php        # Základ pro všechny komponenty
+    │   │   └── BaseGridComponent.php    # Základ pro grid komponenty (viz docs/datagrid.md)
     │   └── Admin/
-    │       └── Sign/
-    │           └── SignInForm/
-    │               ├── SignInForm.php
-    │               └── SignInFormFactory.php
+    │       ├── Sign/
+    │       │   └── SignInForm/
+    │       │       ├── SignInForm.php
+    │       │       └── SignInFormFactory.php
+    │       ├── User/
+    │       │   └── UserListGrid/
+    │       └── ScheduledJob/
+    │           ├── ScheduledJobGrid/
+    │           ├── ScheduledJobRunGrid/
+    │           └── ScheduledJobRunOutputGrid/
     └── Modules/                         # Moduly aplikace
         ├── Base/
         │   └── BasePresenter.php        # Základ pro všechny presentery
         ├── Admin/                       # Admin modul (chráněná sekce)
         │   ├── BaseAdminPresenter.php
+        │   ├── @layout.latte            # AdminLTE layout (navbar, sidebar, flashes)
         │   ├── Home/
         │   │   └── HomePresenter.php
-        │   └── Sign/
-        │       └── SignPresenter.php
+        │   ├── Sign/
+        │   │   └── SignPresenter.php
+        │   ├── User/
+        │   │   └── UserPresenter.php
+        │   └── ScheduledJob/
+        │       └── ScheduledJobPresenter.php
         ├── Web/                         # Web modul (veřejná sekce)
         │   ├── BaseWebPresenter.php
         │   └── Home/
@@ -197,6 +240,8 @@ Základní třída `ExplorerRepository` poskytuje metody:
 - `findOneBy(array $criteria)` — najde jeden záznam podle kritérií
 - `findBy(array $criteria, ...)` — vrátí záznamy podle kritérií
 - `getTable()` — vrátí Nette `Selection` pro danou tabulku
+
+Repozitáře standardně používají hlavní databázové spojení (`database.default`), napojené automaticky přes `decorator` v `config/services.neon`. Job systém (viz [Job systém](scheduler.md)) používá druhé, nezávislé spojení (`database.scheduler`) přes `App\Core\Database\SchedulerExplorerRepository` — vlastní repozitář dědí od ní místo od `ExplorerRepository`, pokud logicky patří k job systému a mělo by být na hlavním spojení nezávislé.
 
 ---
 
@@ -278,9 +323,12 @@ search:
     - in: %appDir%/Command
       classes:
           - *Command
+    - in: %appDir%/Scheduler
+      classes:
+          - *Job
 ```
 
-Díky tomu není nutné ručně registrovat každou třídu — stačí dodržovat konvence pojmenování.
+Díky tomu není nutné ručně registrovat každou třídu — stačí dodržovat konvence pojmenování. Třídy plánovaných úloh (`*Job` v `app/Scheduler/`) jsou tak dostupné přes `Container::findByType(App\Scheduler\IScheduledJob::class)`, což využívá job systém k dohledání implementace podle názvu třídy uložené v databázi — viz [Job systém](scheduler.md).
 
 Pokud třída nesplňuje žádný z výše uvedených vzorů, ale její registrace v DI kontejneru je smysluplná a odůvodněná, lze ji zaregistrovat ručně v `config/services.neon`. Typickým příkladem je pomocná třída v doménové vrstvě, jejíž název nepasuje na žádný ze vzorů — například kalkulátor nebo konvertor:
 

@@ -19,6 +19,7 @@ class SignPresenter extends BaseAdminPresenter
     public function actionOut(): void
     {
         $this->user->logout();
+        $this->getHttpResponse()->deleteCookie('admin_theme');
         $this->redirect(':Web:Home:');
     }
 
@@ -43,7 +44,7 @@ class SignPresenter extends BaseAdminPresenter
         }
 
         if ($this->user->isLoggedIn()) {
-            $this->redirect('Admin:Home:');
+            $this->redirect(':Admin:Home:');
         }
     }
 }

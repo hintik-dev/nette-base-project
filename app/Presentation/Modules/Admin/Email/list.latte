@@ -1,0 +1,17 @@
+{block #pageTitle}Odeslané e-maily{/block}
+
+{block #content}
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h3 class="card-title mb-0">Odeslané e-maily</h3>
+        <a n:href="compose" class="btn btn-sm btn-primary ms-auto">
+            <i class="bi bi-pencil-square"></i> Napsat e-mail
+        </a>
+    </div>
+    <div class="card-body p-0">
+        {control sentEmailGrid}
+    </div>
+</div>
+
+{/block}

@@ -15,8 +15,12 @@ class SignService
     /**
      * @throws AuthenticationException
      */
-    public function signUserIn(string $login, string $password): void
+    public function signUserIn(string $login, string $password, bool $remember = false): void
     {
         $this->securityUser->login($login, $password);
+
+        // remember = true  → žádný inactivity timeout, session trvá do odhlášení
+        // remember = false → odhlášení po 12 hodinách nečinnosti
+        $this->securityUser->setExpiration($remember ? null : '12 hours');
     }
 }

@@ -1,0 +1,29 @@
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Motiv vzhledu</h3>
+    </div>
+    <div class="card-body">
+        {form form}
+        <div class="mb-4">
+            <div class="btn-group" role="group" aria-label="Motiv vzhledu" data-theme-preview>
+                <input n:name="theme:light" class="btn-check" type="radio" autocomplete="off">
+                <label class="btn btn-outline-primary" for="{$form['theme']->htmlId}-light">
+                    <i class="bi bi-sun-fill me-1"></i> Světlý
+                </label>
+
+                <input n:name="theme:dark" class="btn-check" type="radio" autocomplete="off">
+                <label class="btn btn-outline-primary" for="{$form['theme']->htmlId}-dark">
+                    <i class="bi bi-moon-fill me-1"></i> Tmavý
+                </label>
+
+                <input n:name="theme:system" class="btn-check" type="radio" autocomplete="off">
+                <label class="btn btn-outline-primary" for="{$form['theme']->htmlId}-system">
+                    <i class="bi bi-display me-1"></i> Dle systému
+                </label>
+            </div>
+        </div>
+
+        {input submit, class: 'btn btn-primary'}
+        {/form}
+    </div>
+</div>

@@ -2,7 +2,11 @@
 namespace App\Domain\User;
 
 use App\Core\Database\ExplorerRepository;
+use App\Domain\UserRole\UserRole;
 use DateTimeInterface;
+use Nette\Database\Table\ActiveRow;
+use Nette\Database\Table\Selection;
+use RuntimeException;
 
 class ExplorerUserRepository extends ExplorerRepository
 {
@@ -21,6 +25,13 @@ class ExplorerUserRepository extends ExplorerRepository
         private readonly ExplorerUserMapper $userMapper,
     ) {
         parent::__construct(self::TABLE_NAME);
+    }
+
+
+    /** @return Selection<ActiveRow> */
+    public function getAllDataSource(): Selection
+    {
+        return $this->findAll();
     }
 
 
@@ -55,6 +66,71 @@ class ExplorerUserRepository extends ExplorerRepository
         }
 
         return $this->userMapper->mapUser($userRow);
+    }
+
+
+    public function createUser(string $email, string $passwordHash, UserRole $role, bool $active): User
+    {
+        $row = $this->getTable()->insert([
+            self::COLUMN_EMAIL => $email,
+            self::COLUMN_PASSWORD_HASH => $passwordHash,
+            self::COLUMN_ROLE => $role->value,
+            self::COLUMN_ACTIVE => $active,
+        ]);
+
+        if (!($row instanceof ActiveRow))
+        {
+            throw new RuntimeException(
+                'Failed to create user',
+            );
+        }
+
+        return $this->userMapper->mapUser($row);
+    }
+
+
+    public function userExistsByEmail(string $email, ?int $excludeId = null): bool
+    {
+        $selection = $this->getTable()
+            ->where(self::COLUMN_EMAIL, $email);
+
+        if ($excludeId !== null) {
+            $selection->where(self::COLUMN_ID . ' != ?', $excludeId);
+        }
+
+        return $selection->count() > 0;
+    }
+
+
+    public function updateUserPasswordHash(int $id, string $passwordHash): void
+    {
+        $this->getTable()
+            ->where(self::COLUMN_ID, $id)
+            ->update([
+                self::COLUMN_PASSWORD_HASH => $passwordHash,
+            ]);
+    }
+
+
+    public function updateUser(int $id, string $email, UserRole $role, bool $active): void
+    {
+        $this->getTable()
+            ->where(self::COLUMN_ID, $id)
+            ->update([
+                self::COLUMN_EMAIL => $email,
+                self::COLUMN_ROLE => $role->value,
+                self::COLUMN_ACTIVE => $active,
+            ]);
+    }
+
+
+    public function setActive(int $id, bool $active): void
+    {
+        $this->getTable()
+            ->where(self::COLUMN_ID, $id)
+            ->update([
+                self::COLUMN_ACTIVE => $active,
+            ]);
     }
 
 

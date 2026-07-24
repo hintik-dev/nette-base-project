@@ -1,10 +1,9 @@
 <?php declare(strict_types=1);
 namespace App\Model\Security\Authenticator;
 
-use App\Domain\User\User;
 use App\Domain\User\UserNotFoundException;
 use App\Domain\User\UserService;
-use App\Model\Security\Identity;
+use App\Model\Security\IdentityFactory;
 use App\Model\Security\Passwords;
 use Nette\Security\AuthenticationException;
 use Nette\Security\Authenticator;
@@ -14,7 +13,8 @@ final class UserAuthenticator implements Authenticator
 {
     public function __construct(
         private UserService $userService,
-        private Passwords $passwords
+        private Passwords $passwords,
+        private IdentityFactory $identityFactory,
     ) {
     }
 
@@ -41,14 +41,6 @@ final class UserAuthenticator implements Authenticator
 
         $this->userService->updateUserLastLogin($user->id);
 
-        return $this->createIdentity($user);
-    }
-
-
-    protected function createIdentity(User $user): IIdentity
-    {
-        return new Identity($user->id, [$user->role], [
-            'email' => $user->email,
-        ]);
+        return $this->identityFactory->createIdentity($user);
     }
 }

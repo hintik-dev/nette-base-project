@@ -1,0 +1,27 @@
+// =============================================================================
+// Admin – AdminLTE 4 + Bootstrap 5 vlastní proměnné
+//
+// Hodnoty zde definované přepíší výchozí hodnoty AdminLTE i Bootstrapu,
+// protože ty všechny používají !default.
+// =============================================================================
+
+
+// -----------------------------------------------------------------------------
+// BOOTSTRAP – Barvy
+// -----------------------------------------------------------------------------
+
+$primary:   #0d6efd;   // hlavní barva (tlačítka, linky, fokus, …)
+
+
+// -----------------------------------------------------------------------------
+// ADMINLTE – Sidebar
+// -----------------------------------------------------------------------------
+
+$lte-sidebar-color:               #4a5568;
+$lte-sidebar-hover-color:         $primary;
+$lte-sidebar-hover-bg:            rgba(13, 110, 253, 0.08);
+$lte-sidebar-active-color:        $primary;
+$lte-sidebar-menu-active-bg:      rgba(13, 110, 253, 0.12);
+$lte-sidebar-menu-active-color:   $primary;
+$lte-sidebar-submenu-color:       #6b7280;
+$lte-sidebar-submenu-hover-color: $primary;

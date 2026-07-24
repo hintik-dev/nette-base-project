@@ -1,0 +1,16 @@
+{snippet flashes}
+    <script>
+    (function () {
+        function showFlashes() {
+            {foreach $flashes as $flash}
+            toastr.{$flash->type|noescape}({$flash->message});
+            {/foreach}
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showFlashes);
+        } else {
+            showFlashes();
+        }
+    })();
+    </script>
+{/snippet}

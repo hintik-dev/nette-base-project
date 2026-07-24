@@ -46,6 +46,8 @@ cp config/local.example/ config/local -r
 ```
 Případně vyplníme údaje k databázi v `config/local/database.neon`, pokud nepoužíváme vývojovou databázi v kontejneru.
 
+`database.neon` obsahuje dvě samostatná spojení — `default` (hlavní aplikace) a `scheduler` (job systém, viz [Job systém](scheduler.md)). Ve výchozím stavu obě ukazují na stejnou databázi jako dvě nezávislá připojení; v produkci je typicky není potřeba měnit.
+
 ---
 
 ## 3. Spuštění kontejnerů
@@ -119,6 +121,25 @@ Otevřete v prohlížeči:
 - **Aplikace:** http://localhost:10000
 - **Admin sekce:** http://localhost:10000/admin
 - **phpMyAdmin:** http://localhost:30000
+
+---
+
+## 8. Vytvoření prvního admin účtu
+
+Migrace vytvoří tabulku uživatelů, ale žádného uživatele — pro přihlášení do Admin sekce je potřeba nejdřív vytvořit superadmin účet:
+
+```bash
+make bash
+php bin/console app:create-superadmin admin@firma.cz
+```
+
+Příkaz se interaktivně zeptá na heslo. Podrobnosti a další volby: [CLI Příkazy](commands.md#app-create-superadmin).
+
+---
+
+## Job systém a cron
+
+Pokud aplikace používá [plánované úlohy](scheduler.md), je potřeba mimo `make up` navíc nastavit systémový cron, který bude pravidelně (typicky každou minutu) spouštět `php bin/console scheduler:run` uvnitř PHP kontejneru. Bez toho zůstanou naplánované úlohy trvale ve stavu „naplánováno“.
 
 ---
 

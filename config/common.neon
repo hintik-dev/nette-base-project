@@ -1,13 +1,23 @@
 # see https://doc.nette.org/en/configuring
 
 parameters:
+	session:
+		inactivityTimeout: null
 
 
 application:
 	errorPresenter:
 		4xx: Error:Error4xx
 		5xx: Error:Error5xx
-	mapping: App\Presentation\Modules\*\**Presenter
+	mapping:
+	    Web: App\Presentation\Modules\Web\**Presenter
+	    Admin: App\Presentation\Modules\Admin\**Presenter
+	    Api: App\Presentation\Modules\Api\**Controller
+
+extensions:
+    api: Apitte\Core\DI\ApiExtension
+    scheduler: Contributte\Scheduler\DI\SchedulerExtension
+    translation: Contributte\Translation\DI\TranslationExtension
 
 latte:
 	strictParsing: yes
@@ -37,3 +47,31 @@ session:
 	useCookies: true
 	useOnlyCookies: true
 	useStrictMode: true
+
+api:
+    debug: %debugMode%
+    catchException: true
+    plugins:
+        Apitte\Core\DI\Plugin\CoreDecoratorPlugin:
+
+mail:
+    smtp: true
+    host: %email.smtp.host%
+    port: %email.smtp.port%
+    username: %email.smtp.username%
+    password: %email.smtp.password%
+    secure: %email.smtp.secure%
+    timeout: 10
+
+scheduler:
+    path: '%tempDir%/scheduler'
+    jobs: []
+
+translation:
+    locales:
+        whitelist: [cs_CZ]
+        default: cs_CZ
+        fallback: [cs_CZ]
+    dirs:
+        - %appDir%/Lang
+    returnOriginalMessage: true
