@@ -37,8 +37,10 @@ export const alignField: CustomField<Align> = {
     label: 'Zarovnání',
     render: ({ field, value, onChange }) => (
         // Puck u type: "custom" polí popisek nevykresluje sám (na rozdíl od
-        // vestavěných typů) — FieldLabel je potřeba obalit ručně.
-        <FieldLabel label={field.label ?? 'Zarovnání'}>
+        // vestavěných typů) — FieldLabel je potřeba obalit ručně. el="div"
+        // je nutné, protože výchozí <label> kolem vnořených <button> dělá
+        // v prohlížeči zmatky (dvojité/potlačené kliky).
+        <FieldLabel el="div" icon={<AlignIcon align="left" lineWidths={[100, 70, 85]} />} label={field.label ?? 'Zarovnání'}>
             <div style={{ display: 'flex', gap: 4 }}>
                 {ALIGN_OPTIONS.map((option) => (
                     <button
