@@ -1,0 +1,17 @@
+{* Editor běží bez AdminLTE navbaru/sidebaru — Puck má vlastní hlavičku
+   (Publikovat, zpět do administrace, undo/redo) a potřebuje celou výšku okna. *}
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{ifset #title}{include #title|stripHtml} | {/ifset}Administrace</title>
+    <link rel="icon" href="{$basePath}/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css">
+    {asset? 'admin/main.js'}
+    {asset? 'admin/editor/main.tsx'}
+</head>
+<body>
+    {block #content}{/block}
+</body>
+</html>

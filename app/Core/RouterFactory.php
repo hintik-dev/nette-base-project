@@ -28,7 +28,14 @@ final class RouterFactory
     public static function createWebRouter(RouteList $router): RouteList
     {
         $router[] = $list = new RouteList('Web');
-        $list->addRoute('<presenter>/<action>[/<id>]', 'Home:default');
+
+        // Presenter musí být vyjmenován (regex "home" odpovídá URL segmentu, ne
+        // názvu třídy), jinak by tuto trasu zabralo cokoliv před níže uvedeným
+        // slugem stránky z CMS (Page:default). Při přidání nového presenteru
+        // do Web modulu je potřeba ho sem doplnit.
+        $list->addRoute('<presenter=Home home>/<action>[/<id>]', 'Home:default');
+        $list->addRoute('<slug [a-z0-9\-]+>', 'Page:default');
+
         return $router;
     }
 }

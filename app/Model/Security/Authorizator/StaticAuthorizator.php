@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace App\Model\Security\Authorizator;
 
+use App\Domain\Page\Page;
 use App\Domain\User\User;
 use App\Domain\UserRole\UserRole;
 use Nette\Security\Permission;
@@ -34,6 +35,7 @@ final class StaticAuthorizator extends Permission
     protected function addResources(): void
     {
         $this->addResource(User::RESOURCE_ID);
+        $this->addResource(Page::RESOURCE_ID);
         $this->addResource('value-storage');
     }
 

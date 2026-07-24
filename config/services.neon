@@ -28,6 +28,9 @@ services:
 	# Email
 	- App\Domain\Email\EmailSenderService(fromAddress: %email.from.address%, fromName: %email.from.name%)
 
+	# Page – JSON blocky z Puck editoru se renderují do Latte přes BlockRenderer
+	- App\Domain\Page\BlockRenderer
+
 	# API Security ================
 	api.authDecorator:
 	    factory: App\Presentation\Modules\Api\Security\AuthenticationDecorator

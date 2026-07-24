@@ -1,0 +1,7 @@
+{templateType App\Presentation\Modules\Web\Page\PageDefaultTemplate}
+
+{block #pageTitle}{$page->title}{/block}
+
+{block #content}
+    {$contentHtml|noescape}
+{/block}

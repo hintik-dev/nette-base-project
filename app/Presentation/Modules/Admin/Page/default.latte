@@ -1,0 +1,43 @@
+{templateType App\Presentation\Modules\Admin\Page\PageListTemplate}
+
+{block #pageTitle}Stránky{/block}
+
+{block #content}
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h3 class="card-title mb-0">Stránky</h3>
+        <a n:href="create" class="btn btn-sm btn-primary">Nová stránka</a>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Název</th>
+                    <th>Slug</th>
+                    <th>Stav</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr n:foreach="$pages as $pageRow">
+                    <td>{$pageRow->title}</td>
+                    <td><code>/{$pageRow->slug}</code></td>
+                    <td>
+                        <span n:class="'badge', $pageRow->status === 'published' ? 'text-bg-success' : 'text-bg-secondary'">
+                            {$pageRow->status === 'published' ? 'Publikováno' : 'Koncept'}
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <a n:href="edit, id: $pageRow->id" class="btn btn-sm btn-outline-secondary">Upravit</a>
+                    </td>
+                </tr>
+                <tr n:if="!$pages->count()">
+                    <td colspan="4" class="text-center text-muted py-4">Zatím žádné stránky.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{/block}

@@ -41,6 +41,13 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a n:href="Page:default" class="nav-link {if isLinkCurrent(':Admin:Page:*')}active{/if}">
+                        <i class="nav-icon bi bi-file-earmark-richtext-fill"></i>
+                        <p>Stránky</p>
+                    </a>
+                </li>
+
                 {var $emailActive = isLinkCurrent(':Admin:Email:*')}
                 <li class="nav-item {if $emailActive}menu-open{/if}">
                     <a href="#" class="nav-link {if $emailActive}active{/if}">

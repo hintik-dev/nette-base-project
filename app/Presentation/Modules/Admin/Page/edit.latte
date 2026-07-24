@@ -1,0 +1,17 @@
+{templateType App\Presentation\Modules\Admin\Page\PageEditTemplate}
+{layout '@layoutEdit.latte'}
+
+{block #title}{$page->title}{/block}
+
+{block #content}
+
+<div
+    id="puck-root"
+    data-save-url="{$saveUrl}"
+    data-back-url="{link default}"
+    data-title="{$page->title}"
+    data-path="/{$page->slug}"
+    data-initial-content="{$page->content|json}"
+></div>
+
+{/block}
