@@ -2,7 +2,7 @@
 	"type": "module",
 	"dependencies": {
 		"@popperjs/core": "^2.11.8",
-		"@puckeditor/core": "^0.22.2",
+		"@puckeditor/core": "0.23.0-canary.fb9392de",
 		"admin-lte": "^4.0.0-rc6",
 		"bootstrap": "^5.3.8",
 		"flatpickr": "^4.6.13",

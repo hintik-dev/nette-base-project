@@ -20,6 +20,13 @@ type Props = {
 };
 
 export const config: Config<Props> = {
+    root: {
+        fields: {
+            // Bez vlastního `root.fields` by Puck zobrazoval jedno defaultní
+            // (neužívané) pole "title" bez českého popisku.
+            title: { type: 'text', label: 'Název' },
+        },
+    },
     categories: {
         typography: {
             title: 'Text',

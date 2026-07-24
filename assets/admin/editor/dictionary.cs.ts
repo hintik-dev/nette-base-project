@@ -1,6 +1,9 @@
 /**
  * Český překlad vestavěných textů Puck editoru (tlačítka, tooltipy, panely...).
- * Kompletní seznam klíčů: https://puckeditor.com/docs/api-reference/dictionary
+ * `dictionary` prop existuje až od 0.23.0-canary (viz package.json — vydaná
+ * 0.22.2 tuto možnost nemá vůbec). Klíče ověřeny přímo v nainstalovaném
+ * balíčku (node_modules/@puckeditor/core/dist/no-external.js, `defaultDictionary`),
+ * ne jen podle veřejné dokumentace, která popisuje odlišný (novější) stav.
  * Názvy bloků a polí se překládají zvlášť přes `label` v config.ts / blocks/*.tsx.
  */
 export const csDictionary: Record<string, string> = {
@@ -19,12 +22,8 @@ export const csDictionary: Record<string, string> = {
     'label-component': 'Komponenta',
 
     'outline-empty': 'Žádné položky',
-    'outline-header-title': 'Osnova',
-    'outline-header-collapseall': 'Sbalit vše',
-    'outline-item-collapse': 'Sbalit',
-    'outline-item-expand': 'Rozbalit',
-    'outline-item-duplicate': 'Duplikovat',
-    'outline-item-delete': 'Smazat',
+    'outline-collapse': 'Sbalit',
+    'outline-expand': 'Rozbalit',
 
     'drawer-category-collapse': 'Sbalit {title}',
     'drawer-category-expand': 'Rozbalit {title}',

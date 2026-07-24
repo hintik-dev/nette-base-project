@@ -13,6 +13,7 @@ export const NumberedList: ComponentConfig<NumberedListProps> = {
             arrayFields: {
                 text: { type: 'text', label: 'Text' },
             },
+            getItemSummary: (item, index) => item.text || `Položka č. ${(index ?? 0) + 1}`,
         },
     },
     defaultProps: {
