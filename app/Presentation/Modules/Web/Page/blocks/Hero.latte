@@ -1,43 +1,54 @@
 {* Zrcadlí assets/admin/editor/blocks/Hero.tsx — literální třídy v match()
    větvích, ne skládaný řetězec, viz komentář v .tsx protějšku. *}
-{var $hasImage = !empty($props['backgroundImageUrl'])}
-{var $variantClass = match($props['variant'] ?? 'primary') {
-    'neutral' => $hasImage
-        ? 'bg-gradient-to-br from-neutral/90 via-neutral/60 to-secondary/50 text-neutral-content'
-        : 'bg-gradient-to-br from-neutral via-neutral to-secondary text-neutral-content',
-    'base-200' => $hasImage
-        ? 'bg-gradient-to-br from-base-100/90 via-base-100/70 to-base-200/50 text-base-content'
-        : 'bg-gradient-to-br from-base-200 to-base-100 text-base-content',
-    default => $hasImage
-        ? 'bg-gradient-to-br from-primary/85 via-primary/55 to-secondary/45 text-primary-content'
-        : 'bg-gradient-to-br from-primary via-primary to-secondary text-primary-content',
+{var $accent = $props['accent'] ?? 'primary'}
+{var $auroraClass = match($accent) {
+    'secondary' => 'from-secondary/25 via-primary/10 to-transparent',
+    'accent' => 'from-accent/25 via-primary/10 to-transparent',
+    default => 'from-primary/25 via-secondary/10 to-transparent',
 }}
-{var $chipClass = match($props['variant'] ?? 'primary') {
-    'neutral' => 'border-neutral-content/30 text-neutral-content/70',
-    'base-200' => 'border-base-content/20 text-base-content/60',
-    default => 'border-primary-content/30 text-primary-content/70',
+{var $bigTileClass = match($accent) {
+    'secondary' => 'bg-secondary/10 text-secondary',
+    'accent' => 'bg-accent/10 text-accent',
+    default => 'bg-primary/10 text-primary',
 }}
-{* Hlavní CTA musí kontrastovat s pozadím — na primary variantě by
-   btn-primary splynulo se sekcí, proto obrácené (světlé) tlačítko. *}
-{var $primaryButtonClass = match($props['variant'] ?? 'primary') {
-    'primary' => 'bg-base-100 text-primary border-none hover:bg-base-100/90',
-    default => 'btn-primary',
+{var $headingGradientClass = match($accent) {
+    'secondary' => 'from-secondary via-secondary to-primary',
+    'accent' => 'from-accent via-accent to-secondary',
+    default => 'from-primary via-primary to-secondary',
 }}
-{var $blockChips = ['Nadpis', 'Text', 'Obrázek', 'Sloupce', 'Kroky']}
-<div
-    class="hero min-h-[70vh] relative isolate overflow-hidden {$variantClass}"
-    style="{if $hasImage}background-image: url('{$props['backgroundImageUrl']}'); background-size: cover; background-position: center;{/if}"
->
-    <div class="hero-content text-center py-24">
-        <div class="max-w-2xl">
-            <div class="flex flex-wrap gap-2 justify-center mb-6 font-mono text-[11px] uppercase tracking-widest">
-                <span n:foreach="$blockChips as $chip" class="rounded-full border px-3 py-1 {$chipClass}">{$chip}</span>
+{* Signaturní prvek: bento mřížka skutečných typů bloků, viz komentář v .tsx protějšku. *}
+{var $blockTiles = [
+    ['icon' => '🎯', 'label' => 'Hero', 'hint' => 'Poutavý úvod s CTA'],
+    ['icon' => '📝', 'label' => 'Text', 'hint' => null],
+    ['icon' => '🖼️', 'label' => 'Obrázek', 'hint' => null],
+    ['icon' => '🧱', 'label' => 'Sloupce', 'hint' => null],
+    ['icon' => '🔢', 'label' => 'Kroky', 'hint' => null],
+]}
+{var $tilePositionClasses = ['col-span-2 row-span-2 justify-between', 'col-start-3 justify-center', 'col-start-4 justify-center', 'col-start-3 row-start-2 justify-center', 'col-start-4 row-start-2 justify-center']}
+<div class="relative isolate overflow-hidden bg-gradient-to-b from-base-200/70 to-base-100">
+    <div class="pointer-events-none absolute -top-24 -left-24 w-[32rem] h-[32rem] rounded-full blur-3xl bg-gradient-to-br {$auroraClass}"></div>
+    <div class="pointer-events-none absolute top-1/3 -right-32 w-[28rem] h-[28rem] rounded-full blur-3xl bg-gradient-to-br from-secondary/15 via-accent/10 to-transparent"></div>
+
+    <div class="relative container mx-auto px-4 py-20 lg:py-28 grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+            <span class="inline-block font-mono text-xs uppercase tracking-widest text-base-content/50 border border-base-300 rounded-full px-3 py-1 mb-6">
+                Vizuální editor obsahu
+            </span>
+            <h1 class="text-5xl md:text-6xl font-bold leading-[1.05] mb-6 bg-gradient-to-br bg-clip-text text-transparent {$headingGradientClass}">{$props['heading'] ?? ''}</h1>
+            <p n:if="!empty($props['subtext'])" class="text-lg text-base-content/70 mb-8 max-w-lg">{$props['subtext']}</p>
+            <div class="flex flex-wrap items-center gap-6">
+                <a n:if="!empty($props['primaryButtonText'])" href="{$props['primaryButtonUrl'] ?: '#'}" class="btn btn-lg btn-primary shadow-lg shadow-primary/20">{$props['primaryButtonText']}</a>
+                <a n:if="!empty($props['secondaryButtonText'])" href="{$props['secondaryButtonUrl'] ?: '#'}" class="link link-hover font-semibold">{$props['secondaryButtonText']} &rarr;</a>
             </div>
-            <h1 class="text-5xl md:text-6xl font-bold">{$props['heading'] ?? ''}</h1>
-            <p n:if="!empty($props['subtext'])" class="py-6 text-lg opacity-90">{$props['subtext']}</p>
-            <div class="flex gap-3 justify-center">
-                <a n:if="!empty($props['primaryButtonText'])" href="{$props['primaryButtonUrl'] ?: '#'}" class="btn btn-lg shadow-lg {$primaryButtonClass}">{$props['primaryButtonText']}</a>
-                <a n:if="!empty($props['secondaryButtonText'])" href="{$props['secondaryButtonUrl'] ?: '#'}" class="btn btn-lg btn-outline">{$props['secondaryButtonText']}</a>
+        </div>
+
+        <div class="grid grid-cols-4 grid-rows-2 gap-3 h-80">
+            <div n:foreach="$blockTiles as $tile" class="rounded-2xl border border-base-300/60 bg-base-100/80 backdrop-blur shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all p-4 flex flex-col {$tilePositionClasses[$iterator->counter0]}">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-xl {$iterator->first ? $bigTileClass : 'bg-base-200 text-base-content/70'}">{$tile['icon']}</div>
+                <div>
+                    <p class="font-semibold text-sm mt-2">{$tile['label']}</p>
+                    <p n:if="$tile['hint']" class="text-xs text-base-content/50 mt-1">{$tile['hint']}</p>
+                </div>
             </div>
         </div>
     </div>

@@ -5,21 +5,18 @@
     '3' => 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
     default => 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
 }}
-{* Střídání akcentních barev karet, viz komentář v .tsx protějšku. *}
-{var $accentBorderClasses = ['border-t-primary', 'border-t-secondary', 'border-t-accent']}
+{* Ikony se střídají po třech barvách palety, viz komentář v .tsx protějšku. *}
 {var $iconBadgeClasses = ['bg-primary/10 text-primary', 'bg-secondary/10 text-secondary', 'bg-accent/10 text-accent']}
 <div class="container mx-auto px-4 py-16">
     <div class="max-w-2xl mx-auto text-center mb-12">
         <h2 class="text-3xl font-bold mb-4">{$props['heading'] ?? ''}</h2>
         <p n:if="!empty($props['intro'])" class="text-base-content/70">{$props['intro']}</p>
     </div>
-    <div class="grid {$gridClass} gap-6">
-        <div n:foreach="$props['items'] ?? [] as $item" class="card bg-base-100 shadow-md hover:shadow-lg transition-shadow border-t-4 {$accentBorderClasses[$iterator->counter0 % 3]}">
-            <div class="card-body items-center text-center">
-                <div n:if="!empty($item['icon'])" class="w-14 h-14 rounded-full flex items-center justify-center text-2xl mb-2 {$iconBadgeClasses[$iterator->counter0 % 3]}">{$item['icon']}</div>
-                <h3 class="card-title text-base">{$item['title'] ?? ''}</h3>
-                <p class="text-sm text-base-content/70">{$item['text'] ?? ''}</p>
-            </div>
+    <div class="grid {$gridClass} gap-4">
+        <div n:foreach="$props['items'] ?? [] as $item" class="rounded-2xl border border-base-300/60 bg-base-100/70 backdrop-blur shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all p-6 {$iterator->first ? 'sm:col-span-2' : ''}">
+            <div n:if="!empty($item['icon'])" class="w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3 {$iconBadgeClasses[$iterator->counter0 % 3]}">{$item['icon']}</div>
+            <h3 class="font-semibold text-base mb-1">{$item['title'] ?? ''}</h3>
+            <p class="text-sm text-base-content/70">{$item['text'] ?? ''}</p>
         </div>
     </div>
 </div>

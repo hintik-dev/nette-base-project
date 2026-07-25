@@ -53,25 +53,25 @@
 {/block}
 
 {block #footer}
-    <footer class="footer sm:footer-horizontal bg-neutral text-neutral-content px-4 sm:px-10 pt-12 pb-8">
+    <footer class="footer sm:footer-horizontal bg-base-200 text-base-content border-t border-base-300 px-4 sm:px-10 pt-12 pb-8">
         <aside>
             <p class="font-display text-lg font-bold tracking-tight">Váš web</p>
-            <p class="font-mono text-xs uppercase tracking-widest opacity-60">poskládáno z bloků</p>
+            <p class="font-mono text-xs uppercase tracking-widest opacity-50">poskládáno z bloků</p>
         </aside>
         <nav>
-            <h6 class="footer-title opacity-60">Web</h6>
+            <h6 class="footer-title opacity-50">Web</h6>
             <a class="link link-hover" n:href="Page:default, slug: ''">Domů</a>
             <a class="link link-hover" n:href="Page:default, slug: 'o-nas'">O nás</a>
         </nav>
         <nav>
-            <h6 class="footer-title opacity-60">O projektu</h6>
-            <span class="opacity-70">Postaveno na Nette Frameworku</span>
-            <span class="opacity-70">Obsah spravovaný vizuálním editorem</span>
+            <h6 class="footer-title opacity-50">O projektu</h6>
+            <span class="opacity-60">Postaveno na Nette Frameworku</span>
+            <span class="opacity-60">Obsah spravovaný vizuálním editorem</span>
         </nav>
     </footer>
-    <footer class="footer footer-center bg-neutral text-neutral-content border-t border-white/10 px-4 py-4">
+    <footer class="footer footer-center bg-base-200 text-base-content border-t border-base-300 px-4 py-4">
         <aside>
-            <p class="opacity-60 text-sm">&copy; {date('Y')} Váš web</p>
+            <p class="opacity-50 text-sm">&copy; {date('Y')} Váš web</p>
         </aside>
     </footer>
 {/block}

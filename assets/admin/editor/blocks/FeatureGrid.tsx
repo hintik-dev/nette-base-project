@@ -15,10 +15,8 @@ const GRID_CLASSES: Record<FeatureGridProps['columns'], string> = {
     '4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
 };
 
-// Karty se střídají po třech barvách palety, ať mřížka nepůsobí jako
-// jednolitá plocha stejných dlaždic — každá "vlastnost" dostane jiný
-// horní akcentní pruh (amber / slate / moss).
-const ACCENT_BORDER_CLASSES = ['border-t-primary', 'border-t-secondary', 'border-t-accent'];
+// Ikony se střídají po třech barvách palety, ať mřížka nepůsobí jako
+// jednolitá plocha stejných dlaždic (amber / slate / moss).
 const ICON_BADGE_CLASSES = ['bg-primary/10 text-primary', 'bg-secondary/10 text-secondary', 'bg-accent/10 text-accent'];
 
 export const FeatureGrid: ComponentConfig<FeatureGridProps> = {
@@ -61,18 +59,19 @@ export const FeatureGrid: ComponentConfig<FeatureGridProps> = {
                 <h2 className="text-3xl font-bold mb-4">{heading}</h2>
                 {intro && <p className="text-base-content/70">{intro}</p>}
             </div>
-            <div className={`grid ${GRID_CLASSES[columns]} gap-6`}>
+            <div className={`grid ${GRID_CLASSES[columns]} gap-4`}>
                 {items.map((item, i) => (
-                    <div key={i} className={`card bg-base-100 shadow-md hover:shadow-lg transition-shadow border-t-4 ${ACCENT_BORDER_CLASSES[i % 3]}`}>
-                        <div className="card-body items-center text-center">
-                            {item.icon && (
-                                <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl mb-2 ${ICON_BADGE_CLASSES[i % 3]}`}>
-                                    {item.icon}
-                                </div>
-                            )}
-                            <h3 className="card-title text-base">{item.title}</h3>
-                            <p className="text-sm text-base-content/70">{item.text}</p>
-                        </div>
+                    <div
+                        key={i}
+                        className={`rounded-2xl border border-base-300/60 bg-base-100/70 backdrop-blur shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all p-6 ${i === 0 ? 'sm:col-span-2' : ''}`}
+                    >
+                        {item.icon && (
+                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-3 ${ICON_BADGE_CLASSES[i % 3]}`}>
+                                {item.icon}
+                            </div>
+                        )}
+                        <h3 className="font-semibold text-base mb-1">{item.title}</h3>
+                        <p className="text-sm text-base-content/70">{item.text}</p>
                     </div>
                 ))}
             </div>
