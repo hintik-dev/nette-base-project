@@ -56,6 +56,9 @@ export const FeatureGrid: ComponentConfig<FeatureGridProps> = {
     render: ({ heading, intro, columns, items }) => (
         <div className="container mx-auto px-4 py-16">
             <div className="max-w-2xl mx-auto text-center mb-12">
+                <span className="inline-block font-mono text-xs uppercase tracking-widest text-base-content/50 border border-base-300 rounded-full px-3 py-1 mb-4">
+                    Vlastnosti
+                </span>
                 <h2 className="text-3xl font-bold mb-4">{heading}</h2>
                 {intro && <p className="text-base-content/70">{intro}</p>}
             </div>

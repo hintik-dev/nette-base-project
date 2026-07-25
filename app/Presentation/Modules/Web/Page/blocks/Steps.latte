@@ -1,11 +1,18 @@
-{* Zrcadlí assets/admin/editor/blocks/Steps.tsx *}
-<div class="bg-base-200 py-16">
-    <div class="container mx-auto px-4">
-        <div n:if="!empty($props['heading'])" class="max-w-2xl mx-auto text-center mb-10">
-            <h2 class="text-3xl font-bold mb-4">{$props['heading']}</h2>
+{* Zrcadlí assets/admin/editor/blocks/Steps.tsx — skleněné dlaždice
+   s číslem místo vestavěné daisyUI komponenty "steps", viz komentář
+   v .tsx protějšku. *}
+<div class="relative isolate overflow-hidden bg-gradient-to-b from-base-100 to-base-200/60 py-20">
+    <div class="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[36rem] h-[20rem] rounded-full blur-3xl bg-gradient-to-br from-accent/15 via-primary/10 to-transparent"></div>
+    <div class="relative container mx-auto px-4">
+        <div class="max-w-2xl mx-auto text-center mb-12">
+            <span class="inline-block font-mono text-xs uppercase tracking-widest text-base-content/50 border border-base-300 rounded-full px-3 py-1 mb-4">Postup</span>
+            <h2 n:if="!empty($props['heading'])" class="text-3xl font-bold">{$props['heading']}</h2>
         </div>
-        <ul class="steps steps-vertical lg:steps-horizontal w-full">
-            <li n:foreach="$props['items'] ?? [] as $item" class="step step-primary">{$item['text'] ?? ''}</li>
-        </ul>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div n:foreach="$props['items'] ?? [] as $item" class="rounded-2xl border border-base-300/60 bg-base-100/70 backdrop-blur shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all p-6">
+                <div class="w-10 h-10 rounded-full bg-primary text-primary-content flex items-center justify-center font-mono font-bold mb-4">{$iterator->counter}</div>
+                <p class="font-medium">{$item['text'] ?? ''}</p>
+            </div>
+        </div>
     </div>
 </div>
