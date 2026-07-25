@@ -6,13 +6,11 @@
    #pageHeader banner z @layout.latte by ho zdvojoval. *}
 {block #pageHeader}{/block}
 
+{* Bez obalového containeru: sekční bloky (Hero, FeatureGrid, Steps) si
+   nesou vlastní plnou šířku a padding, aby jejich pozadí sahalo od
+   okraje k okraji obrazovky (ne jako vsazený box uprostřed stránky).
+   Textové bloky (Heading, Text, seznamy, Sloupce, Obrázek) si container
+   a typografii řeší samy, viz jejich vlastní .latte šablony. *}
 {block #content}
-    <div class="container mx-auto px-4 py-16">
-        {* prose (@tailwindcss/typography) dává rozumnou výchozí typografii
-           libovolnému HTML z bloků — Tailwind samo o sobě holé h1-h6/p/ul/ol
-           nestyluje vůbec. *}
-        <div class="prose lg:prose-lg mx-auto max-w-none">
-            {$contentHtml|noescape}
-        </div>
-    </div>
+    {$contentHtml|noescape}
 {/block}
