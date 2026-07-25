@@ -12,6 +12,17 @@ final class BlockRenderer
 {
     private const string BLOCKS_DIR = __DIR__ . '/../../Presentation/Modules/Web/Page/blocks';
 
+    /**
+     * Uzavřený seznam typů bloků — musí přesně odpovídat klíčům komponent
+     * v assets/admin/editor/config.ts. Obsah stránky je uložený JSON, které
+     * může přijít i mimo Puck editor (viz Admin\Page\PagePresenter::handleSave),
+     * proto se $type nesmí bez kontroly použít ke skládání cesty k souboru.
+     */
+    private const array BLOCK_TYPES = [
+        'Heading', 'Text', 'NumberedList', 'BulletList', 'Image',
+        'Columns', 'Hero', 'FeatureGrid', 'Steps', 'Section', 'ImageText', 'CTA',
+    ];
+
     public function __construct(
         private readonly LatteFactory $latteFactory,
     ) {
@@ -41,6 +52,10 @@ final class BlockRenderer
 
         if ($type === null || $type === '') {
             return '';
+        }
+
+        if (!in_array($type, self::BLOCK_TYPES, true)) {
+            throw new RuntimeException(sprintf('Neznámý typ bloku "%s".', $type));
         }
 
         $file = self::BLOCKS_DIR . '/' . $type . '.latte';

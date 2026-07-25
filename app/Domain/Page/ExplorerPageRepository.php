@@ -35,6 +35,15 @@ class ExplorerPageRepository extends ExplorerRepository
     }
 
 
+    /** @return array<int, string> */
+    public function getPublishedSlugs(): array
+    {
+        return $this->getTable()
+            ->where(self::COLUMN_STATUS, PageStatus::Published->value)
+            ->fetchPairs(null, self::COLUMN_SLUG);
+    }
+
+
     /**
      * @throws PageNotFoundException
      */

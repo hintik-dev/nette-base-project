@@ -53,6 +53,19 @@ class PageFacade
 
 
     /**
+     * Veřejná metoda — bez kontroly přihlášení, používá se jen k ověření
+     * existence stránky (viz @layout.latte a Web\Page\PagePresenter), ne
+     * k výpisu obsahu.
+     *
+     * @return array<int, string>
+     */
+    public function getPublishedSlugs(): array
+    {
+        return $this->pageService->getPublishedSlugs();
+    }
+
+
+    /**
      * @throws PageNotFoundException Pokud stránka neexistuje nebo není publikovaná.
      */
     public function getPublishedPageBySlug(string $slug): Page

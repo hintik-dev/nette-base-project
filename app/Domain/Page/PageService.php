@@ -23,6 +23,13 @@ readonly class PageService
     }
 
 
+    /** @return array<int, string> */
+    public function getPublishedSlugs(): array
+    {
+        return $this->pageRepository->getPublishedSlugs();
+    }
+
+
     public function slugExists(string $slug, ?int $excludeId = null): bool
     {
         return $this->pageRepository->slugExists($slug, $excludeId);

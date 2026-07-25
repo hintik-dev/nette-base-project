@@ -1,4 +1,8 @@
 {varType Nette\Security\User $user}
+{* Slugy publikovaných stránek — natvrdo zapsané odkazy níže (o-nas) se
+   zobrazí, jen pokud cílová stránka opravdu existuje a je publikovaná;
+   jinak by přejmenování/smazání stránky v adminu potichu rozbilo navigaci. *}
+{varType array $publishedSlugs}
 
 {layout '../Base/@layout.latte'}
 
@@ -25,7 +29,7 @@
             <label for="nav-drawer" aria-label="Zavřít menu" class="drawer-overlay"></label>
             <ul class="menu bg-base-200 min-h-full w-64 p-4 gap-1 text-base">
                 <li><a class="font-medium" n:href="Page:default, slug: ''">Domů</a></li>
-                <li><a class="font-medium" n:href="Page:default, slug: 'o-nas'">O nás</a></li>
+                <li n:if="in_array('o-nas', $publishedSlugs, true)"><a class="font-medium" n:href="Page:default, slug: 'o-nas'">O nás</a></li>
             </ul>
         </div>
     </div>
@@ -54,7 +58,7 @@
             <div class="flex-none hidden lg:block">
                 <ul class="menu menu-horizontal gap-1 text-base">
                     <li><a class="font-medium" n:href="Page:default, slug: ''">Domů</a></li>
-                    <li><a class="font-medium" n:href="Page:default, slug: 'o-nas'">O nás</a></li>
+                    <li n:if="in_array('o-nas', $publishedSlugs, true)"><a class="font-medium" n:href="Page:default, slug: 'o-nas'">O nás</a></li>
                 </ul>
             </div>
         </div>
@@ -82,7 +86,7 @@
             <nav>
                 <h6 class="footer-title opacity-50">Web</h6>
                 <a class="link link-hover" n:href="Page:default, slug: ''">Domů</a>
-                <a class="link link-hover" n:href="Page:default, slug: 'o-nas'">O nás</a>
+                <a n:if="in_array('o-nas', $publishedSlugs, true)" class="link link-hover" n:href="Page:default, slug: 'o-nas'">O nás</a>
             </nav>
             <nav>
                 <h6 class="footer-title opacity-50">O projektu</h6>

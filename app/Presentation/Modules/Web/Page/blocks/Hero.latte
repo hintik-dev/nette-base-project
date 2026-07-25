@@ -37,8 +37,8 @@
             <h1 class="text-5xl md:text-6xl font-bold leading-[1.05] mb-6 bg-gradient-to-br bg-clip-text text-transparent {$headingGradientClass}">{$props['heading'] ?? ''}</h1>
             <p n:if="!empty($props['subtext'])" class="text-lg text-base-content/70 mb-8 max-w-lg">{$props['subtext']}</p>
             <div class="flex flex-wrap items-center gap-6">
-                <a n:if="!empty($props['primaryButtonText'])" href="{$props['primaryButtonUrl'] ?: '#'}" class="btn btn-lg btn-primary shadow-lg shadow-primary/20">{$props['primaryButtonText']}</a>
-                <a n:if="!empty($props['secondaryButtonText'])" href="{$props['secondaryButtonUrl'] ?: '#'}" class="link link-hover font-semibold">{$props['secondaryButtonText']} &rarr;</a>
+                <a n:if="!empty($props['primaryButtonText'])" href="{($props['primaryButtonUrl'] ?? '')|safeUrl}" class="btn btn-lg btn-primary shadow-lg shadow-primary/20">{$props['primaryButtonText']}</a>
+                <a n:if="!empty($props['secondaryButtonText'])" href="{($props['secondaryButtonUrl'] ?? '')|safeUrl}" class="link link-hover font-semibold">{$props['secondaryButtonText']} &rarr;</a>
             </div>
         </div>
 

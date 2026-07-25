@@ -6,6 +6,7 @@ services:
 	    setup:
 	        - addFilter(neon, App\Model\Latte\Filters::neon)
 	        - addFilter(json, App\Model\Latte\Filters::json)
+	        - addFilter(safeUrl, App\Model\Latte\Filters::safeUrl)
 
 	latte.templateFactory:
 	    class: App\Model\Latte\TemplateFactory

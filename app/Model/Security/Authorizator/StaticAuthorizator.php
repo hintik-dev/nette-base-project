@@ -46,5 +46,12 @@ final class StaticAuthorizator extends Permission
     {
         // Zatím všem povolíme vše
         $this->allow();
+
+        // Správa obsahu (CMS stránky) je výjimka z výše uvedeného —
+        // role "user" ji nesmí mít, jen admin a vyšší (role admin/superadmin
+        // dědí z "user", proto je potřeba nejdřív explicitně zakázat a pak
+        // pro admina znovu povolit).
+        $this->deny(UserRole::User->value, Page::RESOURCE_ID);
+        $this->allow(UserRole::Admin->value, Page::RESOURCE_ID);
     }
 }

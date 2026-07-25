@@ -11,4 +11,12 @@ final class PageDefaultTemplate extends BaseTemplate
     public string $contentHtml;
 
     public string $browserTitle;
+
+    /**
+     * Slugy publikovaných stránek — @layout.latte s nimi ověřuje natvrdo
+     * zapsané odkazy v navigaci, aby nevedly na smazanou/nepublikovanou stránku.
+     *
+     * @var array<int, string>
+     */
+    public array $publishedSlugs;
 }

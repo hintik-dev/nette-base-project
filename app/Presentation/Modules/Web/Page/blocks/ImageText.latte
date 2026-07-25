@@ -15,7 +15,7 @@
         <div>
             <h2 class="text-3xl font-bold mb-4">{$props['heading'] ?? ''}</h2>
             <div class="prose max-w-none text-base-content/70 mb-6">{($props['text'] ?? '')|noescape}</div>
-            <a n:if="!empty($props['buttonText'])" href="{$props['buttonUrl'] ?: '#'}" class="btn btn-primary">{$props['buttonText']}</a>
+            <a n:if="!empty($props['buttonText'])" href="{($props['buttonUrl'] ?? '')|safeUrl}" class="btn btn-primary">{$props['buttonText']}</a>
         </div>
     </div>
 </div>

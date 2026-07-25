@@ -12,6 +12,6 @@
     <div class="container mx-auto px-4 py-16 text-center">
         <h2 class="text-3xl font-bold mb-4">{$props['heading'] ?? ''}</h2>
         <p n:if="!empty($props['subtext'])" class="opacity-80 mb-8 max-w-xl mx-auto">{$props['subtext']}</p>
-        <a n:if="!empty($props['buttonText'])" href="{$props['buttonUrl'] ?: '#'}" class="btn btn-lg shadow-lg {$buttonClass}">{$props['buttonText']}</a>
+        <a n:if="!empty($props['buttonText'])" href="{($props['buttonUrl'] ?? '')|safeUrl}" class="btn btn-lg shadow-lg {$buttonClass}">{$props['buttonText']}</a>
     </div>
 </div>

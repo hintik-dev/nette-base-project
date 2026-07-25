@@ -18,4 +18,27 @@ final class Filters
     {
         return Json::encode($value);
     }
+
+
+    /**
+     * Ochrana proti javascript:/data: URI ve vstupech od uživatele (např.
+     * URL tlačítek v blocích CMS stránky) — relativní URL, kotvy a query
+     * bez schématu projdou beze změny, jinak jen výslovně povolená schémata.
+     */
+    public static function safeUrl(mixed $value): string
+    {
+        $url = trim((string) $value);
+
+        if ($url === '') {
+            return '#';
+        }
+
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+
+        if (!is_string($scheme) || in_array(strtolower($scheme), ['http', 'https', 'mailto', 'tel'], true)) {
+            return $url;
+        }
+
+        return '#';
+    }
 }
