@@ -23,7 +23,17 @@ class PageForm extends BaseComponent
     {
         $form = new BaseForm();
 
-        $form->addText(PageFormData::PARAM_SLUG, 'Slug')
+        $slug = $form->addText(PageFormData::PARAM_SLUG, 'Slug');
+
+        $isHomepage = $form->addCheckbox(PageFormData::PARAM_IS_HOMEPAGE, 'Nastavit jako úvodní stránku')
+            ->addRule(
+                fn(Control $control): bool => !$control->getValue() || !$this->pageFacade->slugExists(''),
+                'Úvodní stránka už existuje — nejdřív jí musíte změnit slug.',
+            );
+
+        // Úvodní stránka má vždy prázdný slug (odpovídá kořenovému '/'),
+        // pole Slug proto dává smysl vyžadovat jen když se nezaškrtne.
+        $slug->addConditionOn($isHomepage, $form::Equal, false)
             ->setRequired('Zadejte slug.')
             ->addRule($form::Pattern, 'Slug smí obsahovat jen malá písmena, číslice a pomlčky.', '[a-z0-9\-]+')
             ->addRule(

@@ -5,6 +5,9 @@ import { NumberedList, type NumberedListProps } from './blocks/NumberedList';
 import { BulletList, type BulletListProps } from './blocks/BulletList';
 import { Image, type ImageProps } from './blocks/Image';
 import { Columns, type ColumnsProps } from './blocks/Columns';
+import { Hero, type HeroProps } from './blocks/Hero';
+import { FeatureGrid, type FeatureGridProps } from './blocks/FeatureGrid';
+import { Steps, type StepsProps } from './blocks/Steps';
 
 /**
  * Registr bloků editoru — PHP protějšek je App\Domain\Page\BlockRenderer,
@@ -17,6 +20,9 @@ type Props = {
     BulletList: BulletListProps;
     Image: ImageProps;
     Columns: ColumnsProps;
+    Hero: HeroProps;
+    FeatureGrid: FeatureGridProps;
+    Steps: StepsProps;
 };
 
 export const config: Config<Props> = {
@@ -28,6 +34,10 @@ export const config: Config<Props> = {
         },
     },
     categories: {
+        sections: {
+            title: 'Sekce',
+            components: ['Hero', 'FeatureGrid', 'Steps'],
+        },
         typography: {
             title: 'Text',
             components: ['Heading', 'Text', 'NumberedList', 'BulletList'],
@@ -48,5 +58,8 @@ export const config: Config<Props> = {
         BulletList,
         Image,
         Columns,
+        Hero,
+        FeatureGrid,
+        Steps,
     },
 };

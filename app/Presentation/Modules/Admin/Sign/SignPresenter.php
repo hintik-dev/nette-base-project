@@ -20,7 +20,7 @@ class SignPresenter extends BaseAdminPresenter
     {
         $this->user->logout();
         $this->getHttpResponse()->deleteCookie('admin_theme');
-        $this->redirect(':Web:Home:');
+        $this->redirect(':Web:Page:default', ['slug' => '']);
     }
 
     public function createComponentSignInForm(): SignInForm

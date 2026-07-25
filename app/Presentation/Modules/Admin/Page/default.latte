@@ -22,7 +22,10 @@
             <tbody>
                 <tr n:foreach="$pages as $pageRow">
                     <td>{$pageRow->title}</td>
-                    <td><code>/{$pageRow->slug}</code></td>
+                    <td>
+                        <code>/{$pageRow->slug}</code>
+                        <span n:if="$pageRow->slug === ''" class="badge text-bg-info ms-1">Úvodní stránka</span>
+                    </td>
                     <td>
                         <span n:class="'badge', $pageRow->status === 'published' ? 'text-bg-success' : 'text-bg-secondary'">
                             {$pageRow->status === 'published' ? 'Publikováno' : 'Koncept'}

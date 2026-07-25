@@ -76,7 +76,9 @@ class PageFacade
             throw new InsufficientPrivilegesException();
         }
 
-        return $this->pageService->createPage($data->slug, $data->title);
+        $slug = $data->isHomepage ? '' : $data->slug;
+
+        return $this->pageService->createPage($slug, $data->title);
     }
 
 

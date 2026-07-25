@@ -14,8 +14,14 @@
         <div class="mb-3">
             <label n:name="slug" class="form-label">Slug</label>
             {input slug, class: 'form-control'}
-            <div class="form-text">Bez úvodního lomítka, např. <code>o-nas</code>.</div>
+            <div class="form-text">Bez úvodního lomítka, např. <code>o-nas</code>. Ignoruje se u úvodní stránky.</div>
             {inputError slug}
+        </div>
+        <div class="mb-3 form-check">
+            {input isHomepage, class: 'form-check-input'}
+            <label n:name="isHomepage" class="form-check-label">Nastavit jako úvodní stránku</label>
+            <div class="form-text">Bude dostupná na kořenové adrese webu (<code>/</code>).</div>
+            {inputError isHomepage}
         </div>
         <div class="d-flex gap-2">
             {input submit, class: 'btn btn-primary'}
