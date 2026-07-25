@@ -73,13 +73,18 @@
                 <p class="font-display text-lg font-bold tracking-tight">Váš web</p>
                 <p class="font-mono text-xs uppercase tracking-widest opacity-50">poskládáno z bloků</p>
             </aside>
+            {* daisyUI stackuje obsah svisle přes .footer>:not(...){display:grid}
+               — ale jen na PŘÍMÝCH potomcích .footer. Zabalením do tohoto
+               wrapper divu přestaly nav prvky být přímým potomkem, takže
+               o svislé řazení (h6 + odkazy/text pod sebou) přišly a běžely
+               na jednom řádku. grid gap-2 to na obou nav ručně obnovuje. *}
             <div class="flex flex-col sm:flex-row gap-8 sm:gap-24">
-                <nav>
+                <nav class="grid gap-2">
                     <h6 class="footer-title opacity-50">Web</h6>
                     <a class="link link-hover" n:href="Page:default, slug: ''">Domů</a>
                     <a class="link link-hover" n:href="Page:default, slug: 'o-nas'">O nás</a>
                 </nav>
-                <nav>
+                <nav class="grid gap-2">
                     <h6 class="footer-title opacity-50">O projektu</h6>
                     <span class="opacity-60">Postaveno na Nette Frameworku</span>
                     <span class="opacity-60">Obsah spravovaný vizuálním editorem</span>
