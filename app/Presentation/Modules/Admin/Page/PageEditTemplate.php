@@ -9,4 +9,6 @@ final class PageEditTemplate extends BaseTemplate
     public Page $page;
 
     public string $saveUrl;
+
+    public ?string $webCssUrl;
 }

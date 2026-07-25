@@ -5,6 +5,9 @@ namespace App\Presentation\Modules\Admin\Page;
 use App\Domain\Page\PageFacade;
 use App\Presentation\Components\Admin\Page\PageForm\PageFormFactory;
 use App\Presentation\Modules\Admin\BaseAdminPresenter;
+use Nette\Assets\EntryAsset;
+use Nette\Assets\Registry as AssetsRegistry;
+use Nette\Assets\StyleAsset;
 use Nette\Utils\Json;
 
 class PagePresenter extends BaseAdminPresenter
@@ -12,6 +15,7 @@ class PagePresenter extends BaseAdminPresenter
     public function __construct(
         private readonly PageFacade $pageFacade,
         private readonly PageFormFactory $pageFormFactory,
+        private readonly AssetsRegistry $assetsRegistry,
     ) {
         parent::__construct();
     }
@@ -37,6 +41,30 @@ class PagePresenter extends BaseAdminPresenter
         $template = $this->template;
         $template->page = $this->pageFacade->getPageById($id);
         $template->saveUrl = $this->link('save!', ['id' => $id]);
+        $template->webCssUrl = $this->getWebCssUrl();
+    }
+
+
+    /**
+     * URL kompilovaného CSS veřejného webu — Puck editor si ho vstříkne do
+     * vlastního izolovaného iframe canvasu, aby bloky při editaci vypadaly
+     * stejně jako po publikaci (viz assets/admin/editor/main.tsx).
+     */
+    private function getWebCssUrl(): ?string
+    {
+        $webEntry = $this->assetsRegistry->tryGetAsset('web/main.js');
+
+        if (!$webEntry instanceof EntryAsset) {
+            return null;
+        }
+
+        foreach ($webEntry->imports as $import) {
+            if ($import instanceof StyleAsset) {
+                return $import->url;
+            }
+        }
+
+        return null;
     }
 
 
