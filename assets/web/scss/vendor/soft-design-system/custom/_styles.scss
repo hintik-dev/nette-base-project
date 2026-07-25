@@ -1,0 +1,12 @@
+// ==========================================================================
+// Custom Styles
+// Vlastní styly a komponenty konkrétního projektu — importujte je zde,
+// načítá se až po Soft UI Design System / Bootstrapu.
+// ==========================================================================
+
+// Rozšíření spacerové škály Bootstrapu (výchozí jde jen do 5) pro velkorysejší
+// odsazení hero/marketingových sekcí.
+.py-6 { padding-top: 5rem !important; padding-bottom: 5rem !important; }
+
+.opacity-7 { opacity: .7 !important; }
+.opacity-8 { opacity: .8 !important; }

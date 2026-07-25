@@ -1,144 +1,31 @@
-// Variables
-$color-primary: #0066cc;
-$color-primary-dark: #004499;
-$color-text: #1a1a1a;
-$color-bg: #f5f5f5;
-$color-error: #dc3545;
-$color-border: #ccc;
-$border-radius: 4px;
+// =========================================================
+// * Soft UI Design System - v1.0.9 (MIT, Creative Tim)
+// =========================================================
 
-// Base
-*, *::before, *::after {
-	box-sizing: border-box;
-}
+// Bootstrap Functions
+@import "./scss/vendor/soft-design-system/bootstrap/functions";
 
-body {
-	margin: 0;
-	font-family: system-ui, sans-serif;
-	font-size: 1rem;
-	line-height: 1.6;
-	color: $color-text;
-	background: $color-bg;
-}
+// Custom Variables — zde projekt přepisuje branding (barvy, fonty, ...)
+@import "./scss/vendor/soft-design-system/custom/variables";
 
-h1, h2, h3 {
-	margin: 0 0 0.5em;
-	line-height: 1.2;
-}
+// Theme Variables
+@import "./scss/vendor/soft-design-system/variables";
 
-a {
-	color: $color-primary;
+// Bootstrap Core
+@import "./scss/vendor/soft-design-system/bootstrap/bootstrap";
 
-	&:hover {
-		color: $color-primary-dark;
-	}
-}
+// Theme Core
+@import "./scss/vendor/soft-design-system/theme";
 
-// Layout
-.container {
-	max-width: 960px;
-	margin: 0 auto;
-	padding: 2rem 1rem;
-}
+// Custom Styles — zde projekt přidává vlastní komponenty
+@import "./scss/vendor/soft-design-system/custom/styles";
 
-// Flash messages
+// Flash zprávy (viz Base/@layout.latte) — mapování na Bootstrap alerty
 .flash {
-	padding: 0.75rem 1rem;
-	margin-bottom: 1rem;
-	border-radius: $border-radius;
-	border: 1px solid transparent;
+    @extend .alert;
 
-	&.info {
-		color: #0c5460;
-		background: #d1ecf1;
-		border-color: #bee5eb;
-	}
-
-	&.success {
-		color: #155724;
-		background: #d4edda;
-		border-color: #c3e6cb;
-	}
-
-	&.warning {
-		color: #856404;
-		background: #fff3cd;
-		border-color: #ffeeba;
-	}
-
-	&.error {
-		color: #721c24;
-		background: #f8d7da;
-		border-color: #f5c6cb;
-	}
-}
-
-// Forms
-form {
-	.field,
-	p {
-		margin-bottom: 1rem;
-	}
-}
-
-label {
-	display: block;
-	margin-bottom: 0.25rem;
-	font-weight: 600;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-textarea,
-select {
-	width: 100%;
-	max-width: 24rem;
-	padding: 0.5rem 0.75rem;
-	border: 1px solid $color-border;
-	border-radius: $border-radius;
-	font-size: 1rem;
-	font-family: inherit;
-	background: #fff;
-	transition: border-color 0.15s;
-
-	&:focus {
-		outline: none;
-		border-color: $color-primary;
-		box-shadow: 0 0 0 3px rgba($color-primary, 0.15);
-	}
-
-	&.error {
-		border-color: $color-error;
-	}
-}
-
-.error {
-	color: $color-error;
-	font-size: 0.875rem;
-}
-
-// Buttons
-.btn,
-input[type="submit"],
-button[type="submit"] {
-	display: inline-block;
-	padding: 0.5rem 1.25rem;
-	font-size: 1rem;
-	font-family: inherit;
-	font-weight: 600;
-	cursor: pointer;
-	border: 1px solid transparent;
-	border-radius: $border-radius;
-	text-decoration: none;
-	transition: background 0.15s, border-color 0.15s;
-	color: #fff;
-	background: $color-primary;
-	border-color: $color-primary;
-
-	&:hover {
-		background: $color-primary-dark;
-		border-color: $color-primary-dark;
-	}
+    &.info { @extend .alert-info; }
+    &.success { @extend .alert-success; }
+    &.warning { @extend .alert-warning; }
+    &.error { @extend .alert-danger; }
 }

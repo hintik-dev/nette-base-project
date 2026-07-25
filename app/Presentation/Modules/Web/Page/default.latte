@@ -5,5 +5,7 @@
 {block #pageTitle}{$page->title}{/block}
 
 {block #content}
-    {$contentHtml|noescape}
+    <div class="container py-6">
+        {$contentHtml|noescape}
+    </div>
 {/block}
