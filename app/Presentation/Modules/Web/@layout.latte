@@ -23,9 +23,9 @@
         </div>
         <div class="drawer-side z-50">
             <label for="nav-drawer" aria-label="Zavřít menu" class="drawer-overlay"></label>
-            <ul class="menu bg-base-200 min-h-full w-64 p-4">
-                <li><a n:href="Page:default, slug: ''">Domů</a></li>
-                <li><a n:href="Page:default, slug: 'o-nas'">O nás</a></li>
+            <ul class="menu bg-base-200 min-h-full w-64 p-4 gap-1 text-base">
+                <li><a class="font-medium" n:href="Page:default, slug: ''">Domů</a></li>
+                <li><a class="font-medium" n:href="Page:default, slug: 'o-nas'">O nás</a></li>
             </ul>
         </div>
     </div>
@@ -46,12 +46,15 @@
                 </label>
             </div>
             <div class="flex-1">
-                <a class="btn btn-ghost font-display text-xl font-bold tracking-tight" n:href="Page:default, slug: ''">Váš web</a>
+                {* Bez btn btn-ghost — na obyčejném textovém logu by button
+                   vzhled (velké ohraničené pozadí na hover) působil násilně.
+                   Místo toho jen jemné ztlumení barvy. *}
+                <a class="font-display text-xl font-bold tracking-tight hover:text-primary transition-colors" n:href="Page:default, slug: ''">Váš web</a>
             </div>
             <div class="flex-none hidden lg:block">
-                <ul class="menu menu-horizontal px-1">
-                    <li><a n:href="Page:default, slug: ''">Domů</a></li>
-                    <li><a n:href="Page:default, slug: 'o-nas'">O nás</a></li>
+                <ul class="menu menu-horizontal gap-1 text-base">
+                    <li><a class="font-medium" n:href="Page:default, slug: ''">Domů</a></li>
+                    <li><a class="font-medium" n:href="Page:default, slug: 'o-nas'">O nás</a></li>
                 </ul>
             </div>
         </div>
