@@ -11,19 +11,61 @@
                 Tuhle stránku poskládal redaktor v administraci z jednotlivých bloků —
                 nadpisy, odstavce, seznamy, obrázky i sloupcové rozložení — bez zásahu do kódu.
             </p>
-            <a href="#o-konceptu" class="btn btn-primary">Zjistit víc</a>
+            <div class="flex gap-2 justify-center">
+                <a href="#o-konceptu" class="btn btn-primary">Zjistit víc</a>
+                <a n:href="Page:default, slug: 'o-nas'" class="btn btn-outline">O nás</a>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="container mx-auto px-4 py-16" id="o-konceptu">
-    <div class="max-w-2xl mx-auto text-center">
-        <h2 class="text-3xl font-bold mb-4">Jak to funguje</h2>
+    <div class="max-w-2xl mx-auto text-center mb-12">
+        <h2 class="text-3xl font-bold mb-4">Co to umí</h2>
         <p class="text-base-content/70">
-            Vytvořte stránku v administraci, poskládejte obsah z bloků v editoru
-            a publikujte. Design webu (tahle šablona) zůstává jednotný napříč
-            všemi stránkami bez ohledu na to, co si redaktor naskládá.
+            Design webu (tahle šablona) zůstává jednotný napříč všemi stránkami
+            bez ohledu na to, co si redaktor v editoru naskládá.
         </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card bg-base-100 shadow-sm">
+            <div class="card-body items-center text-center">
+                <h3 class="card-title text-base">Vizuální editor</h3>
+                <p class="text-sm text-base-content/70">Stránky se skládají přetažením bloků, žádný kód.</p>
+            </div>
+        </div>
+        <div class="card bg-base-100 shadow-sm">
+            <div class="card-body items-center text-center">
+                <h3 class="card-title text-base">Vlastní design</h3>
+                <p class="text-sm text-base-content/70">Tailwind + daisyUI — barvy a styl si každý projekt přizpůsobí.</p>
+            </div>
+        </div>
+        <div class="card bg-base-100 shadow-sm">
+            <div class="card-body items-center text-center">
+                <h3 class="card-title text-base">Draft / publikováno</h3>
+                <p class="text-sm text-base-content/70">Rozpracovaná stránka nic nezmění, dokud ji nepublikujete.</p>
+            </div>
+        </div>
+        <div class="card bg-base-100 shadow-sm">
+            <div class="card-body items-center text-center">
+                <h3 class="card-title text-base">Rozšiřitelné bloky</h3>
+                <p class="text-sm text-base-content/70">Nadpisy, texty, obrázky, sloupce, seznamy — a snadno přibudou další.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-base-200 py-16">
+    <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto text-center mb-10">
+            <h2 class="text-3xl font-bold mb-4">Jak to funguje</h2>
+        </div>
+        <ul class="steps steps-vertical lg:steps-horizontal w-full">
+            <li class="step step-primary">Vytvořte stránku v administraci</li>
+            <li class="step step-primary">Poskládejte obsah z bloků</li>
+            <li class="step step-primary">Publikujte</li>
+        </ul>
     </div>
 </div>
 
