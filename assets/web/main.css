@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";
+
+/* Vite root je assets/ — Latte šablony (app/) leží mimo výchozí sken. */
+@source "../../app/**/*.latte";
+
+/* Zde projekt přizpůsobí branding — barvy, fonty, radius, ... */
+@theme {
+}
+
+/* Flash zprávy (Base/@layout.latte) namapované na daisyUI alert */
+.flash {
+    @apply alert mb-4;
+}
+.flash.info {
+    @apply alert-info;
+}
+.flash.success {
+    @apply alert-success;
+}
+.flash.warning {
+    @apply alert-warning;
+}
+.flash.error {
+    @apply alert-error;
+}

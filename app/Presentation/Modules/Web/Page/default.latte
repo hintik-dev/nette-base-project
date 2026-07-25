@@ -5,7 +5,12 @@
 {block #pageTitle}{$page->title}{/block}
 
 {block #content}
-    <div class="container py-6">
-        {$contentHtml|noescape}
+    <div class="container mx-auto px-4 py-16">
+        {* prose (@tailwindcss/typography) dává rozumnou výchozí typografii
+           libovolnému HTML z bloků — Tailwind samo o sobě holé h1-h6/p/ul/ol
+           nestyluje vůbec. *}
+        <div class="prose lg:prose-lg mx-auto max-w-none">
+            {$contentHtml|noescape}
+        </div>
     </div>
 {/block}

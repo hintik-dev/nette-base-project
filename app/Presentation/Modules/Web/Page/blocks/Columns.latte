@@ -1,8 +1,7 @@
 {* Zrcadlí assets/admin/editor/blocks/Columns.tsx — sloty "left"/"right" jsou
    vnořené pole bloků (stejný formát jako $blocks v BlockRenderer::render()),
-   proto se vykreslují rekurzivně přes $blockRenderer. Bootstrap grid místo
-   ručního CSS gridu — gutter spacing a responsivita zdarma. *}
-<div class="row">
-    <div class="col-md-6">{$blockRenderer->render($props['left'] ?? [])|noescape}</div>
-    <div class="col-md-6">{$blockRenderer->render($props['right'] ?? [])|noescape}</div>
+   proto se vykreslují rekurzivně přes $blockRenderer. *}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>{$blockRenderer->render($props['left'] ?? [])|noescape}</div>
+    <div>{$blockRenderer->render($props['right'] ?? [])|noescape}</div>
 </div>

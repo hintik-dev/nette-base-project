@@ -4,77 +4,63 @@
 
 {block #title}Web{/block}
 
-{block #head}
-    {asset? 'web/main.js'}
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1/font/bootstrap-icons.min.css">
-{/block}
+{block #head}{asset? 'web/main.js'}{/block}
 
 {block #body}
-    {include #header}
-
-    <main>
-        {include #content}
-    </main>
-
-    {include #footer}
+    <div class="drawer">
+        <input id="nav-drawer" type="checkbox" class="drawer-toggle">
+        <div class="drawer-content flex flex-col min-h-screen">
+            {include #header}
+            <main class="flex-1">
+                {include #content}
+            </main>
+            {include #footer}
+        </div>
+        <div class="drawer-side z-50">
+            <label for="nav-drawer" aria-label="Zavřít menu" class="drawer-overlay"></label>
+            <ul class="menu bg-base-200 min-h-full w-64 p-4">
+                <li><a n:href="Home:default">Domů</a></li>
+            </ul>
+        </div>
+    </div>
 {/block}
 
 {block #header}
-    <header class="position-relative">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-dark shadow-none">
-            <div class="container">
-                <a class="navbar-brand text-white" n:href="Home:default">Váš web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Přepnout navigaci">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarMain">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-white" n:href="Home:default">Domů</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+    <div class="navbar bg-neutral text-neutral-content">
+        <div class="flex-none lg:hidden">
+            <label for="nav-drawer" class="btn btn-square btn-ghost" aria-label="Otevřít menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </label>
+        </div>
+        <div class="flex-1">
+            <a class="btn btn-ghost text-xl" n:href="Home:default">Váš web</a>
+        </div>
+        <div class="flex-none hidden lg:block">
+            <ul class="menu menu-horizontal px-1">
+                <li><a n:href="Home:default">Domů</a></li>
+            </ul>
+        </div>
+    </div>
 
-        {ifset #pageHeader}{include #pageHeader}{/ifset}
-    </header>
+    {ifset #pageHeader}{include #pageHeader}{/ifset}
 {/block}
 
 {block #pageHeader}
-    <div class="page-header min-vh-25 bg-gradient-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 text-center mx-auto">
-                    {ifset #pageTitle}<h1 class="text-white">{include #pageTitle}</h1>{/ifset}
-                </div>
+    <div class="hero bg-base-200 py-16">
+        <div class="hero-content text-center">
+            <div class="max-w-md">
+                {ifset #pageTitle}<h1 class="text-4xl font-bold">{include #pageTitle}</h1>{/ifset}
             </div>
-        </div>
-        <div class="position-absolute w-100 z-index-1 bottom-0">
-            <svg class="waves" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                 viewBox="0 24 150 40" preserveAspectRatio="none" shape-rendering="auto">
-                <defs>
-                    <path id="gentle-wave" d="M-160 44c30 0 58-5 88-5s 58 5 88 5 58-5 88-5 58 5 88 5 v20h-352z" />
-                </defs>
-                <g class="moving-waves">
-                    <use xlink:href="#gentle-wave" x="48" y="12" fill="rgba(251,251,251,0.40)" />
-                    <use xlink:href="#gentle-wave" x="48" y="16" fill="rgba(251,251,251,0.95)" />
-                </g>
-            </svg>
         </div>
     </div>
 {/block}
 
 {block #footer}
-    <footer class="footer py-5">
-        <hr class="horizontal dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p class="mb-0 text-sm text-muted">&copy; {date('Y')} Váš web</p>
-                </div>
-            </div>
-        </div>
+    <footer class="footer footer-horizontal footer-center bg-base-200 text-base-content p-6">
+        <aside>
+            <p>&copy; {date('Y')} Váš web</p>
+        </aside>
     </footer>
 {/block}
