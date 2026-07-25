@@ -27,10 +27,18 @@ export const Image: ComponentConfig<ImageProps> = {
         alt: '',
         width: '100',
     },
-    render: ({ src, alt, width }) =>
-        src ? (
-            <img src={src} alt={alt} style={{ width: `${width}%`, maxWidth: '100%' }} />
-        ) : (
-            <p>(vyplňte URL obrázku)</p>
-        ),
+    render: ({ src, alt, width }) => (
+        <div className="container mx-auto px-4">
+            {src ? (
+                <img
+                    src={src}
+                    alt={alt}
+                    className="rounded-xl shadow-lg"
+                    style={{ width: `${width}%`, maxWidth: '100%' }}
+                />
+            ) : (
+                <p>(vyplňte URL obrázku)</p>
+            )}
+        </div>
+    ),
 };

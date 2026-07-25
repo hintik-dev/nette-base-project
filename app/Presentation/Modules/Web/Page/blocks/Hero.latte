@@ -1,27 +1,43 @@
 {* Zrcadlí assets/admin/editor/blocks/Hero.tsx — literální třídy v match()
    větvích, ne skládaný řetězec, viz komentář v .tsx protějšku. *}
-{var $variantClass = match($props['variant'] ?? 'neutral') {
-    'primary' => 'bg-primary text-primary-content',
-    'base-200' => 'bg-base-200',
-    default => 'bg-neutral text-neutral-content',
+{var $hasImage = !empty($props['backgroundImageUrl'])}
+{var $variantClass = match($props['variant'] ?? 'primary') {
+    'neutral' => $hasImage
+        ? 'bg-gradient-to-br from-neutral/90 via-neutral/60 to-secondary/50 text-neutral-content'
+        : 'bg-gradient-to-br from-neutral via-neutral to-secondary text-neutral-content',
+    'base-200' => $hasImage
+        ? 'bg-gradient-to-br from-base-100/90 via-base-100/70 to-base-200/50 text-base-content'
+        : 'bg-gradient-to-br from-base-200 to-base-100 text-base-content',
+    default => $hasImage
+        ? 'bg-gradient-to-br from-primary/85 via-primary/55 to-secondary/45 text-primary-content'
+        : 'bg-gradient-to-br from-primary via-primary to-secondary text-primary-content',
 }}
-{var $chipClass = match($props['variant'] ?? 'neutral') {
-    'primary' => 'border-primary-content/30 text-primary-content/70',
+{var $chipClass = match($props['variant'] ?? 'primary') {
+    'neutral' => 'border-neutral-content/30 text-neutral-content/70',
     'base-200' => 'border-base-content/20 text-base-content/60',
-    default => 'border-neutral-content/30 text-neutral-content/70',
+    default => 'border-primary-content/30 text-primary-content/70',
+}}
+{* Hlavní CTA musí kontrastovat s pozadím — na primary variantě by
+   btn-primary splynulo se sekcí, proto obrácené (světlé) tlačítko. *}
+{var $primaryButtonClass = match($props['variant'] ?? 'primary') {
+    'primary' => 'bg-base-100 text-primary border-none hover:bg-base-100/90',
+    default => 'btn-primary',
 }}
 {var $blockChips = ['Nadpis', 'Text', 'Obrázek', 'Sloupce', 'Kroky']}
-<div class="hero min-h-[60vh] {$variantClass}">
-    <div class="hero-content text-center">
-        <div class="max-w-md">
+<div
+    class="hero min-h-[70vh] relative isolate overflow-hidden {$variantClass}"
+    style="{if $hasImage}background-image: url('{$props['backgroundImageUrl']}'); background-size: cover; background-position: center;{/if}"
+>
+    <div class="hero-content text-center py-24">
+        <div class="max-w-2xl">
             <div class="flex flex-wrap gap-2 justify-center mb-6 font-mono text-[11px] uppercase tracking-widest">
                 <span n:foreach="$blockChips as $chip" class="rounded-full border px-3 py-1 {$chipClass}">{$chip}</span>
             </div>
-            <h1 class="text-5xl font-bold">{$props['heading'] ?? ''}</h1>
-            <p n:if="!empty($props['subtext'])" class="py-6 opacity-80">{$props['subtext']}</p>
-            <div class="flex gap-2 justify-center">
-                <a n:if="!empty($props['primaryButtonText'])" href="{$props['primaryButtonUrl'] ?: '#'}" class="btn btn-primary">{$props['primaryButtonText']}</a>
-                <a n:if="!empty($props['secondaryButtonText'])" href="{$props['secondaryButtonUrl'] ?: '#'}" class="btn btn-outline">{$props['secondaryButtonText']}</a>
+            <h1 class="text-5xl md:text-6xl font-bold">{$props['heading'] ?? ''}</h1>
+            <p n:if="!empty($props['subtext'])" class="py-6 text-lg opacity-90">{$props['subtext']}</p>
+            <div class="flex gap-3 justify-center">
+                <a n:if="!empty($props['primaryButtonText'])" href="{$props['primaryButtonUrl'] ?: '#'}" class="btn btn-lg shadow-lg {$primaryButtonClass}">{$props['primaryButtonText']}</a>
+                <a n:if="!empty($props['secondaryButtonText'])" href="{$props['secondaryButtonUrl'] ?: '#'}" class="btn btn-lg btn-outline">{$props['secondaryButtonText']}</a>
             </div>
         </div>
     </div>

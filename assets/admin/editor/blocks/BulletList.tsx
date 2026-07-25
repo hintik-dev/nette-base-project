@@ -27,10 +27,12 @@ export const BulletList: ComponentConfig<BulletListProps> = {
         size: 'normal',
     },
     render: ({ items, size }) => (
-        <ul style={{ fontSize: FONT_SIZE_PX[size] }}>
-            {items.map((item, i) => (
-                <li key={i}>{item.text}</li>
-            ))}
-        </ul>
+        <div className="container mx-auto px-4">
+            <ul className="prose lg:prose-lg max-w-none" style={{ fontSize: FONT_SIZE_PX[size] }}>
+                {items.map((item, i) => (
+                    <li key={i}>{item.text}</li>
+                ))}
+            </ul>
+        </div>
     ),
 };

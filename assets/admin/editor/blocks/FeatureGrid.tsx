@@ -4,7 +4,7 @@ export type FeatureGridProps = {
     heading: string;
     intro: string;
     columns: '2' | '3' | '4';
-    items: { title: string; text: string }[];
+    items: { icon: string; title: string; text: string }[];
 };
 
 // Literální třídy — Tailwind ve zdrojácích hledá přesné řetězce, ne
@@ -19,6 +19,7 @@ const GRID_CLASSES: Record<FeatureGridProps['columns'], string> = {
 // jednolitá plocha stejných dlaždic — každá "vlastnost" dostane jiný
 // horní akcentní pruh (amber / slate / moss).
 const ACCENT_BORDER_CLASSES = ['border-t-primary', 'border-t-secondary', 'border-t-accent'];
+const ICON_BADGE_CLASSES = ['bg-primary/10 text-primary', 'bg-secondary/10 text-secondary', 'bg-accent/10 text-accent'];
 
 export const FeatureGrid: ComponentConfig<FeatureGridProps> = {
     label: 'Mřížka vlastností',
@@ -38,6 +39,7 @@ export const FeatureGrid: ComponentConfig<FeatureGridProps> = {
             type: 'array',
             label: 'Položky',
             arrayFields: {
+                icon: { type: 'text', label: 'Ikona (emoji, nepovinné)' },
                 title: { type: 'text', label: 'Titulek' },
                 text: { type: 'textarea', label: 'Text' },
             },
@@ -49,8 +51,8 @@ export const FeatureGrid: ComponentConfig<FeatureGridProps> = {
         intro: '',
         columns: '4',
         items: [
-            { title: 'Vlastnost 1', text: 'Krátký popis.' },
-            { title: 'Vlastnost 2', text: 'Krátký popis.' },
+            { icon: '✨', title: 'Vlastnost 1', text: 'Krátký popis.' },
+            { icon: '🚀', title: 'Vlastnost 2', text: 'Krátký popis.' },
         ],
     },
     render: ({ heading, intro, columns, items }) => (
@@ -61,8 +63,13 @@ export const FeatureGrid: ComponentConfig<FeatureGridProps> = {
             </div>
             <div className={`grid ${GRID_CLASSES[columns]} gap-6`}>
                 {items.map((item, i) => (
-                    <div key={i} className={`card bg-base-100 shadow-sm border-t-4 ${ACCENT_BORDER_CLASSES[i % 3]}`}>
+                    <div key={i} className={`card bg-base-100 shadow-md hover:shadow-lg transition-shadow border-t-4 ${ACCENT_BORDER_CLASSES[i % 3]}`}>
                         <div className="card-body items-center text-center">
+                            {item.icon && (
+                                <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl mb-2 ${ICON_BADGE_CLASSES[i % 3]}`}>
+                                    {item.icon}
+                                </div>
+                            )}
                             <h3 className="card-title text-base">{item.title}</h3>
                             <p className="text-sm text-base-content/70">{item.text}</p>
                         </div>

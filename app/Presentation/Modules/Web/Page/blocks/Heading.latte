@@ -1,2 +1,12 @@
 {* Zrcadlí assets/admin/editor/blocks/Heading.tsx — stejné props, jiný vykreslovač. *}
-<h2 n:tag="'h' . ($props['level'] ?? 2)" style="text-align: {$props['align'] ?? 'left'}">{$props['text'] ?? ''}</h2>
+{var $levelClass = match((string) ($props['level'] ?? '2')) {
+    '1' => 'text-4xl md:text-5xl font-bold mb-6',
+    '3' => 'text-2xl md:text-3xl font-bold mb-4',
+    '4' => 'text-xl md:text-2xl font-bold mb-3',
+    '5' => 'text-lg font-bold mb-2',
+    '6' => 'text-base font-bold mb-2',
+    default => 'text-3xl md:text-4xl font-bold mb-5',
+}}
+<div class="container mx-auto px-4">
+    <h2 n:tag="'h' . ($props['level'] ?? 2)" class="{$levelClass}" style="text-align: {$props['align'] ?? 'left'}">{$props['text'] ?? ''}</h2>
+</div>

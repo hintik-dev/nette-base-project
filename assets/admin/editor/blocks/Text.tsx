@@ -21,5 +21,11 @@ export const Text: ComponentConfig<TextProps> = {
     // Puck předává hodnotu richtext pole do render() už jako vyrenderovaný
     // ReactNode (ne holý HTML string) — vlastní dangerouslySetInnerHTML
     // způsobovalo pád komponenty hned po vložení (viz .scratch-repro.mjs).
-    render: ({ text, size }) => <div style={{ fontSize: FONT_SIZE_PX[size] }}>{text}</div>,
+    render: ({ text, size }) => (
+        <div className="container mx-auto px-4">
+            <div className="prose lg:prose-lg max-w-none" style={{ fontSize: FONT_SIZE_PX[size] }}>
+                {text}
+            </div>
+        </div>
+    ),
 };

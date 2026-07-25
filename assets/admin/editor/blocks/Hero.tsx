@@ -4,6 +4,7 @@ export type HeroProps = {
     heading: string;
     subtext: string;
     variant: 'neutral' | 'primary' | 'base-200';
+    backgroundImageUrl: string;
     primaryButtonText: string;
     primaryButtonUrl: string;
     secondaryButtonText: string;
@@ -12,10 +13,29 @@ export type HeroProps = {
 
 // Literální třídy (ne skládané za běhu) — Tailwind hledá přesné řetězce
 // ve zdrojových souborech, dynamicky sestavený název by nenašel.
+// Bez fotky na pozadí: jemný přechod barvou místo plochého jednobarevného
+// pozadí, ať sekce nepůsobí jako plochá "dlaždice".
 const VARIANT_CLASSES: Record<HeroProps['variant'], string> = {
-    neutral: 'bg-neutral text-neutral-content',
-    primary: 'bg-primary text-primary-content',
-    'base-200': 'bg-base-200',
+    neutral: 'bg-gradient-to-br from-neutral via-neutral to-secondary text-neutral-content',
+    primary: 'bg-gradient-to-br from-primary via-primary to-secondary text-primary-content',
+    'base-200': 'bg-gradient-to-br from-base-200 to-base-100 text-base-content',
+};
+
+// S fotkou na pozadí: poloprůhledný barevný přechod přes fotku, aby text
+// zůstal čitelný a sekce zároveň nesla skutečnou fotografii (ne plochu barvy).
+const OVERLAY_CLASSES: Record<HeroProps['variant'], string> = {
+    neutral: 'bg-gradient-to-br from-neutral/90 via-neutral/60 to-secondary/50 text-neutral-content',
+    primary: 'bg-gradient-to-br from-primary/85 via-primary/55 to-secondary/45 text-primary-content',
+    'base-200': 'bg-gradient-to-br from-base-100/90 via-base-100/70 to-base-200/50 text-base-content',
+};
+
+// Hlavní CTA tlačítko musí vůči pozadí kontrastovat — na primary pozadí
+// by btn-primary splynulo se sekcí, proto je pro tuhle variantu tlačítko
+// obrácené (světlé s barevným textem) místo plné primary barvy.
+const PRIMARY_BUTTON_CLASSES: Record<HeroProps['variant'], string> = {
+    neutral: 'btn-primary',
+    primary: 'bg-base-100 text-primary border-none hover:bg-base-100/90',
+    'base-200': 'btn-primary',
 };
 
 const CHIP_CLASSES: Record<HeroProps['variant'], string> = {
@@ -43,6 +63,7 @@ export const Hero: ComponentConfig<HeroProps> = {
                 { label: 'Světlá', value: 'base-200' },
             ],
         },
+        backgroundImageUrl: { type: 'text', label: 'URL fotky na pozadí (nepovinné)' },
         primaryButtonText: { type: 'text', label: 'Text hlavního tlačítka' },
         primaryButtonUrl: { type: 'text', label: 'Odkaz hlavního tlačítka' },
         secondaryButtonText: { type: 'text', label: 'Text vedlejšího tlačítka (nepovinné)' },
@@ -51,16 +72,29 @@ export const Hero: ComponentConfig<HeroProps> = {
     defaultProps: {
         heading: 'Nadpis hero sekce',
         subtext: 'Krátký popisný text pod nadpisem.',
-        variant: 'neutral',
+        variant: 'primary',
+        backgroundImageUrl: '',
         primaryButtonText: 'Hlavní akce',
         primaryButtonUrl: '#',
         secondaryButtonText: '',
         secondaryButtonUrl: '',
     },
-    render: ({ heading, subtext, variant, primaryButtonText, primaryButtonUrl, secondaryButtonText, secondaryButtonUrl }) => (
-        <div className={`hero min-h-[60vh] ${VARIANT_CLASSES[variant]}`}>
-            <div className="hero-content text-center">
-                <div className="max-w-md">
+    render: ({
+        heading,
+        subtext,
+        variant,
+        backgroundImageUrl,
+        primaryButtonText,
+        primaryButtonUrl,
+        secondaryButtonText,
+        secondaryButtonUrl,
+    }) => (
+        <div
+            className={`hero min-h-[70vh] relative isolate overflow-hidden ${backgroundImageUrl ? OVERLAY_CLASSES[variant] : VARIANT_CLASSES[variant]}`}
+            style={backgroundImageUrl ? { backgroundImage: `url(${backgroundImageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
+        >
+            <div className="hero-content text-center py-24">
+                <div className="max-w-2xl">
                     <div className="flex flex-wrap gap-2 justify-center mb-6 font-mono text-[11px] uppercase tracking-widest">
                         {BLOCK_CHIPS.map((chip) => (
                             <span key={chip} className={`rounded-full border px-3 py-1 ${CHIP_CLASSES[variant]}`}>
@@ -68,16 +102,16 @@ export const Hero: ComponentConfig<HeroProps> = {
                             </span>
                         ))}
                     </div>
-                    <h1 className="text-5xl font-bold">{heading}</h1>
-                    {subtext && <p className="py-6 opacity-80">{subtext}</p>}
-                    <div className="flex gap-2 justify-center">
+                    <h1 className="text-5xl md:text-6xl font-bold">{heading}</h1>
+                    {subtext && <p className="py-6 text-lg opacity-90">{subtext}</p>}
+                    <div className="flex gap-3 justify-center">
                         {primaryButtonText && (
-                            <a href={primaryButtonUrl || '#'} className="btn btn-primary">
+                            <a href={primaryButtonUrl || '#'} className={`btn btn-lg shadow-lg ${PRIMARY_BUTTON_CLASSES[variant]}`}>
                                 {primaryButtonText}
                             </a>
                         )}
                         {secondaryButtonText && (
-                            <a href={secondaryButtonUrl || '#'} className="btn btn-outline">
+                            <a href={secondaryButtonUrl || '#'} className="btn btn-lg btn-outline">
                                 {secondaryButtonText}
                             </a>
                         )}

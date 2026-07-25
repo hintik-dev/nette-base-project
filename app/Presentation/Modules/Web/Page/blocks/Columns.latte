@@ -1,7 +1,7 @@
 {* Zrcadlí assets/admin/editor/blocks/Columns.tsx — sloty "left"/"right" jsou
    vnořené pole bloků (stejný formát jako $blocks v BlockRenderer::render()),
    proto se vykreslují rekurzivně přes $blockRenderer. *}
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6">
     <div>{$blockRenderer->render($props['left'] ?? [])|noescape}</div>
     <div>{$blockRenderer->render($props['right'] ?? [])|noescape}</div>
 </div>

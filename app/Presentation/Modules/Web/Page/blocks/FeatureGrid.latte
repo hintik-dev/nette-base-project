@@ -7,14 +7,16 @@
 }}
 {* Střídání akcentních barev karet, viz komentář v .tsx protějšku. *}
 {var $accentBorderClasses = ['border-t-primary', 'border-t-secondary', 'border-t-accent']}
+{var $iconBadgeClasses = ['bg-primary/10 text-primary', 'bg-secondary/10 text-secondary', 'bg-accent/10 text-accent']}
 <div class="container mx-auto px-4 py-16">
     <div class="max-w-2xl mx-auto text-center mb-12">
         <h2 class="text-3xl font-bold mb-4">{$props['heading'] ?? ''}</h2>
         <p n:if="!empty($props['intro'])" class="text-base-content/70">{$props['intro']}</p>
     </div>
     <div class="grid {$gridClass} gap-6">
-        <div n:foreach="$props['items'] ?? [] as $item" class="card bg-base-100 shadow-sm border-t-4 {$accentBorderClasses[$iterator->counter0 % 3]}">
+        <div n:foreach="$props['items'] ?? [] as $item" class="card bg-base-100 shadow-md hover:shadow-lg transition-shadow border-t-4 {$accentBorderClasses[$iterator->counter0 % 3]}">
             <div class="card-body items-center text-center">
+                <div n:if="!empty($item['icon'])" class="w-14 h-14 rounded-full flex items-center justify-center text-2xl mb-2 {$iconBadgeClasses[$iterator->counter0 % 3]}">{$item['icon']}</div>
                 <h3 class="card-title text-base">{$item['title'] ?? ''}</h3>
                 <p class="text-sm text-base-content/70">{$item['text'] ?? ''}</p>
             </div>

@@ -4,6 +4,8 @@
  *}
 {var $size = \App\Domain\Page\BlockFontSize::fromProps($props['size'] ?? null)}
 {* |noescape viz Text.latte — Latte v CSS kontextu jinak escapuje tečku v čísle *}
-<ol style="font-size: {$size->toRem()|noescape}">
-    <li n:foreach="$props['items'] ?? [] as $item">{($item['text'] ?? '')|noescape}</li>
-</ol>
+<div class="container mx-auto px-4">
+    <ol class="prose lg:prose-lg max-w-none" style="font-size: {$size->toRem()|noescape}">
+        <li n:foreach="$props['items'] ?? [] as $item">{($item['text'] ?? '')|noescape}</li>
+    </ol>
+</div>

@@ -12,7 +12,7 @@ export const Columns: ComponentConfig<ColumnsProps> = {
         right: { type: 'slot', label: 'Pravý sloupec' },
     },
     render: ({ left: Left, right: Right }) => (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6">
             <Left />
             <Right />
         </div>

@@ -1,2 +1,4 @@
 {* Zrcadlí assets/admin/editor/blocks/Image.tsx *}
-<img n:if="!empty($props['src'])" src="{$props['src']}" alt="{$props['alt'] ?? ''}" class="rounded-lg shadow-md h-auto max-w-full" style="width: {$props['width'] ?? 100}%">
+<div class="container mx-auto px-4">
+    <img n:if="!empty($props['src'])" src="{$props['src']}" alt="{$props['alt'] ?? ''}" class="rounded-xl shadow-lg h-auto max-w-full" style="width: {$props['width'] ?? 100}%">
+</div>
