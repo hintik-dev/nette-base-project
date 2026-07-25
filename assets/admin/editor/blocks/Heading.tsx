@@ -6,6 +6,7 @@ export type HeadingProps = {
     text: string;
     level: '1' | '2' | '3' | '4' | '5' | '6';
     align: Align;
+    color: 'default' | 'primary' | 'secondary' | 'accent';
 };
 
 // Preflight (Tailwind) resetuje h1-h6 na zcela neokázalý styl (dědí
@@ -19,6 +20,15 @@ const LEVEL_CLASSES: Record<HeadingProps['level'], string> = {
     '4': 'text-xl md:text-2xl font-bold mb-3',
     '5': 'text-lg font-bold mb-2',
     '6': 'text-base font-bold mb-2',
+};
+
+// "default" nechává barvu dědit z textu stránky, ostatní volby sáhnou
+// po akcentu z palety — stejná volba jako accent v Hero.
+const COLOR_CLASSES: Record<HeadingProps['color'], string> = {
+    default: '',
+    primary: 'text-primary',
+    secondary: 'text-secondary',
+    accent: 'text-accent',
 };
 
 export const Heading: ComponentConfig<HeadingProps> = {
@@ -38,15 +48,30 @@ export const Heading: ComponentConfig<HeadingProps> = {
             ],
         },
         align: alignField,
+        color: {
+            type: 'select',
+            label: 'Barva',
+            options: [
+                { label: 'Výchozí', value: 'default' },
+                { label: 'Primární', value: 'primary' },
+                { label: 'Sekundární', value: 'secondary' },
+                { label: 'Akcentní', value: 'accent' },
+            ],
+        },
     },
     defaultProps: {
         text: 'Nadpis',
         level: '2',
         align: 'left',
+        color: 'default',
     },
-    render: ({ text, level, align }) => (
-        <div className="container mx-auto px-4">
-            {createElement(`h${level}`, { className: LEVEL_CLASSES[level], style: { textAlign: align } }, text)}
+    render: ({ text, level, align, color }) => (
+        <div className="container mx-auto px-4 py-6">
+            {createElement(
+                `h${level}`,
+                { className: `${LEVEL_CLASSES[level]} ${COLOR_CLASSES[color]}`, style: { textAlign: align } },
+                text,
+            )}
         </div>
     ),
 };

@@ -7,6 +7,6 @@
 {* |noescape u velikosti: Latte v CSS kontextu jinak escapuje tečku
    v desetinném čísle (1.25rem -> 1\.25rem), hodnota je bezpečná — jde
    o hardcoded literál z uzavřeného enumu, ne o vstup od uživatele. *}
-<div class="container mx-auto px-4">
+<div class="container mx-auto px-4 py-6">
     <div class="prose lg:prose-lg max-w-none" style="font-size: {$size->toRem()|noescape}">{($props['text'] ?? '')|noescape}</div>
 </div>

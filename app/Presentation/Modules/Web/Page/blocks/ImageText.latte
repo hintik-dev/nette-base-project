@@ -1,0 +1,21 @@
+{* Zrcadlí assets/admin/editor/blocks/ImageText.tsx — literální třídy
+   v match() větvích, ne skládaný řetězec, viz komentář v .tsx protějšku. *}
+{var $imageOrderClass = match($props['imagePosition'] ?? 'left') {
+    'right' => 'md:order-2',
+    default => '',
+}}
+<div class="container mx-auto px-4 py-10">
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div class="{$imageOrderClass}">
+            <img n:if="!empty($props['imageSrc'])" src="{$props['imageSrc']}" alt="{$props['imageAlt'] ?? ''}" class="rounded-2xl shadow-lg w-full h-auto">
+            <div n:if="empty($props['imageSrc'])" class="rounded-2xl border border-dashed border-base-300 aspect-video flex items-center justify-center text-base-content/40 text-sm">
+                (vyplňte URL obrázku)
+            </div>
+        </div>
+        <div>
+            <h2 class="text-3xl font-bold mb-4">{$props['heading'] ?? ''}</h2>
+            <div class="prose max-w-none text-base-content/70 mb-6">{($props['text'] ?? '')|noescape}</div>
+            <a n:if="!empty($props['buttonText'])" href="{$props['buttonUrl'] ?: '#'}" class="btn btn-primary">{$props['buttonText']}</a>
+        </div>
+    </div>
+</div>

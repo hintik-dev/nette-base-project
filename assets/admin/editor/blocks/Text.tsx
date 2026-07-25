@@ -22,7 +22,7 @@ export const Text: ComponentConfig<TextProps> = {
     // ReactNode (ne holý HTML string) — vlastní dangerouslySetInnerHTML
     // způsobovalo pád komponenty hned po vložení (viz .scratch-repro.mjs).
     render: ({ text, size }) => (
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 py-6">
             <div className="prose lg:prose-lg max-w-none" style={{ fontSize: FONT_SIZE_PX[size] }}>
                 {text}
             </div>

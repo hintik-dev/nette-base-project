@@ -46,9 +46,9 @@ export const Hero: ComponentConfig<HeroProps> = {
             type: 'select',
             label: 'Akcentní barva',
             options: [
-                { label: 'Amber (primary)', value: 'primary' },
-                { label: 'Slate (secondary)', value: 'secondary' },
-                { label: 'Moss (accent)', value: 'accent' },
+                { label: 'Primární', value: 'primary' },
+                { label: 'Sekundární', value: 'secondary' },
+                { label: 'Akcentní', value: 'accent' },
             ],
         },
         primaryButtonText: { type: 'text', label: 'Text hlavního tlačítka' },

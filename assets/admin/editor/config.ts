@@ -8,6 +8,9 @@ import { Columns, type ColumnsProps } from './blocks/Columns';
 import { Hero, type HeroProps } from './blocks/Hero';
 import { FeatureGrid, type FeatureGridProps } from './blocks/FeatureGrid';
 import { Steps, type StepsProps } from './blocks/Steps';
+import { Section, type SectionProps } from './blocks/Section';
+import { ImageText, type ImageTextProps } from './blocks/ImageText';
+import { CTA, type CTAProps } from './blocks/CTA';
 
 /**
  * Registr bloků editoru — PHP protějšek je App\Domain\Page\BlockRenderer,
@@ -23,6 +26,9 @@ type Props = {
     Hero: HeroProps;
     FeatureGrid: FeatureGridProps;
     Steps: StepsProps;
+    Section: SectionProps;
+    ImageText: ImageTextProps;
+    CTA: CTAProps;
 };
 
 export const config: Config<Props> = {
@@ -36,7 +42,7 @@ export const config: Config<Props> = {
     categories: {
         sections: {
             title: 'Sekce',
-            components: ['Hero', 'FeatureGrid', 'Steps'],
+            components: ['Hero', 'FeatureGrid', 'Steps', 'CTA'],
         },
         typography: {
             title: 'Text',
@@ -48,7 +54,7 @@ export const config: Config<Props> = {
         },
         layout: {
             title: 'Rozložení',
-            components: ['Columns'],
+            components: ['Columns', 'Section', 'ImageText'],
         },
     },
     components: {
@@ -61,5 +67,8 @@ export const config: Config<Props> = {
         Hero,
         FeatureGrid,
         Steps,
+        Section,
+        ImageText,
+        CTA,
     },
 };

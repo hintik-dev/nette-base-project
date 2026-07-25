@@ -28,7 +28,7 @@ export const Image: ComponentConfig<ImageProps> = {
         width: '100',
     },
     render: ({ src, alt, width }) => (
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 py-6">
             {src ? (
                 <img
                     src={src}

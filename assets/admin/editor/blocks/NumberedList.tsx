@@ -27,7 +27,7 @@ export const NumberedList: ComponentConfig<NumberedListProps> = {
         size: 'normal',
     },
     render: ({ items, size }) => (
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 py-6">
             <ol className="prose lg:prose-lg max-w-none" style={{ fontSize: FONT_SIZE_PX[size] }}>
                 {items.map((item, i) => (
                     <li key={i}>{item.text}</li>
