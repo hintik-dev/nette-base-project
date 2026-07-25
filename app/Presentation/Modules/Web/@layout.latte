@@ -59,38 +59,33 @@
 {/block}
 
 {block #footer}
-    {* Rovnoměrně široké sloupce (grid-cols-3) sice container vyplní celý,
-       ale krátký text ve 3. sloupci nevyplní celou svou třetinu — zarovnání
-       doleva (place-items:start) pak za textem vlevo zbyde málo místa, ale
-       za krátkým textem vpravo zbyde místa hodně. justify-between se 2
-       položkami (značka / skupina nav) ale vytvořilo přesně jednu velkou
-       mezeru uprostřed — vypadalo to rozbitě. Řešení: přirozené řazení
-       zleva (bez justify-between) s pevnou mezerou mezi značkou a
-       navigacemi, stejnou jako mezi oběma nav sloupci — patička pak plyne
-       zleva jako jeden celek, zbylé místo vpravo je v pořádku prázdné. *}
+    {* daisyUI .footer je nativně grid se sloupci velikosti podle obsahu
+       (grid-auto-columns: minmax(10rem,auto)) — justify-content na gridu
+       funguje stejně jako na flexu. Se 3 PŘÍMÝMI potomky (značka, nav "Web",
+       nav "O projektu") sm:justify-between rozloží položky: 1. přisátá
+       vlevo, 3. vpravo, 2. (kratší "Web") přesně doprostřed zbylého místa
+       — dvě rovnoměrné mezery místo jedné velké (viz předchozí flex pokus
+       se 2 seskupenými položkami) nebo prázdna napravo od nerovnoměrných
+       sloupců (grid-cols-3) nebo obsahu nalepeného vlevo (bez justify).
+       Díky přímým potomkům navíc funguje i vestavěné .footer>:not(...)
+       {display:grid;gap:.5rem} pro svislé řazení h6+odkazů/textu — žádný
+       obalový div, žádná ruční oprava stackování není potřeba. *}
     <div class="bg-base-200 text-base-content border-t border-base-300">
-        <footer class="footer sm:footer-horizontal flex flex-col sm:flex-row container mx-auto px-4 sm:px-10 pt-12 pb-8 gap-8 sm:gap-24">
+        <footer class="footer sm:footer-horizontal sm:justify-between container mx-auto px-4 sm:px-10 pt-12 pb-8 gap-8">
             <aside>
                 <p class="font-display text-lg font-bold tracking-tight">Váš web</p>
                 <p class="font-mono text-xs uppercase tracking-widest opacity-50">poskládáno z bloků</p>
             </aside>
-            {* daisyUI stackuje obsah svisle přes .footer>:not(...){display:grid}
-               — ale jen na PŘÍMÝCH potomcích .footer. Zabalením do tohoto
-               wrapper divu přestaly nav prvky být přímým potomkem, takže
-               o svislé řazení (h6 + odkazy/text pod sebou) přišly a běžely
-               na jednom řádku. grid gap-2 to na obou nav ručně obnovuje. *}
-            <div class="flex flex-col sm:flex-row gap-8 sm:gap-24">
-                <nav class="grid gap-2">
-                    <h6 class="footer-title opacity-50">Web</h6>
-                    <a class="link link-hover" n:href="Page:default, slug: ''">Domů</a>
-                    <a class="link link-hover" n:href="Page:default, slug: 'o-nas'">O nás</a>
-                </nav>
-                <nav class="grid gap-2">
-                    <h6 class="footer-title opacity-50">O projektu</h6>
-                    <span class="opacity-60">Postaveno na Nette Frameworku</span>
-                    <span class="opacity-60">Obsah spravovaný vizuálním editorem</span>
-                </nav>
-            </div>
+            <nav>
+                <h6 class="footer-title opacity-50">Web</h6>
+                <a class="link link-hover" n:href="Page:default, slug: ''">Domů</a>
+                <a class="link link-hover" n:href="Page:default, slug: 'o-nas'">O nás</a>
+            </nav>
+            <nav>
+                <h6 class="footer-title opacity-50">O projektu</h6>
+                <span class="opacity-60">Postaveno na Nette Frameworku</span>
+                <span class="opacity-60">Obsah spravovaný vizuálním editorem</span>
+            </nav>
         </footer>
     </div>
     <div class="bg-base-200 text-base-content border-t border-base-300">
