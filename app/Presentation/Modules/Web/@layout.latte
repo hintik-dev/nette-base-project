@@ -56,26 +56,35 @@
     {* daisyUI footer sám o sobě sloupce velikostně přizpůsobuje obsahu
        (grid-auto-columns), ne rovnoměrně na celou šířku — se 3 krátkými
        sloupci pak vpravo zbyde prázdné místo. sm:grid-cols-3 to přebije
-       na rovnoměrné rozdělení přes celou šířku patičky. *}
-    <footer class="footer sm:footer-horizontal sm:grid-cols-3 bg-base-200 text-base-content border-t border-base-300 px-4 sm:px-10 pt-12 pb-8">
-        <aside>
-            <p class="font-display text-lg font-bold tracking-tight">Váš web</p>
-            <p class="font-mono text-xs uppercase tracking-widest opacity-50">poskládáno z bloků</p>
-        </aside>
-        <nav>
-            <h6 class="footer-title opacity-50">Web</h6>
-            <a class="link link-hover" n:href="Page:default, slug: ''">Domů</a>
-            <a class="link link-hover" n:href="Page:default, slug: 'o-nas'">O nás</a>
-        </nav>
-        <nav>
-            <h6 class="footer-title opacity-50">O projektu</h6>
-            <span class="opacity-60">Postaveno na Nette Frameworku</span>
-            <span class="opacity-60">Obsah spravovaný vizuálním editorem</span>
-        </nav>
-    </footer>
-    <footer class="footer footer-center bg-base-200 text-base-content border-t border-base-300 px-4 py-4">
-        <aside>
-            <p class="opacity-50 text-sm">&copy; {date('Y')} Váš web</p>
-        </aside>
-    </footer>
+       na rovnoměrné rozdělení. Zároveň (na rozdíl od Hero/FeatureGrid/Steps)
+       patičce chyběl container mx-auto — na širších obrazovkách se proto
+       roztahovala přes celé okno, zatímco obsah nad ní byl centrovaný
+       v užším kontejneru, což vypadalo, jako by byla patička posunutá
+       vlevo. Pozadí zůstává full-bleed (na vnějším divu), obsah je
+       zarovnaný do stejného container mx-auto jako zbytek stránky. *}
+    <div class="bg-base-200 text-base-content border-t border-base-300">
+        <footer class="footer sm:footer-horizontal sm:grid-cols-3 container mx-auto px-4 sm:px-10 pt-12 pb-8">
+            <aside>
+                <p class="font-display text-lg font-bold tracking-tight">Váš web</p>
+                <p class="font-mono text-xs uppercase tracking-widest opacity-50">poskládáno z bloků</p>
+            </aside>
+            <nav>
+                <h6 class="footer-title opacity-50">Web</h6>
+                <a class="link link-hover" n:href="Page:default, slug: ''">Domů</a>
+                <a class="link link-hover" n:href="Page:default, slug: 'o-nas'">O nás</a>
+            </nav>
+            <nav>
+                <h6 class="footer-title opacity-50">O projektu</h6>
+                <span class="opacity-60">Postaveno na Nette Frameworku</span>
+                <span class="opacity-60">Obsah spravovaný vizuálním editorem</span>
+            </nav>
+        </footer>
+    </div>
+    <div class="bg-base-200 text-base-content border-t border-base-300">
+        <footer class="footer footer-center container mx-auto px-4 py-4">
+            <aside>
+                <p class="opacity-50 text-sm">&copy; {date('Y')} Váš web</p>
+            </aside>
+        </footer>
+    </div>
 {/block}
