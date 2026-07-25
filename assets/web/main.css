@@ -1,5 +1,13 @@
 @import "tailwindcss";
-@plugin "daisyui";
+/* Bez omezení seznamu témat by daisyUI vedle "workshop" generovalo i své
+   vestavěné výchozí motivy (light/dark/...) — jejich vestavěný "dark" má
+   vlastní @media (prefers-color-scheme: dark) blok, který by (kvůli pozdějšímu
+   pořadí ve výstupním CSS) přebil naše světlé téma, když má uživatel systém
+   nastavený na tmavý režim. Web má být striktně light mode, proto je aktivní
+   jen náš vlastní motiv. */
+@plugin "daisyui" {
+    themes: workshop --default;
+}
 @plugin "@tailwindcss/typography";
 
 /* Vite root je assets/ — Latte šablony (app/) leží mimo výchozí sken. */
