@@ -15,6 +15,11 @@ const GRID_CLASSES: Record<FeatureGridProps['columns'], string> = {
     '4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
 };
 
+// Karty se střídají po třech barvách palety, ať mřížka nepůsobí jako
+// jednolitá plocha stejných dlaždic — každá "vlastnost" dostane jiný
+// horní akcentní pruh (amber / slate / moss).
+const ACCENT_BORDER_CLASSES = ['border-t-primary', 'border-t-secondary', 'border-t-accent'];
+
 export const FeatureGrid: ComponentConfig<FeatureGridProps> = {
     label: 'Mřížka vlastností',
     fields: {
@@ -56,7 +61,7 @@ export const FeatureGrid: ComponentConfig<FeatureGridProps> = {
             </div>
             <div className={`grid ${GRID_CLASSES[columns]} gap-6`}>
                 {items.map((item, i) => (
-                    <div key={i} className="card bg-base-100 shadow-sm">
+                    <div key={i} className={`card bg-base-100 shadow-sm border-t-4 ${ACCENT_BORDER_CLASSES[i % 3]}`}>
                         <div className="card-body items-center text-center">
                             <h3 className="card-title text-base">{item.title}</h3>
                             <p className="text-sm text-base-content/70">{item.text}</p>

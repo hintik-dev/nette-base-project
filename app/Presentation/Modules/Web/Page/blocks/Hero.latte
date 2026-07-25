@@ -5,9 +5,18 @@
     'base-200' => 'bg-base-200',
     default => 'bg-neutral text-neutral-content',
 }}
+{var $chipClass = match($props['variant'] ?? 'neutral') {
+    'primary' => 'border-primary-content/30 text-primary-content/70',
+    'base-200' => 'border-base-content/20 text-base-content/60',
+    default => 'border-neutral-content/30 text-neutral-content/70',
+}}
+{var $blockChips = ['Nadpis', 'Text', 'Obrázek', 'Sloupce', 'Kroky']}
 <div class="hero min-h-[60vh] {$variantClass}">
     <div class="hero-content text-center">
         <div class="max-w-md">
+            <div class="flex flex-wrap gap-2 justify-center mb-6 font-mono text-[11px] uppercase tracking-widest">
+                <span n:foreach="$blockChips as $chip" class="rounded-full border px-3 py-1 {$chipClass}">{$chip}</span>
+            </div>
             <h1 class="text-5xl font-bold">{$props['heading'] ?? ''}</h1>
             <p n:if="!empty($props['subtext'])" class="py-6 opacity-80">{$props['subtext']}</p>
             <div class="flex gap-2 justify-center">
