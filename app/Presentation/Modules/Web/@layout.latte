@@ -62,13 +62,14 @@
     {* Rovnoměrně široké sloupce (grid-cols-3) sice container vyplní celý,
        ale krátký text ve 3. sloupci nevyplní celou svou třetinu — zarovnání
        doleva (place-items:start) pak za textem vlevo zbyde málo místa, ale
-       za krátkým textem vpravo zbyde místa hodně, takže patička působí
-       posunutá vlevo, i když je container správně na střed. Řešení: flex
-       s justify-between — značka zůstává vlevo, obě navigace se semknou
-       do jedné skupiny a ta se přisune k pravému okraji containeru, takže
-       patička vizuálně vyplňuje šířku podobně jako karty v sekci Steps. *}
+       za krátkým textem vpravo zbyde místa hodně. justify-between se 2
+       položkami (značka / skupina nav) ale vytvořilo přesně jednu velkou
+       mezeru uprostřed — vypadalo to rozbitě. Řešení: přirozené řazení
+       zleva (bez justify-between) s pevnou mezerou mezi značkou a
+       navigacemi, stejnou jako mezi oběma nav sloupci — patička pak plyne
+       zleva jako jeden celek, zbylé místo vpravo je v pořádku prázdné. *}
     <div class="bg-base-200 text-base-content border-t border-base-300">
-        <footer class="footer sm:footer-horizontal flex flex-col sm:flex-row sm:justify-between container mx-auto px-4 sm:px-10 pt-12 pb-8 gap-8">
+        <footer class="footer sm:footer-horizontal flex flex-col sm:flex-row container mx-auto px-4 sm:px-10 pt-12 pb-8 gap-8 sm:gap-24">
             <aside>
                 <p class="font-display text-lg font-bold tracking-tight">Váš web</p>
                 <p class="font-mono text-xs uppercase tracking-widest opacity-50">poskládáno z bloků</p>
