@@ -19,14 +19,6 @@ class UserRolePermissionsForm extends BaseComponent
 {
     public const string EFFECT_NEUTRAL = 'neutral';
 
-    /**
-     * Klíče oprávnění obsahují tečky, které by Nette Forms rozbily jako
-     * oddělovač kontejnerů. Tečka se proto v názvu prvku nahrazuje dvojitým
-     * podtržítkem — v klíčích se nevyskytuje, takže je převod jednoznačný.
-     */
-    private const string KEY_SEPARATOR = '__';
-
-
     public function __construct(
         private readonly UserRoleFacade $userRoleFacade,
         private readonly int $roleId,
@@ -45,8 +37,10 @@ class UserRolePermissionsForm extends BaseComponent
             PermissionEffect::Deny->value => PermissionEffect::Deny->getLabel(),
         ];
 
+        $controlNames = $this->getControlNames();
+
         foreach ($this->userRoleFacade->getPermissionRegistry()->getAll() as $key => $definition) {
-            $form->addRadioList(self::toControlName($key), $definition->getLabel(), $options)
+            $form->addRadioList($controlNames[$key], $definition->getLabel(), $options)
                 ->setDefaultValue(isset($current[$key]) ? $current[$key]->value : self::EFFECT_NEUTRAL)
                 ->setHtmlAttribute('class', 'btn-check');
         }
@@ -77,6 +71,7 @@ class UserRolePermissionsForm extends BaseComponent
      */
     private function buildGroups(): array
     {
+        $controlNames = $this->getControlNames();
         $groups = [];
 
         foreach ($this->userRoleFacade->getPermissionRegistry()->getGrouped() as $group => $definitions) {
@@ -84,13 +79,22 @@ class UserRolePermissionsForm extends BaseComponent
                 $groups[$group][] = new PermissionMatrixRow(
                     key: $definition->getKey(),
                     label: $definition->getLabel(),
-                    controlName: self::toControlName($definition->getKey()),
+                    controlName: $controlNames[$definition->getKey()],
                     scope: $definition->getScope(),
                 );
             }
         }
 
         return $groups;
+    }
+
+
+    /** @return array<string, string> klíč oprávnění => název prvku */
+    private function getControlNames(): array
+    {
+        return PermissionControlName::buildMap(
+            array_keys($this->userRoleFacade->getPermissionRegistry()->getAll()),
+        );
     }
 
 
@@ -101,8 +105,8 @@ class UserRolePermissionsForm extends BaseComponent
 
         $permissions = [];
 
-        foreach (array_keys($this->userRoleFacade->getPermissionRegistry()->getAll()) as $key) {
-            $effect = PermissionEffect::tryFrom($values[self::toControlName($key)] ?? '');
+        foreach ($this->getControlNames() as $key => $controlName) {
+            $effect = PermissionEffect::tryFrom($values[$controlName] ?? '');
 
             if ($effect !== null) {
                 $permissions[$key] = $effect;
@@ -121,11 +125,5 @@ class UserRolePermissionsForm extends BaseComponent
 
         $this->flashSuccess('Oprávnění role byla uložena.');
         $this->presenter->redirect('edit', ['id' => $this->roleId]);
-    }
-
-
-    private static function toControlName(string $permissionKey): string
-    {
-        return str_replace('.', self::KEY_SEPARATOR, $permissionKey);
     }
 }
