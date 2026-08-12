@@ -1,0 +1,78 @@
+{templateType App\Presentation\Components\Admin\UserRole\UserRolePermissionsForm\UserRolePermissionsFormTemplate}
+
+{var $effects = [
+    ['allow',   'Povoleno',  'btn-outline-success'],
+    ['neutral', 'Neutrální', 'btn-outline-secondary'],
+    ['deny',    'Blokováno', 'btn-outline-danger'],
+]}
+
+{form form}
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h3 class="card-title mb-0">Oprávnění role {$roleName}</h3>
+        {input submit, class: 'btn btn-sm btn-primary'}
+    </div>
+    <div class="card-body">
+        {if $isDefaultRole}
+            <div class="alert alert-secondary py-2 small mb-3">
+                Tato oprávnění platí <strong>všem uživatelům</strong>, i těm bez jakékoli role.
+                Role s vyšší prioritou je mohou přepsat.
+            </div>
+        {else}
+            <div class="alert alert-secondary py-2 small mb-3">
+                <strong>Neutrální</strong> znamená, že role o oprávnění nerozhoduje — platí, co řekla
+                role s nižší prioritou. Pokud nerozhodne nikdo, je oprávnění zakázané.
+            </div>
+        {/if}
+
+        <div n:if="$form->hasErrors()" class="alert alert-danger py-2 small">
+            <div n:foreach="$form->getErrors() as $error">{$error}</div>
+        </div>
+
+        {foreach $groups as $groupName => $rows}
+            <h4 class="h6 text-uppercase text-muted mt-4 mb-2">{$groupName}</h4>
+            <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                    <tbody>
+                    {foreach $rows as $row}
+                        {var $control = $form[$row->controlName]}
+                        <tr>
+                            <td>
+                                {$row->label}
+                                {if $row->scope !== null}
+                                    <span class="badge bg-info-subtle text-info-emphasis ms-1">{$row->scope->getLabel()}</span>
+                                {/if}
+                                <div><code class="small text-muted">{$row->key}</code></div>
+                            </td>
+                            <td class="text-end" style="width: 1%">
+                                <div class="btn-group btn-group-sm" role="group" aria-label="{$row->label}">
+                                    {foreach $effects as [$value, $caption, $class]}
+                                        {$control->getControlPart($value)}
+                                        {$control->getLabelPart($value)->setAttribute('class', 'btn ' . $class)}
+                                    {/foreach}
+                                </div>
+                            </td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        {/foreach}
+
+        <div n:if="$orphanKeys" class="alert alert-warning mt-4 mb-0 small">
+            <strong>Osiřelá oprávnění v databázi.</strong>
+            Tyhle klíče už žádná část aplikace nekontroluje — zůstaly po refaktoringu kódu
+            a při vyhodnocování se ignorují. Uložením libovolné role se z ní odstraní.
+            <ul class="mb-0 mt-1">
+                <li n:foreach="$orphanKeys as $key"><code>{$key}</code></li>
+            </ul>
+        </div>
+
+        <div class="mt-4">
+            {input submit, class: 'btn btn-primary'}
+        </div>
+    </div>
+</div>
+
+{/form}

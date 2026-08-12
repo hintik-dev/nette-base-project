@@ -79,12 +79,13 @@ class UserRoleFacade
     /**
      * @throws InsufficientPrivilegesException
      * @throws DefaultRoleException
+     * @throws UserRoleConflictException
      */
-    public function createRole(string $code, string $name, ?string $description, int $priority): UserRole
+    public function createRole(UserRoleFormData $data): UserRole
     {
         $this->assertAllowed(AclPermission::RoleEdit);
 
-        $role = $this->userRoleService->createRole($code, $name, $description, $priority);
+        $role = $this->userRoleService->createRole($data);
         $this->permissionEvaluator->clearCache();
 
         return $role;
@@ -95,12 +96,13 @@ class UserRoleFacade
      * @throws InsufficientPrivilegesException
      * @throws UserRoleNotFoundException
      * @throws DefaultRoleException
+     * @throws UserRoleConflictException
      */
-    public function updateRole(int $id, string $name, ?string $description, int $priority): void
+    public function updateRole(int $id, UserRoleFormData $data): void
     {
         $this->assertAllowed(AclPermission::RoleEdit);
 
-        $this->userRoleService->updateRole($id, $name, $description, $priority);
+        $this->userRoleService->updateRole($id, $data);
         $this->permissionEvaluator->clearCache();
     }
 
@@ -188,6 +190,18 @@ class UserRoleFacade
 
         $this->userRoleService->setRolesForUser($userId, $roleIds);
         $this->permissionEvaluator->clearCache();
+    }
+
+
+    public function codeExists(string $code, ?int $excludeId = null): bool
+    {
+        return $this->userRoleService->codeExists($code, $excludeId);
+    }
+
+
+    public function priorityExists(int $priority, ?int $excludeId = null): bool
+    {
+        return $this->userRoleService->priorityExists($priority, $excludeId);
     }
 
 

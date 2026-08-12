@@ -49,32 +49,37 @@ class UserRoleService
 
     /**
      * @throws DefaultRoleException
+     * @throws UserRoleConflictException
      */
-    public function createRole(string $code, string $name, ?string $description, int $priority): UserRole
+    public function createRole(UserRoleFormData $data): UserRole
     {
-        $this->assertAssignablePriority($priority);
+        $this->assertAssignablePriority($data->priority);
+        $this->assertUnique($data, null);
 
-        return $this->userRoleRepository->create($code, $name, $description, $priority);
+        return $this->userRoleRepository->create($data->code, $data->name, $data->description, $data->priority);
     }
 
 
     /**
      * @throws UserRoleNotFoundException
      * @throws DefaultRoleException
+     * @throws UserRoleConflictException
      */
-    public function updateRole(int $id, string $name, ?string $description, int $priority): void
+    public function updateRole(int $id, UserRoleFormData $data): void
     {
         $role = $this->userRoleRepository->getById($id);
 
-        if ($role->isDefault() && $priority !== UserRole::DEFAULT_PRIORITY) {
+        if ($role->isDefault() && $data->priority !== UserRole::DEFAULT_PRIORITY) {
             throw new DefaultRoleException('Výchozí roli nelze změnit prioritu.');
         }
 
         if (!$role->isDefault()) {
-            $this->assertAssignablePriority($priority);
+            $this->assertAssignablePriority($data->priority);
         }
 
-        $this->userRoleRepository->update($id, $name, $description, $priority);
+        $this->assertUnique($data, $id);
+
+        $this->userRoleRepository->update($id, $data->name, $data->description, $data->priority);
     }
 
 
@@ -201,6 +206,23 @@ class UserRoleService
         $granting = $this->userRoleRepository->getRoleIdsGranting($permissionKey);
 
         return array_diff($granting, $roleIdsBeingRevoked) === [];
+    }
+
+
+    /**
+     * Kód se u existující role nemění, kontroluje se jen při zakládání.
+     *
+     * @throws UserRoleConflictException
+     */
+    private function assertUnique(UserRoleFormData $data, ?int $excludeId): void
+    {
+        if ($excludeId === null && $this->userRoleRepository->codeExists($data->code)) {
+            throw new UserRoleConflictException('Role s kódem "' . $data->code . '" už existuje.');
+        }
+
+        if ($this->userRoleRepository->priorityExists($data->priority, $excludeId)) {
+            throw new UserRoleConflictException('Prioritu ' . $data->priority . ' už používá jiná role.');
+        }
     }
 
 
