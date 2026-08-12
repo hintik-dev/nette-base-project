@@ -28,7 +28,9 @@ class PagePresenter extends BaseAdminPresenter
     {
         /** @var PageListTemplate $template */
         $template = $this->template;
-        $template->pages = $this->pageFacade->getAllPagesDataSource();
+        $pages = $this->pageFacade->getAllPagesDataSource();
+        $template->pages = $pages;
+        $template->editablePageIds = $this->pageFacade->getEditablePageIds($pages);
     }
 
 
@@ -39,7 +41,7 @@ class PagePresenter extends BaseAdminPresenter
     }
 
 
-    #[RequiresPermission(PagePermission::Edit)]
+    #[RequiresPermission(PagePermission::Edit, PagePermission::EditOwn)]
     public function actionEdit(int $id): void
     {
         /** @var PageEditTemplate $template */

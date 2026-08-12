@@ -4,6 +4,8 @@ namespace App\Model\Security;
 use App\Domain\UserSession\LogoutReason;
 use App\Model\Security\Permission\PermissionDefinition;
 use App\Model\Security\Permission\PermissionEvaluator;
+use App\Model\Security\Permission\PermissionScope;
+use App\Model\Security\Permission\ScopeResolverRegistry;
 use App\Model\Security\Storage\DbUserStorage;
 use Nette\Security\User as NetteUser;
 use Override;
@@ -21,11 +23,20 @@ final class SecurityUser extends NetteUser
 {
     private PermissionEvaluator $permissionEvaluator;
 
+    private ScopeResolverRegistry $scopeResolverRegistry;
+
 
     /** Vstřikuje se přes setup v config/services.neon. */
     public function setPermissionEvaluator(PermissionEvaluator $permissionEvaluator): void
     {
         $this->permissionEvaluator = $permissionEvaluator;
+    }
+
+
+    /** Vstřikuje se přes setup v config/services.neon. */
+    public function setScopeResolverRegistry(ScopeResolverRegistry $scopeResolverRegistry): void
+    {
+        $this->scopeResolverRegistry = $scopeResolverRegistry;
     }
 
 
@@ -64,6 +75,43 @@ final class SecurityUser extends NetteUser
         $identity = $this->isLoggedIn() ? parent::getIdentity() : null;
 
         return $identity instanceof Identity && $identity->isSuperadmin();
+    }
+
+
+    /**
+     * Kontrola oprávnění nad konkrétní entitou.
+     *
+     * Předává se **globální** varianta oprávnění; vlastnické (`.own`) se zkusí
+     * automaticky, až když globální neprojde. Pořadí je podstatné — kdo smí
+     * upravit libovolnou stránku, nepotřebuje být jejím autorem.
+     *
+     *     $user->isAllowedOn(PagePermission::Edit, $page)
+     */
+    public function isAllowedOn(PermissionDefinition $permission, object $entity): bool
+    {
+        if ($this->isAllowed($permission)) {
+            return true;
+        }
+
+        $userId = $this->getUserId();
+
+        if ($userId === null) {
+            return false;
+        }
+
+        foreach (PermissionScope::cases() as $scope) {
+            $scopedKey = $permission->getKey() . '.' . $scope->value;
+
+            if (!$this->permissionEvaluator->isAllowed($userId, $scopedKey)) {
+                continue;
+            }
+
+            if ($this->scopeResolverRegistry->matches($permission->getResource(), $scope, $entity, $userId)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

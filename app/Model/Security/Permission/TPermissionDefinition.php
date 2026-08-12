@@ -15,6 +15,12 @@ trait TPermissionDefinition
     }
 
 
+    public function getResource(): string
+    {
+        return explode('.', $this->value)[0];
+    }
+
+
     /**
      * Scope je poslední segment klíče, pokud odpovídá některé hodnotě
      * PermissionScope. Klíče jako `acl.role.edit` tak zůstávají globální.

@@ -9,4 +9,7 @@ final class PageListTemplate extends BaseTemplate
 {
     /** @var Selection<ActiveRow> */
     public Selection $pages;
+
+    /** @var list<int> */
+    public array $editablePageIds = [];
 }

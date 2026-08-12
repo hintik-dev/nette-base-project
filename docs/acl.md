@@ -202,11 +202,24 @@ Vyhodnocení jednoho dotazu proběhne ve dvou krocích:
 1. Zkusí se **globální** klíč (`page.delete`). Když projde, hotovo.
 2. Jinak se zkusí **scoped** klíč (`page.delete.own`) — ten uspěje jen tehdy, když ho ACL povolí *a zároveň* resolver potvrdí vlastnictví.
 
-Volání se rozšíří o třetí parametr:
+Volání má vlastní metodu, které se předává **globální** varianta oprávnění — vlastnická se zkusí automaticky:
 
 ```php
-$user->isAllowed(Page::RESOURCE_ID, 'delete', $page);
+$user->isAllowedOn(PagePermission::Edit, $page);
 ```
+
+V šabloně totéž jako funkce `isAllowedOn()`.
+
+Presenter na to potřebuje hrubší branku, protože v `checkRequirements()` ještě entitu nemá. Řeší to OR sémantika uvnitř jednoho atributu:
+
+```php
+#[RequiresPermission(PagePermission::Edit, PagePermission::EditOwn)]
+public function actionEdit(int $id): void
+```
+
+Mezi opakovanými atributy platí AND, uvnitř jednoho OR. Která konkrétní stránka projde, rozhodne až fasáda.
+
+Vlastnictví stránky zavedla migrace `page.author_id`. Sloupec je nullable, takže stránky vzniklé před touto změnou autora nemají — a **stránka bez autora nepatří nikomu**, vlastnické oprávnění na ni tedy nezabere. Kdyby to bylo obráceně, po nasazení by na ně dosáhl každý s `page.edit.own`.
 
 ### Omezení u výpisů
 
@@ -354,13 +367,14 @@ Teprve tady se splnil cíl „nezobrazovat podle role“.
 - [x] Sidebar pod oprávnění, Latte funkce `isAllowed()`
 - [x] Převod všech fasád na nové klíče včetně těch, které dosud ACL neměly
 
-### Fáze 4 — Vlastnická práva · ~1–2 dny
+### Fáze 4 — Vlastnická práva · hotovo
 
-Kandidát na odložení, pokud 1.2 tlačí termín — zbytek funguje i bez toho.
-
-- [ ] `ScopeResolver` a klíče `.own`
-- [ ] Rozšíření `isAllowed()` o parametr entity
-- [ ] Latte funkce `isAllowed()` pro scoped kontroly
+- [x] Migrace `page.author_id` — bez sloupce vlastníka nemá `.own` na čem stát
+- [x] `ScopeResolver`, `ScopeResolverRegistry` a `PageOwnerScopeResolver`
+- [x] Klíč `page.edit.own`, `getResource()` v definici oprávnění
+- [x] `SecurityUser::isAllowedOn()` a Latte funkce `isAllowedOn()`
+- [x] OR sémantika uvnitř atributu `#[RequiresPermission]`
+- [x] Testy vyhodnocení scope
 
 ### Fáze 5 — Sidebar jako komponenta · ~1 den
 

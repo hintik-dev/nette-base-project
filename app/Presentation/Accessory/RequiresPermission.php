@@ -12,13 +12,25 @@ use Attribute;
  * stránce nezůstane déle než do dalšího kliknutí. Zároveň to znamená, že se
  * ACL nedá obejít přímým vstupem na URL.
  *
+ * Uvnitř jednoho atributu platí OR, mezi opakovanými atributy AND:
+ *
+ *     #[RequiresPermission(PagePermission::Edit, PagePermission::EditOwn)]
+ *
+ * Tahle dvojice pustí dál i toho, kdo smí upravovat jen vlastní stránky —
+ * hrubá branka na vstupu. Které konkrétní stránky to jsou, rozhodne až
+ * fasáda přes isAllowedOn(), protože tam už je po ruce entita.
+ *
  * Atribut na třídě platí pro všechny akce, atribut na akci ho zpřesňuje.
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class RequiresPermission
 {
-    public function __construct(
-        public PermissionDefinition $permission,
-    ) {
+    /** @var list<PermissionDefinition> */
+    public array $permissions;
+
+
+    public function __construct(PermissionDefinition ...$permissions)
+    {
+        $this->permissions = array_values($permissions);
     }
 }

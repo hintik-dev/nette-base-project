@@ -18,6 +18,9 @@ interface PermissionDefinition extends BackedEnum
     /** Klíč ukládaný do user_role_permission.permission_key */
     public function getKey(): string;
 
+    /** První segment klíče — entita, ke které se oprávnění vztahuje */
+    public function getResource(): string;
+
     /** Popisek v matici oprávnění */
     public function getLabel(): string;
 

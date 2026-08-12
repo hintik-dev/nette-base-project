@@ -37,6 +37,11 @@ final class LatteExtension extends Extension
         return [
             'isAllowed' => fn (PermissionDefinition $permission): bool
                 => $this->securityUser?->isAllowed($permission) ?? false,
+
+            // Varianta nad konkrétní entitou — projde i vlastnické právo,
+            // pokud je uživatel jejím vlastníkem.
+            'isAllowedOn' => fn (PermissionDefinition $permission, object $entity): bool
+                => $this->securityUser?->isAllowedOn($permission, $entity) ?? false,
         ];
     }
 }

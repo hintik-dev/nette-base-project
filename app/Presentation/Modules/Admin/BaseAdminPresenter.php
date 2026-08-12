@@ -90,9 +90,16 @@ class BaseAdminPresenter extends BasePresenter
     private function checkPermissionAttributes(ReflectionMethod|ReflectionClass $element): void
     {
         foreach ($element->getAttributes(RequiresPermission::class) as $attribute) {
-            if (!$this->getSecurityUser()->isAllowed($attribute->newInstance()->permission)) {
-                $this->denyAccess();
+            $permissions = $attribute->newInstance()->permissions;
+
+            // Uvnitř jednoho atributu stačí jedno z uvedených oprávnění.
+            foreach ($permissions as $permission) {
+                if ($this->getSecurityUser()->isAllowed($permission)) {
+                    continue 2;
+                }
             }
+
+            $this->denyAccess();
         }
     }
 

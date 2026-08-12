@@ -19,6 +19,7 @@ services:
 		factory: App\Model\Security\SecurityUser
 		setup:
 			- setPermissionEvaluator(@App\Model\Security\Permission\PermissionEvaluator)
+			- setScopeResolverRegistry(@App\Model\Security\Permission\ScopeResolverRegistry)
 	security.authenticator: App\Model\Security\Authenticator\UserAuthenticator
 
 	# ACL — oprávnění jsou v databázi, rozhoduje o nich PermissionEvaluator nad
@@ -27,6 +28,7 @@ services:
 	# sémantiku. Ani jedna třída neodpovídá vzorům v sekci `search`.
 	- App\Model\Security\Permission\PermissionRegistry
 	- App\Model\Security\Permission\PermissionEvaluator
+	- App\Model\Security\Permission\ScopeResolverRegistry(typed(App\Model\Security\Permission\ScopeResolver))
 
 	security.userStorage:
 		factory: App\Model\Security\Storage\DbUserStorage
@@ -56,6 +58,7 @@ search:
 			- *Repository
 			- *Service
 			- *Mapper
+			- *Resolver
 	-	in: %appDir%/Command
 		classes:
 			- *Command

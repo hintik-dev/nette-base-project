@@ -15,10 +15,18 @@ readonly class Page implements Resource
         public int $id,
         public string $slug,
         public string $title,
+        public ?int $authorId,
         public array $content,
         public PageStatus $status,
         public ?DateTime $publishedAt,
     ) {
+    }
+
+
+    /** Stránka bez autora nepatří nikomu — vlastnické oprávnění na ni nezabere. */
+    public function isAuthoredBy(int $userId): bool
+    {
+        return $this->authorId === $userId;
     }
 
 

@@ -11,6 +11,7 @@ enum PagePermission: string implements PermissionDefinition
     case ListAll = 'page.list';
     case Create = 'page.create';
     case Edit = 'page.edit';
+    case EditOwn = 'page.edit.own';
     case Publish = 'page.publish';
 
 
@@ -19,7 +20,8 @@ enum PagePermission: string implements PermissionDefinition
         return match ($this) {
             self::ListAll => 'Zobrazit seznam stránek',
             self::Create  => 'Založit stránku',
-            self::Edit    => 'Upravit stránku',
+            self::Edit    => 'Upravit libovolnou stránku',
+            self::EditOwn => 'Upravit stránku, které je autorem',
             self::Publish => 'Publikovat stránku',
         };
     }
