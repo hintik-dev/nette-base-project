@@ -1,8 +1,10 @@
 <?php declare(strict_types=1);
 namespace App\Model\Security;
 
+use App\Domain\UserSession\LogoutReason;
 use App\Model\Security\Permission\PermissionDefinition;
 use App\Model\Security\Permission\PermissionEvaluator;
+use App\Model\Security\Storage\DbUserStorage;
 use Nette\Security\User as NetteUser;
 use Override;
 
@@ -62,6 +64,22 @@ final class SecurityUser extends NetteUser
         $identity = $this->isLoggedIn() ? parent::getIdentity() : null;
 
         return $identity instanceof Identity && $identity->isSuperadmin();
+    }
+
+
+    /**
+     * Odhlásí uživatele se zaznamenaným důvodem. Nette\Security\User::logout()
+     * žádný důvod nepředává, proto se nastavuje do storage předem.
+     */
+    public function forceLogout(LogoutReason $reason): void
+    {
+        $storage = $this->getStorage();
+
+        if ($storage instanceof DbUserStorage) {
+            $storage->setNextLogoutReason($reason);
+        }
+
+        $this->logout(clearIdentity: true);
     }
 
 

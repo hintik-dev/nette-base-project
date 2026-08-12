@@ -29,6 +29,9 @@ final class DbUserStorage implements UserStorage
     /** Current inactivity timeout in seconds; null = no timeout. */
     private ?int $expireDeltaSeconds = null;
 
+    /** Důvod zapsaný při nejbližším odhlášení; po použití se vrací na Manual. */
+    private LogoutReason $nextLogoutReason = LogoutReason::Manual;
+
 
     public function __construct(
         private readonly Session $session,
@@ -54,6 +57,16 @@ final class DbUserStorage implements UserStorage
 
         $delta = (int) \Nette\Utils\DateTime::from($timeout)->format('U') - time();
         $this->expireDeltaSeconds = $delta > 0 ? $delta : null;
+    }
+
+
+    /**
+     * Nastaví důvod pro nejbližší clearAuthentication(). Volá se těsně před
+     * logout(), protože Nette\Security\User::logout() žádný důvod nepředává.
+     */
+    public function setNextLogoutReason(LogoutReason $reason): void
+    {
+        $this->nextLogoutReason = $reason;
     }
 
 
@@ -91,12 +104,13 @@ final class DbUserStorage implements UserStorage
         if ($token !== null) {
             $dbSession = $this->sessionRepository->findByToken($token);
             if ($dbSession !== null && $dbSession->isActive()) {
-                $this->sessionRepository->markAsLoggedOut($dbSession->id, LogoutReason::Manual);
+                $this->sessionRepository->markAsLoggedOut($dbSession->id, $this->nextLogoutReason);
             }
 
             $this->response->deleteCookie(self::COOKIE_NAME);
         }
 
+        $this->nextLogoutReason = LogoutReason::Manual;
         $this->session->regenerateId();
     }
 

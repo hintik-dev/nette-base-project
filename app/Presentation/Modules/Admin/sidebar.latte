@@ -18,39 +18,47 @@
                     </a>
                 </li>
 
-                <li class="nav-header">CMS</li>
+                <li n:if="isAllowed(\App\Domain\Page\PagePermission::ListAll)" class="nav-header">CMS</li>
 
-                <li class="nav-item">
+                <li n:if="isAllowed(\App\Domain\Page\PagePermission::ListAll)" class="nav-item">
                     <a n:href="Page:default" class="nav-link {if isLinkCurrent(':Admin:Page:*')}active{/if}">
                         <i class="nav-icon bi bi-file-earmark-richtext-fill"></i>
                         <p>Stránky</p>
                     </a>
                 </li>
 
-                <li class="nav-header">Správa</li>
+                {var $showManagement =
+                    isAllowed(\App\Domain\User\UserPermission::ListAll)
+                    || isAllowed(\App\Domain\UserRole\AclPermission::RoleList)
+                    || isAllowed(\App\Domain\UserSession\UserSessionPermission::ListAll)
+                    || isAllowed(\App\Domain\ApiUser\ApiUserPermission::ListAll)
+                    || isAllowed(\App\Domain\Email\EmailPermission::ListAll)
+                    || isAllowed(\App\Domain\ScheduledJob\ScheduledJobPermission::ListAll)
+                    || isAllowed(\App\Domain\AppSettings\AppSettingsPermission::View)}
+                <li n:if="$showManagement" class="nav-header">Správa</li>
 
-                <li class="nav-item">
+                <li n:if="isAllowed(\App\Domain\User\UserPermission::ListAll)" class="nav-item">
                     <a n:href="User:list" class="nav-link {if isLinkCurrent(':Admin:User:*')}active{/if}">
                         <i class="nav-icon bi bi-people-fill"></i>
                         <p>Uživatelé</p>
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li n:if="isAllowed(\App\Domain\UserRole\AclPermission::RoleList)" class="nav-item">
                     <a n:href="UserRole:default" class="nav-link {if isLinkCurrent(':Admin:UserRole:*')}active{/if}">
                         <i class="nav-icon bi bi-shield-lock-fill"></i>
                         <p>Role a oprávnění</p>
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li n:if="isAllowed(\App\Domain\UserSession\UserSessionPermission::ListAll)" class="nav-item">
                     <a n:href="UserSession:default" class="nav-link {if isLinkCurrent(':Admin:UserSession:default')}active{/if}">
                         <i class="nav-icon bi bi-person-badge-fill"></i>
                         <p>Session uživatelů</p>
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li n:if="isAllowed(\App\Domain\ApiUser\ApiUserPermission::ListAll)" class="nav-item">
                     <a n:href="ApiUser:default" class="nav-link {if isLinkCurrent(':Admin:ApiUser:*')}active{/if}">
                         <i class="nav-icon bi bi-key-fill"></i>
                         <p>API uživatelé</p>
@@ -58,7 +66,7 @@
                 </li>
 
                 {var $emailActive = isLinkCurrent(':Admin:Email:*')}
-                <li class="nav-item {if $emailActive}menu-open{/if}">
+                <li n:if="isAllowed(\App\Domain\Email\EmailPermission::ListAll)" class="nav-item {if $emailActive}menu-open{/if}">
                     <a href="#" class="nav-link {if $emailActive}active{/if}">
                         <i class="nav-icon bi bi-envelope-fill"></i>
                         <p>
@@ -73,7 +81,7 @@
                                 <p>Odeslané e-maily</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li n:if="isAllowed(\App\Domain\Email\EmailPermission::Send)" class="nav-item">
                             <a n:href="Email:compose" class="nav-link ps-4 {if isLinkCurrent(':Admin:Email:compose')}active{/if}">
                                 <i class="nav-icon bi bi-pencil-square"></i>
                                 <p>Nový e-mail</p>
@@ -83,7 +91,7 @@
                 </li>
 
                 {var $scheduledJobActive = isLinkCurrent(':Admin:ScheduledJob:*')}
-                <li class="nav-item {if $scheduledJobActive}menu-open{/if}">
+                <li n:if="isAllowed(\App\Domain\ScheduledJob\ScheduledJobPermission::ListAll)" class="nav-item {if $scheduledJobActive}menu-open{/if}">
                     <a href="#" class="nav-link {if $scheduledJobActive}active{/if}">
                         <i class="nav-icon bi bi-clock-fill"></i>
                         <p>
@@ -98,7 +106,7 @@
                                 <p>Definice úloh</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li n:if="isAllowed(\App\Domain\ScheduledJob\ScheduledJobPermission::RunHistory)" class="nav-item">
                             <a n:href="ScheduledJob:runs" class="nav-link ps-4 {if isLinkCurrent(':Admin:ScheduledJob:runs')}active{/if}">
                                 <i class="nav-icon bi bi-journal-text"></i>
                                 <p>Historie běhů</p>
@@ -107,7 +115,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
+                <li n:if="isAllowed(\App\Domain\AppSettings\AppSettingsPermission::View)" class="nav-item">
                     <a n:href="AppSettings:general" class="nav-link {if isLinkCurrent(':Admin:AppSettings:*')}active{/if}">
                         <i class="nav-icon bi bi-gear-fill"></i>
                         <p>Nastavení</p>

@@ -3,6 +3,9 @@
 namespace App\Domain\AppSettings;
 
 use App\Domain\ValueStorage\ValueStorageService;
+use App\Model\Security\Authorizator\InsufficientPrivilegesException;
+use App\Model\Security\Permission\PermissionDefinition;
+use App\Model\Security\SecurityUser;
 
 class AppSettingsFacade
 {
@@ -13,6 +16,7 @@ class AppSettingsFacade
 
     public function __construct(
         private readonly ValueStorageService $valueStorageService,
+        private readonly SecurityUser $securityUser,
     ) {
     }
 
@@ -31,9 +35,22 @@ class AppSettingsFacade
 
     public function saveGeneralSettings(string $siteName, string $contactEmail): void
     {
+        $this->assertAllowed(AppSettingsPermission::Edit);
+
         $this->valueStorageService->setMany(self::CATEGORY, [
             self::KEY_SITE_NAME => $siteName,
             self::KEY_CONTACT_EMAIL => $contactEmail,
         ]);
+    }
+
+
+    /**
+     * @throws InsufficientPrivilegesException
+     */
+    private function assertAllowed(PermissionDefinition $permission): void
+    {
+        if (!$this->securityUser->isAllowed($permission)) {
+            throw new InsufficientPrivilegesException();
+        }
     }
 }

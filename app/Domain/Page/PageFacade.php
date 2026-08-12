@@ -22,7 +22,7 @@ class PageFacade
      */
     public function getAllPagesDataSource(): Selection
     {
-        if (!$this->securityUser->isAllowed(Page::RESOURCE_ID, 'list')) {
+        if (!$this->securityUser->isAllowed(PagePermission::ListAll)) {
             throw new InsufficientPrivilegesException();
         }
 
@@ -35,7 +35,7 @@ class PageFacade
      */
     public function getPageById(int $id): Page
     {
-        if (!$this->securityUser->isAllowed(Page::RESOURCE_ID, 'edit')) {
+        if (!$this->securityUser->isAllowed(PagePermission::Edit)) {
             throw new InsufficientPrivilegesException();
         }
 
@@ -85,7 +85,7 @@ class PageFacade
      */
     public function create(PageFormData $data): Page
     {
-        if (!$this->securityUser->isAllowed(Page::RESOURCE_ID, 'create')) {
+        if (!$this->securityUser->isAllowed(PagePermission::Create)) {
             throw new InsufficientPrivilegesException();
         }
 
@@ -101,7 +101,7 @@ class PageFacade
      */
     public function publishContent(int $id, array $content): void
     {
-        if (!$this->securityUser->isAllowed(Page::RESOURCE_ID, 'publish')) {
+        if (!$this->securityUser->isAllowed(PagePermission::Publish)) {
             throw new InsufficientPrivilegesException();
         }
 

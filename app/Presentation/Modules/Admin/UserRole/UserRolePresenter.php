@@ -8,7 +8,10 @@ use App\Presentation\Components\Admin\UserRole\UserRoleForm\UserRoleFormFactory;
 use App\Presentation\Components\Admin\UserRole\UserRoleGrid\UserRoleGridFactory;
 use App\Presentation\Components\Admin\UserRole\UserRolePermissionsForm\UserRolePermissionsFormFactory;
 use App\Presentation\Modules\Admin\BaseAdminPresenter;
+use App\Domain\UserRole\AclPermission;
+use App\Presentation\Accessory\RequiresPermission;
 
+#[RequiresPermission(AclPermission::RoleList)]
 class UserRolePresenter extends BaseAdminPresenter
 {
     public function __construct(
@@ -27,6 +30,7 @@ class UserRolePresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(AclPermission::RoleEdit)]
     public function actionCreate(): void
     {
         $this->addComponent($this->userRoleFormFactory->create(null), 'userRoleForm');
@@ -44,6 +48,7 @@ class UserRolePresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(AclPermission::RoleEdit)]
     public function handleDelete(int $id): void
     {
         try {

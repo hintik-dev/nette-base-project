@@ -52,7 +52,7 @@ class ValueStorageFacade
      */
     public function set(string $category, string $key, ?string $value): void
     {
-        if (!$this->securityUser->isAllowed('value-storage', 'edit')) {
+        if (!$this->securityUser->isAllowed(ValueStoragePermission::Edit)) {
             throw new InsufficientPrivilegesException();
         }
 

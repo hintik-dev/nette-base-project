@@ -344,15 +344,15 @@ Po nasazení se navenek nic nezmění.
 - [x] Výpis osiřelých klíčů k úklidu
 - [x] Guardy proti zamčení se ven navázané na UI
 
-### Fáze 3 — Prosazení do aplikace · ~1–2 dny
+### Fáze 3 — Prosazení do aplikace · hotovo
 
-Teprve tady se splní cíl „nezobrazovat podle role“.
+Teprve tady se splnil cíl „nezobrazovat podle role“.
 
-- [ ] Atribut `#[RequiresPermission]` a kontrola `admin.access` v `BaseAdminPresenter`
-- [ ] Vynucené odhlášení při ztrátě `admin.access`, `LogoutReason::AccessRevoked`
-- [ ] Handling `InsufficientPrivilegesException` → 403
-- [ ] Sidebar a šablony pod oprávnění
-- [ ] Převod všech fasád na nové klíče
+- [x] Atribut `#[RequiresPermission]` a kontrola `admin.access` v `BaseAdminPresenter`
+- [x] Vynucené odhlášení při ztrátě `admin.access`, `LogoutReason::AccessRevoked`
+- [x] Handling `InsufficientPrivilegesException` → 403 (`BasePresenter::run()`)
+- [x] Sidebar pod oprávnění, Latte funkce `isAllowed()`
+- [x] Převod všech fasád na nové klíče včetně těch, které dosud ACL neměly
 
 ### Fáze 4 — Vlastnická práva · ~1–2 dny
 
@@ -363,3 +363,13 @@ Kandidát na odložení, pokud 1.2 tlačí termín — zbytek funguje i bez toho
 - [ ] Latte funkce `isAllowed()` pro scoped kontroly
 
 **Celkem ~6–10 dní**, bez fáze 4 zhruba 5–8.
+
+---
+
+## Nápady mimo rozsah 1.2
+
+### Sidebar jako komponenta s definicí v PHP
+
+Menu je dnes ručně psaná šablona, kde je u každé položky opsaná podmínka na oprávnění a u hlaviček sekcí navíc ručně sestavená disjunkce („Správa“ se skrývá, jen když se skryje všech sedm položek pod ní). To se rozjede při každé další položce.
+
+Komponenta s definicí struktury v PHP by to sjednotila: položka by nesla `PermissionDefinition`, cíl a ikonu, sekce by se skrývala automaticky podle toho, jestli jí zbyla aspoň jedna viditelná položka, a stejná definice by mohla sloužit i jako zdroj pro atribut `#[RequiresPermission]` na presenteru — dnes je oprávnění zapsané na dvou místech a nic nehlídá, že se neshodují.
