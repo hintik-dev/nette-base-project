@@ -118,17 +118,17 @@ Refaktoring oprávnění pak nevyžaduje migraci, deploy nepotřebuje synchroniz
 
 ## Registr oprávnění
 
-Klíč má tvar `entita.akce`, případně `entita.akce.scope` pro práva vázaná na vlastnost:
+Klíč má tvar `entita.akce`, případně `entita.akce.scope` pro práva vázaná na vlastnost. Klíče se scope jsou v tabulce uvedené kvůli formátu — implementuje je až fáze 4, do registru se přidají s ní.
 
 | Klíč | Entita | Význam |
 |---|---|---|
 | `admin.access` | Administrace | Přístup do administrace vůbec — bez něj se nelze přihlásit |
 | `user.list` | Uživatel | Zobrazit seznam uživatelů |
 | `user.change-password` | Uživatel | Změnit heslo libovolnému uživateli |
-| `user.change-password.own` | Uživatel | Změnit vlastní heslo |
+| `user.change-password.own` | Uživatel | Změnit vlastní heslo (fáze 4) |
 | `page.publish` | Stránka | Publikovat stránku |
 | `page.delete` | Stránka | Smazat libovolnou stránku |
-| `page.delete.own` | Stránka | Smazat vlastní stránku |
+| `page.delete.own` | Stránka | Smazat vlastní stránku (fáze 4) |
 | `acl.role.edit` | Role | Spravovat role a jejich oprávnění |
 | `acl.role.assign` | Role | Přiřazovat role uživatelům |
 
@@ -266,7 +266,7 @@ Ruční vynucené odhlášení uživatele administrátorem už existuje (`UserSe
 
 Jakmile je oprávnění editovat oprávnění samo uloženo v databázi, vzniká scénář, kdy si administrátor jedním kliknutím vezme přístup ke správě práv a nikdo ho nemůže vrátit. Tři vrstvy obrany:
 
-- **Bypass flag.** `user.is_superadmin` obchází ACL úplně. Nezávisí na datech v tabulkách rolí, takže ho nelze rozbít z admin rozhraní.
+- **Bypass flag.** `user.is_superadmin` obchází ACL úplně. Nezávisí na datech v tabulkách rolí, takže ho nelze rozbít z admin rozhraní — a nastavit ho lze jen z CLI (`ExplorerUserRepository::setSuperadmin()` nemá cestu z formulářů), takže si obejití oprávnění nikdo neudělí sám.
 - **Recovery přes CLI.** Příkaz `app:create-superadmin` (viz [docs/commands.md](commands.md)) zůstává cestou ven i z úplně rozbitého stavu.
 - **Guardy ve fasádě.** Nelze si odebrat vlastní `acl.*` oprávnění. Nelze smazat ani odebrat oprávnění poslední roli, která dává `acl.role.edit`. Výchozí roli nelze smazat, změnit jí prioritu ani ji explicitně přiřadit.
 
@@ -318,23 +318,25 @@ Jakmile je oprávnění editovat oprávnění samo uloženo v databázi, vzniká
 
 ## Fázování a stav implementace
 
-### Fáze 1 — Jádro bez UI · ~2–3 dny
+### Fáze 1 — Jádro bez UI · hotovo
 
 Po nasazení se navenek nic nezmění.
 
-- [ ] Migrace: `user_role`, `user_role_permission`, `user_x_user_role`, úprava `user`
-- [ ] Doménový balík rolí a oprávnění (entita, mapper, repozitář, service, fasáda)
-- [ ] `PermissionRegistry` a enumy definic po doménách
-- [ ] Evaluátor priorit + testy
-- [ ] Override `isAllowed()` v `SecurityUser`, odstranění `StaticAuthorizator`
-- [ ] Seed migrace zachovávající dnešní chování
+- [x] Migrace: `user_role`, `user_role_permission`, `user_x_user_role`, úprava `user`
+- [x] Doménový balík rolí a oprávnění (entita, mapper, repozitář, service, fasáda)
+- [x] `PermissionRegistry` a enumy definic po doménách
+- [x] Evaluátor priorit + testy
+- [x] Override `isAllowed()` v `SecurityUser`, odstranění `StaticAuthorizator`
+- [x] Kontrola `admin.access` při přihlášení (`UserAuthenticator`)
+- [x] Přiřazení rolí uživateli (multiselect v `UserForm`) — přesunuto z fáze 2, jinak by fáze 1 nebyla nasaditelná
+- [x] Seed migrace zachovávající dnešní chování
 
-### Fáze 2 — Admin rozhraní · ~2–3 dny
+### Fáze 2 — Admin rozhraní · ~2 dny
 
 - [ ] CRUD rolí včetně priority
 - [ ] Třístavová matice oprávnění seskupená po entitách
-- [ ] Přiřazení rolí uživateli (multiselect v `UserForm`)
-- [ ] Guardy proti zamčení se ven
+- [ ] Výpis osiřelých klíčů k úklidu
+- [ ] Guardy proti zamčení se ven navázané na UI
 
 ### Fáze 3 — Prosazení do aplikace · ~1–2 dny
 
