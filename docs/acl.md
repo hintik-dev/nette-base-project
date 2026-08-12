@@ -148,7 +148,13 @@ enum PagePermission: string implements PermissionDefinition
 }
 ```
 
-`PermissionRegistry` je posbírá (přes DI tag nebo rozšíření `search` v `config/services.neon`) a slouží dvěma věcem: staví matici v admin UI seskupenou po entitách a validuje klíče. Vedlejším efektem je typová bezpečnost — `isAllowed(PagePermission::Edit)` místo řetězce, který PHPStan nezkontroluje.
+`PermissionRegistry` je posbírá a slouží dvěma věcem: staví matici v admin UI seskupenou po entitách a validuje klíče. Vedlejším efektem je typová bezpečnost — `isAllowed(PagePermission::Edit)` místo řetězce, který PHPStan nezkontroluje.
+
+### Klíč vs. název formulářového prvku
+
+Matice oprávnění dělá z každého klíče formulářový prvek, jenže `Nette\ComponentModel\Container` povoluje v názvu komponenty pouze `[a-zA-Z0-9_]`. Klíče jsou přitom kebab-case oddělený tečkami (`user.change-password`), takže je nutné zakódovat tečku i pomlčku — dělá to `PermissionControlName` (tečka → `__`, pomlčka → `_`).
+
+Chybu tohoto typu nezachytí PHPStan ani latte-lint, protože název prvku je jen řetězec. Hlídá ji proto test, který prožene všechny klíče z registru stejným regulárním výrazem, jaký používá Nette — nové oprávnění s neplatným klíčem tak spadne v testech, ne až na stránce.
 
 ---
 
@@ -331,12 +337,12 @@ Po nasazení se navenek nic nezmění.
 - [x] Přiřazení rolí uživateli (multiselect v `UserForm`) — přesunuto z fáze 2, jinak by fáze 1 nebyla nasaditelná
 - [x] Seed migrace zachovávající dnešní chování
 
-### Fáze 2 — Admin rozhraní · ~2 dny
+### Fáze 2 — Admin rozhraní · hotovo
 
-- [ ] CRUD rolí včetně priority
-- [ ] Třístavová matice oprávnění seskupená po entitách
-- [ ] Výpis osiřelých klíčů k úklidu
-- [ ] Guardy proti zamčení se ven navázané na UI
+- [x] CRUD rolí včetně priority (`/admin/user-role`)
+- [x] Třístavová matice oprávnění seskupená po entitách
+- [x] Výpis osiřelých klíčů k úklidu
+- [x] Guardy proti zamčení se ven navázané na UI
 
 ### Fáze 3 — Prosazení do aplikace · ~1–2 dny
 
