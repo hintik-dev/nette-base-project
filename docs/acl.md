@@ -362,14 +362,19 @@ Kandidát na odložení, pokud 1.2 tlačí termín — zbytek funguje i bez toho
 - [ ] Rozšíření `isAllowed()` o parametr entity
 - [ ] Latte funkce `isAllowed()` pro scoped kontroly
 
-**Celkem ~6–10 dní**, bez fáze 4 zhruba 5–8.
+### Fáze 5 — Sidebar jako komponenta · ~1 den
 
----
+Nezávislá na fázi 4, může přijít před ní i po ní.
 
-## Nápady mimo rozsah 1.2
+Menu je dnes ručně psaná šablona, kde je u každé položky opsaná podmínka na oprávnění a u hlaviček sekcí navíc ručně sestavená disjunkce — „Správa“ se skryje, jen když se skryje všech sedm položek pod ní. Každá další položka znamená zásah na dvou místech a nic neupozorní, když se na druhé zapomene.
 
-### Sidebar jako komponenta s definicí v PHP
+Podstatnější je ale duplicita oprávnění: stejné právo je zapsané v šabloně (co se zobrazí) a v atributu `#[RequiresPermission]` na presenteru (co se vynutí). Nic nehlídá, že se ty dva zápisy shodují — menu tak může nabízet sekci, na kterou presenter stejně nepustí, nebo naopak skrývat něco přístupného.
 
-Menu je dnes ručně psaná šablona, kde je u každé položky opsaná podmínka na oprávnění a u hlaviček sekcí navíc ručně sestavená disjunkce („Správa“ se skrývá, jen když se skryje všech sedm položek pod ní). To se rozjede při každé další položce.
+- [ ] Hodnotové objekty `MenuSection` a `MenuItem` (popisek, ikona, cíl, oprávnění)
+- [ ] Definice struktury menu v PHP na jednom místě
+- [ ] Komponenta, která skryje sekci bez viditelné položky a řeší aktivní stav
+- [ ] Odstranění duplicity oprávnění vůči `#[RequiresPermission]`
 
-Komponenta s definicí struktury v PHP by to sjednotila: položka by nesla `PermissionDefinition`, cíl a ikonu, sekce by se skrývala automaticky podle toho, jestli jí zbyla aspoň jedna viditelná položka, a stejná definice by mohla sloužit i jako zdroj pro atribut `#[RequiresPermission]` na presenteru — dnes je oprávnění zapsané na dvou místech a nic nehlídá, že se neshodují.
+K poslednímu bodu jsou dvě cesty. Buď menu zůstane zdrojem pravdy a atribut se z něj generuje, nebo menu odvodí oprávnění z presenteru — přes `PresenterFactory::getPresenterClass()` dohledá třídu podle cíle a přečte si atribut reflexí. Druhá varianta drží oprávnění u kódu, který ho vynucuje, což je správnější místo; cenou je reflexe při renderu menu, kterou je potřeba cachovat.
+
+**Celkem ~7–11 dní**, bez volitelných fází 4 a 5 zhruba 5–8.
