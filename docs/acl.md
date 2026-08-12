@@ -219,7 +219,7 @@ public function actionEdit(int $id): void
 
 Mezi opakovanými atributy platí AND, uvnitř jednoho OR. Která konkrétní stránka projde, rozhodne až fasáda.
 
-Vlastnictví stránky zavedla migrace `page.author_id`. Sloupec je nullable, takže stránky vzniklé před touto změnou autora nemají — a **stránka bez autora nepatří nikomu**, vlastnické oprávnění na ni tedy nezabere. Kdyby to bylo obráceně, po nasazení by na ně dosáhl každý s `page.edit.own`.
+Až se vlastnictví u nějaké entity zavede, počítejte s tím, že existující záznamy vlastníka mít nebudou. Pravidlo musí znít **záznam bez vlastníka nepatří nikomu** — kdyby to bylo obráceně, po nasazení by na všechna stará data dosáhl každý s právem `.own`. Stejně tak chybějící resolver znamená zákaz, aby samotné přidání klíče nevytvořilo tiché povolení.
 
 ### Omezení u výpisů
 
@@ -367,14 +367,15 @@ Teprve tady se splnil cíl „nezobrazovat podle role“.
 - [x] Sidebar pod oprávnění, Latte funkce `isAllowed()`
 - [x] Převod všech fasád na nové klíče včetně těch, které dosud ACL neměly
 
-### Fáze 4 — Vlastnická práva · hotovo
+### Fáze 4 — Vlastnická práva · mechanismus hotový, bez konzumenta
 
-- [x] Migrace `page.author_id` — bez sloupce vlastníka nemá `.own` na čem stát
-- [x] `ScopeResolver`, `ScopeResolverRegistry` a `PageOwnerScopeResolver`
-- [x] Klíč `page.edit.own`, `getResource()` v definici oprávnění
+- [x] `ScopeResolver`, `ScopeResolverRegistry`, `getResource()` v definici oprávnění
 - [x] `SecurityUser::isAllowedOn()` a Latte funkce `isAllowedOn()`
 - [x] OR sémantika uvnitř atributu `#[RequiresPermission]`
-- [x] Testy vyhodnocení scope
+- [x] Testy vyhodnocení scope nad testovací entitou
+- [ ] První doména, která vlastnictví skutečně používá
+
+Vlastnictví **nemá mít každá entita** — stránky mezi ně nepatří, u nich rozhoduje jen globální `page.edit`. Mechanismus je proto připravený, ale zatím ho žádná doména nepoužívá; první z nich si přinese vlastní `ScopeResolver` a klíč `.own`. Testy stojí na vlastní testovací entitě, aby platily nezávisle na tom, kdo bude ten první.
 
 ### Fáze 5 — Sidebar jako komponenta · ~1 den
 

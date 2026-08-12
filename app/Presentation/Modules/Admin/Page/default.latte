@@ -32,7 +32,7 @@
                         </span>
                     </td>
                     <td class="text-end">
-                        <a n:if="in_array($pageRow->id, $editablePageIds, true)"
+                        <a n:if="isAllowed(\App\Domain\Page\PagePermission::Edit)"
                            n:href="edit, id: $pageRow->id" class="btn btn-sm btn-outline-secondary">Upravit</a>
                     </td>
                 </tr>

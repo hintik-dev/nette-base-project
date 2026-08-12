@@ -14,7 +14,6 @@ class ExplorerPageRepository extends ExplorerRepository
     public const string COLUMN_ID = 'id';
     public const string COLUMN_SLUG = 'slug';
     public const string COLUMN_TITLE = 'title';
-    public const string COLUMN_AUTHOR_ID = 'author_id';
     public const string COLUMN_CONTENT = 'content';
     public const string COLUMN_STATUS = 'status';
     public const string COLUMN_PUBLISHED_AT = 'published_at';
@@ -92,12 +91,11 @@ class ExplorerPageRepository extends ExplorerRepository
     }
 
 
-    public function createPage(string $slug, string $title, ?int $authorId): Page
+    public function createPage(string $slug, string $title): Page
     {
         $row = $this->getTable()->insert([
             self::COLUMN_SLUG => $slug,
             self::COLUMN_TITLE => $title,
-            self::COLUMN_AUTHOR_ID => $authorId,
             self::COLUMN_CONTENT => Json::encode(['content' => [], 'root' => ['props' => new stdClass()]]),
             self::COLUMN_STATUS => PageStatus::Draft->value,
         ]);

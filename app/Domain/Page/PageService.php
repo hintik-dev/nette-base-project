@@ -36,9 +36,9 @@ readonly class PageService
     }
 
 
-    public function createPage(string $slug, string $title, ?int $authorId): Page
+    public function createPage(string $slug, string $title): Page
     {
-        return $this->pageRepository->createPage($slug, $title, $authorId);
+        return $this->pageRepository->createPage($slug, $title);
     }
 
 

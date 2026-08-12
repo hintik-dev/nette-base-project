@@ -14,11 +14,12 @@ use Attribute;
  *
  * Uvnitř jednoho atributu platí OR, mezi opakovanými atributy AND:
  *
- *     #[RequiresPermission(PagePermission::Edit, PagePermission::EditOwn)]
+ *     #[RequiresPermission(FooPermission::Edit, FooPermission::EditOwn)]
  *
- * Tahle dvojice pustí dál i toho, kdo smí upravovat jen vlastní stránky —
- * hrubá branka na vstupu. Které konkrétní stránky to jsou, rozhodne až
- * fasáda přes isAllowedOn(), protože tam už je po ruce entita.
+ * Dvojice globálního a vlastnického oprávnění je hrubá branka na vstupu —
+ * pustí dál i toho, kdo smí upravovat jen vlastní záznamy. Které konkrétní
+ * to jsou, rozhodne až fasáda přes isAllowedOn(), protože tam je po ruce
+ * entita; v checkRequirements() ještě není.
  *
  * Atribut na třídě platí pro všechny akce, atribut na akci ho zpřesňuje.
  */

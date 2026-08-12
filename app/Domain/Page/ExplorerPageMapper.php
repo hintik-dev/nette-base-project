@@ -15,9 +15,6 @@ class ExplorerPageMapper
             id: $row[ExplorerPageRepository::COLUMN_ID],
             slug: $row[ExplorerPageRepository::COLUMN_SLUG],
             title: $row[ExplorerPageRepository::COLUMN_TITLE],
-            authorId: $row[ExplorerPageRepository::COLUMN_AUTHOR_ID] !== null
-                ? (int) $row[ExplorerPageRepository::COLUMN_AUTHOR_ID]
-                : null,
             content: $content,
             status: PageStatus::from($row[ExplorerPageRepository::COLUMN_STATUS]),
             publishedAt: $row[ExplorerPageRepository::COLUMN_PUBLISHED_AT] ?? null,
