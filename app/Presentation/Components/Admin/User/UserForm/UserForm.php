@@ -97,6 +97,9 @@ class UserForm extends BaseComponent
     {
         $this->template->editId = $this->editId;
         $this->template->backLink = $this->presenter->link('User:list');
+        $this->template->canAssignRoles = $this->userFacade->canAssignRoles();
+        $this->template->isSuperadmin = $this->editId !== null
+            && $this->userFacade->getUserById($this->editId)->isSuperadmin;
         parent::render($params);
     }
 

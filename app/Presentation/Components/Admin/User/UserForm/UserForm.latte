@@ -17,10 +17,17 @@
             <div n:if="$form['password']->getOption('description')" class="form-text">{$form['password']->getOption('description')}</div>
             {inputError password}
         </div>
-        <div class="mb-3">
-            <label n:name="role" class="form-label">Role</label>
-            {input role, class: 'form-select'}
-            {inputError role}
+        <div n:if="$isSuperadmin" class="alert alert-warning py-2 small">
+            Tento účet je <strong>superadministrátor</strong> — obchází ACL a vidí vše
+            bez ohledu na přiřazené role. Zrušit to lze jen z příkazové řádky.
+        </div>
+        <div n:if="$canAssignRoles" class="mb-3">
+            <label n:name="roleIds" class="form-label">Role</label>
+            {input roleIds, class: 'form-select', size: 6}
+            <div class="form-text">
+                Bez vybrané role platí uživateli jen výchozí role. Držte Ctrl pro výběr více rolí.
+            </div>
+            {inputError roleIds}
         </div>
         <div class="mb-3">
             {input active}

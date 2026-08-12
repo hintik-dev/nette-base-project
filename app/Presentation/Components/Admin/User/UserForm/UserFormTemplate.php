@@ -7,5 +7,11 @@ final class UserFormTemplate extends BaseTemplate
 {
     public ?int $editId = null;
 
-    public string $backLink;
+    public string $backLink = '';
+
+    /** Pole rolí se vykresluje jen tomu, kdo je smí přiřazovat. */
+    public bool $canAssignRoles = false;
+
+    /** Superadmin obchází ACL — role u něj nic neovlivní, je potřeba to říct. */
+    public bool $isSuperadmin = false;
 }
