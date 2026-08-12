@@ -77,6 +77,7 @@ Podrobný návod: [docs/getting-started.md](docs/getting-started.md)
 | [Komponenty](docs/components.md) | Tvorba komponent, factory, registrace, flash zprávy |
 | [Formuláře](docs/forms.md) | Formuláře v komponentách, validace, DTO |
 | [DataGrid](docs/datagrid.md) | Tvorba grid komponent, sloupce, filtry, akce |
+| [ACL](docs/acl.md) | Role a oprávnění, priority, vynucování přístupu |
 | [Job systém](docs/scheduler.md) | Plánované úlohy, logování běhu, cron |
 | [Jazykové mutace](docs/translations.md) | contributte/translation, překladové soubory |
 | [CLI Příkazy](docs/commands.md) | Psaní a spouštění konzolových příkazů |
