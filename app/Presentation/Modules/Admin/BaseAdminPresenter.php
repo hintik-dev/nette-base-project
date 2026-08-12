@@ -6,6 +6,8 @@ use App\Domain\UserSettings\AppearanceTheme;
 use App\Domain\UserSettings\UserSettingsFacade;
 use App\Model\Security\Permission\AdminPermission;
 use App\Presentation\Accessory\RequiresPermission;
+use App\Presentation\Components\Admin\Menu\SidebarMenu\SidebarMenu;
+use App\Presentation\Components\Admin\Menu\SidebarMenu\SidebarMenuFactory;
 use App\Presentation\Modules\Base\BasePresenter;
 use Nette\Http\IResponse;
 use Override;
@@ -24,11 +26,25 @@ class BaseAdminPresenter extends BasePresenter
 
     private UserSettingsFacade $userSettingsFacade;
 
+    private SidebarMenuFactory $sidebarMenuFactory;
+
     private ?AppearanceTheme $adminTheme = null;
 
     public function injectUserSettingsFacade(UserSettingsFacade $userSettingsFacade): void
     {
         $this->userSettingsFacade = $userSettingsFacade;
+    }
+
+
+    public function injectSidebarMenuFactory(SidebarMenuFactory $sidebarMenuFactory): void
+    {
+        $this->sidebarMenuFactory = $sidebarMenuFactory;
+    }
+
+
+    protected function createComponentSidebarMenu(): SidebarMenu
+    {
+        return $this->sidebarMenuFactory->create($this->getAdminTheme());
     }
 
 

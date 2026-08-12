@@ -30,6 +30,10 @@ services:
 	- App\Model\Security\Permission\PermissionEvaluator
 	- App\Model\Security\Permission\ScopeResolverRegistry(typed(App\Model\Security\Permission\ScopeResolver))
 
+	# Menu se ptá na oprávnění cílového presenteru, aby nebylo zapsané dvakrát.
+	- App\Presentation\Components\Admin\Menu\MenuPermissionReader
+	- App\Presentation\Components\Admin\Menu\MenuPermissionResolver
+
 	security.userStorage:
 		factory: App\Model\Security\Storage\DbUserStorage
 		setup:

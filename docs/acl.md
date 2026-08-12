@@ -377,19 +377,18 @@ Teprve tady se splnil cíl „nezobrazovat podle role“.
 
 Vlastnictví **nemá mít každá entita** — stránky mezi ně nepatří, u nich rozhoduje jen globální `page.edit`. Mechanismus je proto připravený, ale zatím ho žádná doména nepoužívá; první z nich si přinese vlastní `ScopeResolver` a klíč `.own`. Testy stojí na vlastní testovací entitě, aby platily nezávisle na tom, kdo bude ten první.
 
-### Fáze 5 — Sidebar jako komponenta · ~1 den
+### Fáze 5 — Sidebar jako komponenta · hotovo
 
-Nezávislá na fázi 4, může přijít před ní i po ní.
+- [x] Hodnotové objekty `MenuSection` a `MenuItem`
+- [x] Definice struktury menu v PHP na jednom místě (`AdminMenuFactory`)
+- [x] Komponenta, která skryje sekci bez viditelné položky a řeší aktivní stav
+- [x] Odstranění duplicity oprávnění vůči `#[RequiresPermission]`
+- [x] Test procházející celé menu
 
-Menu je dnes ručně psaná šablona, kde je u každé položky opsaná podmínka na oprávnění a u hlaviček sekcí navíc ručně sestavená disjunkce — „Správa“ se skryje, jen když se skryje všech sedm položek pod ní. Každá další položka znamená zásah na dvou místech a nic neupozorní, když se na druhé zapomene.
+Zvolena varianta, kdy menu **odvozuje oprávnění z presenteru**: `MenuPermissionReader` přeloží cíl přes `PresenterFactory::getPresenterClass()` na třídu a přečte z ní i z metody akce atributy `#[RequiresPermission]`. Právo tak existuje jen na jednom místě — u kódu, který přístup skutečně vynucuje. Reflexe běží jednou na cíl a request a drží se v paměti; instance presenteru nevzniká.
 
-Podstatnější je ale duplicita oprávnění: stejné právo je zapsané v šabloně (co se zobrazí) a v atributu `#[RequiresPermission]` na presenteru (co se vynutí). Nic nehlídá, že se ty dva zápisy shodují — menu tak může nabízet sekci, na kterou presenter stejně nepustí, nebo naopak skrývat něco přístupného.
+`MenuItem` proto oprávnění vůbec nemá. Přidání položky znamená jeden řádek v `AdminMenuFactory` a atribut na presenteru — nikdy podmínku v šabloně.
 
-- [ ] Hodnotové objekty `MenuSection` a `MenuItem` (popisek, ikona, cíl, oprávnění)
-- [ ] Definice struktury menu v PHP na jednom místě
-- [ ] Komponenta, která skryje sekci bez viditelné položky a řeší aktivní stav
-- [ ] Odstranění duplicity oprávnění vůči `#[RequiresPermission]`
+Neexistující cíl vyhodí výjimku místo tichého skrytí; test prochází všechny cíle v menu, takže překlep spadne v testech. Druhý test hlídá, že žádná položka kromě dashboardu nezůstane bez oprávnění — položka viditelná úplně všem je skoro vždy zapomenutý atribut.
 
-K poslednímu bodu jsou dvě cesty. Buď menu zůstane zdrojem pravdy a atribut se z něj generuje, nebo menu odvodí oprávnění z presenteru — přes `PresenterFactory::getPresenterClass()` dohledá třídu podle cíle a přečte si atribut reflexí. Druhá varianta drží oprávnění u kódu, který ho vynucuje, což je správnější místo; cenou je reflexe při renderu menu, kterou je potřeba cachovat.
-
-**Celkem ~7–11 dní**, bez volitelných fází 4 a 5 zhruba 5–8.
+**Celkem ~7–11 dní.** Všechny fáze jsou hotové; otevřený zůstává jediný bod — první doména, která si vlastnictví skutečně vezme.
