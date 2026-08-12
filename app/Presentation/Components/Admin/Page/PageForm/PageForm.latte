@@ -17,9 +17,9 @@
             <div class="form-text">Bez úvodního lomítka, např. <code>o-nas</code>. Ignoruje se u úvodní stránky.</div>
             {inputError slug}
         </div>
-        <div class="mb-3 form-check">
-            {input isHomepage, class: 'form-check-input'}
-            <label n:name="isHomepage" class="form-check-label">Nastavit jako úvodní stránku</label>
+        <div class="mb-3">
+            {input isHomepage}
+            {label isHomepage /}
             <div class="form-text">Bude dostupná na kořenové adrese webu (<code>/</code>).</div>
             {inputError isHomepage}
         </div>
