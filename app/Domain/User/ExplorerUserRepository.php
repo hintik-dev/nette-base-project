@@ -2,7 +2,6 @@
 namespace App\Domain\User;
 
 use App\Core\Database\ExplorerRepository;
-use App\Domain\UserRole\UserRole;
 use DateTimeInterface;
 use Nette\Database\Table\ActiveRow;
 use Nette\Database\Table\Selection;
@@ -13,7 +12,7 @@ class ExplorerUserRepository extends ExplorerRepository
     public const string COLUMN_ID = 'id';
     public const string COLUMN_EMAIL = 'email';
     public const string COLUMN_PASSWORD_HASH = 'password_hash';
-    public const string COLUMN_ROLE = 'role';
+    public const string COLUMN_IS_SUPERADMIN = 'is_superadmin';
 
     public const string COLUMN_ACTIVE = 'active';
     public const string COLUMN_LAST_LOGIN = 'last_login';
@@ -69,12 +68,11 @@ class ExplorerUserRepository extends ExplorerRepository
     }
 
 
-    public function createUser(string $email, string $passwordHash, UserRole $role, bool $active): User
+    public function createUser(string $email, string $passwordHash, bool $active): User
     {
         $row = $this->getTable()->insert([
             self::COLUMN_EMAIL => $email,
             self::COLUMN_PASSWORD_HASH => $passwordHash,
-            self::COLUMN_ROLE => $role->value,
             self::COLUMN_ACTIVE => $active,
         ]);
 
@@ -112,14 +110,27 @@ class ExplorerUserRepository extends ExplorerRepository
     }
 
 
-    public function updateUser(int $id, string $email, UserRole $role, bool $active): void
+    public function updateUser(int $id, string $email, bool $active): void
     {
         $this->getTable()
             ->where(self::COLUMN_ID, $id)
             ->update([
                 self::COLUMN_EMAIL => $email,
-                self::COLUMN_ROLE => $role->value,
                 self::COLUMN_ACTIVE => $active,
+            ]);
+    }
+
+
+    /**
+     * Bypass ACL se nastavuje jen z CLI (app:create-superadmin), ne z administrace —
+     * nikdo si tak nemůže sám udělit obejití oprávnění.
+     */
+    public function setSuperadmin(int $id, bool $isSuperadmin): void
+    {
+        $this->getTable()
+            ->where(self::COLUMN_ID, $id)
+            ->update([
+                self::COLUMN_IS_SUPERADMIN => $isSuperadmin,
             ]);
     }
 

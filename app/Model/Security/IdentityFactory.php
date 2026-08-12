@@ -7,8 +7,11 @@ class IdentityFactory
 {
     public function createIdentity(User $user): Identity
     {
-        return new Identity($user->id, [$user->role->value], [
-            'email' => $user->email,
+        // Role se do identity záměrně nepředávají — o oprávněních rozhoduje
+        // PermissionEvaluator nad aktuálním stavem databáze.
+        return new Identity($user->id, null, [
+            Identity::DATA_EMAIL => $user->email,
+            Identity::DATA_IS_SUPERADMIN => $user->isSuperadmin,
         ]);
     }
 }

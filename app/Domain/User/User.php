@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 namespace App\Domain\User;
 
-use App\Domain\UserRole\UserRole;
-use DateTime;
+use DateTimeInterface;
 use Nette\Security\Resource;
 
 readonly class User implements Resource
@@ -13,9 +12,9 @@ readonly class User implements Resource
         public int $id,
         public string $email,
         public string $passwordHash,
-        public UserRole $role,
+        public bool $isSuperadmin,
         public bool $active,
-        public ?DateTime $lastLogin,
+        public ?DateTimeInterface $lastLogin,
     ) {
     }
 

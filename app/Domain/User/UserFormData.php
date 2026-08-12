@@ -9,14 +9,19 @@ class UserFormData
 
     public const string PARAM_EMAIL = 'email';
     public const string PARAM_PASSWORD = 'password';
-    public const string PARAM_ROLE = 'role';
+    public const string PARAM_ROLE_IDS = 'roleIds';
     public const string PARAM_ACTIVE = 'active';
 
     public string $email;
 
     public ?string $password = null;
 
-    public string $role;
+    /**
+     * ID přiřazených rolí. Prázdné pole = uživateli platí jen výchozí role.
+     *
+     * @var list<int>
+     */
+    public array $roleIds = [];
 
     public bool $active = true;
 }

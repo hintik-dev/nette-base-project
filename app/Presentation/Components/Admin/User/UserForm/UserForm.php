@@ -4,7 +4,7 @@ namespace App\Presentation\Components\Admin\User\UserForm;
 
 use App\Domain\User\UserFacade;
 use App\Domain\User\UserFormData;
-use App\Domain\UserRole\UserRole;
+use App\Domain\UserRole\UserRoleFacade;
 use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\Form\BaseForm;
 use Nette\Forms\Control;
@@ -16,6 +16,7 @@ class UserForm extends BaseComponent
 {
     public function __construct(
         private readonly UserFacade $userFacade,
+        private readonly UserRoleFacade $userRoleFacade,
         private readonly ?int $editId,
     ) {
     }
@@ -44,11 +45,14 @@ class UserForm extends BaseComponent
             $password->setRequired('Zadejte heslo.');
         }
 
-        $form->addSelect(UserFormData::PARAM_ROLE, 'Role', [
-            UserRole::User->value       => UserRole::User->toLabel(),
-            UserRole::Admin->value      => UserRole::Admin->toLabel(),
-            UserRole::SuperAdmin->value => UserRole::SuperAdmin->toLabel(),
-        ])->setRequired();
+        // Role se nabízejí jen tomu, kdo je smí přiřazovat. Výchozí role mezi
+        // nimi není — aplikuje se vždy, i uživateli bez jakékoli role.
+        $canAssignRoles = $this->userFacade->canAssignRoles();
+
+        if ($canAssignRoles) {
+            $form->addMultiSelect(UserFormData::PARAM_ROLE_IDS, 'Role', $this->getRoleOptions())
+                ->setOption('description', 'Bez vybrané role platí uživateli jen výchozí role.');
+        }
 
         $form->addCheckbox(UserFormData::PARAM_ACTIVE, 'Aktivní');
 
@@ -56,11 +60,16 @@ class UserForm extends BaseComponent
 
         if ($this->editId !== null) {
             $user = $this->userFacade->getUserById($this->editId);
-            $form->setDefaults([
+            $defaults = [
                 UserFormData::PARAM_EMAIL  => $user->email,
-                UserFormData::PARAM_ROLE   => $user->role->value,
                 UserFormData::PARAM_ACTIVE => $user->active,
-            ]);
+            ];
+
+            if ($canAssignRoles) {
+                $defaults[UserFormData::PARAM_ROLE_IDS] = $this->userRoleFacade->getRoleIdsForUser($this->editId);
+            }
+
+            $form->setDefaults($defaults);
         } else {
             $form->setDefaults([UserFormData::PARAM_ACTIVE => true]);
         }
@@ -68,6 +77,19 @@ class UserForm extends BaseComponent
         $form->onSuccess[] = fn(BaseForm $form, UserFormData $data) => $this->saveForm($data);
 
         return $form;
+    }
+
+
+    /** @return array<int, string> */
+    private function getRoleOptions(): array
+    {
+        $options = [];
+
+        foreach ($this->userRoleFacade->getAssignableRoles() as $role) {
+            $options[$role->id] = $role->name;
+        }
+
+        return $options;
     }
 
 

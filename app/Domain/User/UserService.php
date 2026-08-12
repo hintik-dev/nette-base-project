@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 namespace App\Domain\User;
 
-use App\Domain\UserRole\UserRole;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -25,9 +24,9 @@ readonly class UserService
     }
 
 
-    public function createUser(string $email, string $passwordHash, UserRole $role, bool $active = true): User
+    public function createUser(string $email, string $passwordHash, bool $active = true): User
     {
-        return $this->userRepository->createUser($email, $passwordHash, $role, $active);
+        return $this->userRepository->createUser($email, $passwordHash, $active);
     }
 
 
@@ -43,9 +42,15 @@ readonly class UserService
     }
 
 
-    public function updateUser(int $id, string $email, UserRole $role, bool $active): void
+    public function updateUser(int $id, string $email, bool $active): void
     {
-        $this->userRepository->updateUser($id, $email, $role, $active);
+        $this->userRepository->updateUser($id, $email, $active);
+    }
+
+
+    public function setSuperadmin(int $id, bool $isSuperadmin): void
+    {
+        $this->userRepository->setSuperadmin($id, $isSuperadmin);
     }
 
 
