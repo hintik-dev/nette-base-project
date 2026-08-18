@@ -2,15 +2,15 @@
 
 namespace App\Presentation\Components\Admin\Email\ComposeEmailForm;
 
-use App\Domain\Email\EmailSenderService;
 use App\Domain\Email\Mail\ComposeMail;
+use App\Domain\Email\MailQueueService;
 use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\Form\BaseForm;
 
 class ComposeEmailForm extends BaseComponent
 {
     public function __construct(
-        private readonly EmailSenderService $emailSenderService,
+        private readonly MailQueueService $mailQueueService,
     ) {
     }
 
@@ -46,34 +46,17 @@ class ComposeEmailForm extends BaseComponent
         $recipients = $this->parseRecipients($values->recipients);
         $mail = new ComposeMail($values->subject, $values->bodyHtml);
 
-        $failed = [];
         foreach ($recipients as $recipient) {
-            try {
-                $this->emailSenderService->send($recipient, $mail);
-            } catch (\Throwable) {
-                $failed[] = $recipient;
-            }
+            $this->mailQueueService->enqueue($recipient, $mail);
         }
 
-        if (!empty($failed)) {
-            $this->flashError(sprintf(
-                'Nepodařilo se odeslat na: %s',
-                implode(', ', $failed),
-            ));
-        }
+        $this->flashSuccess(sprintf(
+            'E-mail byl zařazen do fronty pro %d %s.',
+            count($recipients),
+            count($recipients) === 1 ? 'příjemce' : 'příjemců',
+        ));
 
-        $sent = count($recipients) - count($failed);
-        if ($sent > 0) {
-            $this->flashSuccess(sprintf(
-                'E-mail byl úspěšně odeslán %d %s.',
-                $sent,
-                $sent === 1 ? 'příjemci' : 'příjemcům',
-            ));
-        }
-
-        if (empty($failed)) {
-            $this->presenter->redirect(':Admin:Email:list');
-        }
+        $this->presenter->redirect(':Admin:Email:list');
     }
 
 

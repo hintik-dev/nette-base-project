@@ -30,6 +30,11 @@
                 {/if}
             </dd>
 
+            {if $email->isSensitive}
+            <dt class="col-sm-3">Citlivý obsah</dt>
+            <dd class="col-sm-9"><span class="badge bg-warning text-dark">Citlivý e-mail</span> — obsah nebyl z bezpečnostních důvodů uložen, opětovné odeslání není možné.</dd>
+            {/if}
+
             {if $email->error !== null}
             <dt class="col-sm-3">Chyba</dt>
             <dd class="col-sm-9 text-danger">{$email->error}</dd>
