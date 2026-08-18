@@ -81,6 +81,7 @@ class UserSessionGrid extends BaseGridComponent
                     LogoutReason::Inactivity    => 'Nečinnost',
                     LogoutReason::Forced        => 'Vynuceno',
                     LogoutReason::SingleSession => 'Nová session',
+                    LogoutReason::AccessRevoked => 'Odebrán přístup',
                 };
 
                 return Html::el('span')

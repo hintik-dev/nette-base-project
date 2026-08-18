@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Domain\User\UserService;
-use App\Domain\UserRole\UserRole;
 use App\Model\Security\Passwords;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -61,11 +60,16 @@ class CreateSuperAdminCommand extends BaseCommand
         if ($userExists) {
             $user = $this->userService->getUserByEmail($email);
             $this->userService->updateUserPasswordHash($user->id, $passwordHash);
-            $output->writeln('<info>Heslo uživatele "' . $email . '" bylo aktualizováno.</info>');
+            $this->userService->setSuperadmin($user->id, true);
+            $this->userService->setActive($user->id, true);
+            $output->writeln('<info>Heslo uživatele "' . $email . '" bylo aktualizováno a účet povýšen na superadmina.</info>');
         } else {
-            $user = $this->userService->createUser($email, $passwordHash, UserRole::SuperAdmin);
+            $user = $this->userService->createUser($email, $passwordHash);
+            $this->userService->setSuperadmin($user->id, true);
             $output->writeln('<info>Superadmin uživatel "' . $email . '" byl úspěšně vytvořen (ID: ' . $user->id . ').</info>');
         }
+
+        $output->writeln('<comment>Superadmin obchází ACL — tento účet používejte jen pro správu a obnovu přístupu.</comment>');
 
         return self::SUCCESS;
     }

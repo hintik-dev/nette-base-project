@@ -5,6 +5,8 @@ use App\Domain\User\UserNotFoundException;
 use App\Domain\User\UserService;
 use App\Model\Security\IdentityFactory;
 use App\Model\Security\Passwords;
+use App\Model\Security\Permission\AdminPermission;
+use App\Model\Security\Permission\PermissionEvaluator;
 use Nette\Security\AuthenticationException;
 use Nette\Security\Authenticator;
 use Nette\Security\IIdentity;
@@ -15,6 +17,7 @@ final class UserAuthenticator implements Authenticator
         private UserService $userService,
         private Passwords $passwords,
         private IdentityFactory $identityFactory,
+        private PermissionEvaluator $permissionEvaluator,
     ) {
     }
 
@@ -37,6 +40,12 @@ final class UserAuthenticator implements Authenticator
 
         if (!$user->active) {
             throw new AuthenticationException('Account is blocked', self::NotApproved);
+        }
+
+        // Bez admin.access se uživatel nemá kam přihlásit. Evaluátor proto
+        // pracuje s ID uživatele — v tuhle chvíli ještě žádná identita není.
+        if (!$user->isSuperadmin && !$this->permissionEvaluator->isAllowed($user->id, AdminPermission::Access->getKey())) {
+            throw new AuthenticationException('Access to administration has been revoked', self::NotApproved);
         }
 
         $this->userService->updateUserLastLogin($user->id);

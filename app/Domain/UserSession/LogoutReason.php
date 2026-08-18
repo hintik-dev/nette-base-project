@@ -7,4 +7,5 @@ enum LogoutReason: string
     case Inactivity = 'inactivity';
     case Forced = 'forced';
     case SingleSession = 'single_session';
+    case AccessRevoked = 'access_revoked';
 }

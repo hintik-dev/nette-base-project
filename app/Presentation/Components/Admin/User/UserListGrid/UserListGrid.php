@@ -4,7 +4,7 @@ namespace App\Presentation\Components\Admin\User\UserListGrid;
 
 use App\Domain\User\ExplorerUserRepository;
 use App\Domain\User\UserFacade;
-use App\Domain\UserRole\UserRole;
+use App\Domain\UserRole\ExplorerUserRoleRepository;
 use App\Presentation\Components\Base\BaseGridComponent;
 use App\Presentation\Control\DataGrid\BaseGrid;
 use App\Presentation\Control\DataGrid\BaseGridFactory;
@@ -14,6 +14,7 @@ class UserListGrid extends BaseGridComponent
 {
     public function __construct(
         private readonly UserFacade $userFacade,
+        private readonly ExplorerUserRoleRepository $userRoleRepository,
         BaseGridFactory $baseGridFactory,
     ) {
         parent::__construct($baseGridFactory);
@@ -30,8 +31,19 @@ class UserListGrid extends BaseGridComponent
             ->setSortable()
             ->setFilterText();
 
-        $grid->addColumnText(ExplorerUserRepository::COLUMN_ROLE, 'Role')
-            ->setRenderer(fn($row) => UserRole::from($row[ExplorerUserRepository::COLUMN_ROLE])->toLabel())
+        // Načteno jedním dotazem dopředu, ať grid nedělá dotaz na každý řádek.
+        $roleNamesByUser = $this->userRoleRepository->getRoleNamesByUser();
+
+        $grid->addColumnText(ExplorerUserRepository::COLUMN_IS_SUPERADMIN, 'Role')
+            ->setRenderer(function ($row) use ($roleNamesByUser): string {
+                if ((bool) $row[ExplorerUserRepository::COLUMN_IS_SUPERADMIN]) {
+                    return 'Superadministrátor';
+                }
+
+                $names = $roleNamesByUser[(int) $row[ExplorerUserRepository::COLUMN_ID]] ?? [];
+
+                return $names === [] ? 'Výchozí role' : implode(', ', $names);
+            })
             ->setFitContent();
 
         $grid->addColumnStatus(ExplorerUserRepository::COLUMN_ACTIVE, 'Aktivní')

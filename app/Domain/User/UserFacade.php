@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 namespace App\Domain\User;
 
-use App\Domain\UserRole\UserRole;
+use App\Domain\UserRole\AclPermission;
+use App\Domain\UserRole\UserRoleFacade;
 use App\Model\Security\Authorizator\InsufficientPrivilegesException;
 use App\Model\Security\Passwords;
+use App\Model\Security\Permission\PermissionDefinition;
 use App\Model\Security\SecurityUser;
 use Nette\Database\Table\ActiveRow;
 use Nette\Database\Table\Selection;
@@ -13,6 +15,7 @@ class UserFacade
     public function __construct(
         private readonly UserService $userService,
         private readonly ExplorerUserRepository $userRepository,
+        private readonly UserRoleFacade $userRoleFacade,
         private readonly SecurityUser $securityUser,
         private readonly Passwords $passwords,
     ) {
@@ -25,9 +28,7 @@ class UserFacade
      */
     public function getAllUsersDataSource(): Selection
     {
-        if (!$this->securityUser->isAllowed('user', 'list')) {
-            throw new InsufficientPrivilegesException();
-        }
+        $this->assertAllowed(UserPermission::ListAll);
 
         return $this->userRepository->getAllDataSource();
     }
@@ -38,9 +39,7 @@ class UserFacade
      */
     public function getUserById(int $id): User
     {
-        if (!$this->securityUser->isAllowed('user', 'detail')) {
-            throw new InsufficientPrivilegesException();
-        }
+        $this->assertAllowed(UserPermission::Detail);
 
         return $this->userService->getUserById($id);
     }
@@ -51,9 +50,7 @@ class UserFacade
      */
     public function getUserByEmail(string $email): User
     {
-        if (!$this->securityUser->isAllowed('user', 'detail')) {
-            throw new InsufficientPrivilegesException();
-        }
+        $this->assertAllowed(UserPermission::Detail);
 
         return $this->userService->getUserByEmail($email);
     }
@@ -64,13 +61,17 @@ class UserFacade
      */
     public function create(UserFormData $data): User
     {
-        if (!$this->securityUser->isAllowed('user', 'create')) {
-            throw new InsufficientPrivilegesException();
-        }
+        $this->assertAllowed(UserPermission::Create);
 
         $passwordHash = $this->passwords->hash((string) $data->password);
 
-        return $this->userService->createUser($data->email, $passwordHash, UserRole::from($data->role), $data->active);
+        $user = $this->userService->createUser($data->email, $passwordHash, $data->active);
+
+        if ($this->canAssignRoles()) {
+            $this->userRoleFacade->setRolesForUser($user->id, $data->roleIds);
+        }
+
+        return $user;
     }
 
 
@@ -79,14 +80,18 @@ class UserFacade
      */
     public function update(int $id, UserFormData $data): void
     {
-        if (!$this->securityUser->isAllowed('user', 'edit')) {
-            throw new InsufficientPrivilegesException();
-        }
+        $this->assertAllowed(UserPermission::Edit);
 
-        $this->userService->updateUser($id, $data->email, UserRole::from($data->role), $data->active);
+        $this->userService->updateUser($id, $data->email, $data->active);
 
         if ($data->password !== null && $data->password !== '') {
+            $this->assertAllowed(UserPermission::ChangePassword);
             $this->userService->updateUserPasswordHash($id, $this->passwords->hash($data->password));
+        }
+
+        // Kdo nesmí přiřazovat role, uživatele upraví, ale jeho role nechá být.
+        if ($this->canAssignRoles()) {
+            $this->userRoleFacade->setRolesForUser($id, $data->roleIds);
         }
     }
 
@@ -97,9 +102,7 @@ class UserFacade
      */
     public function setActive(int $id, bool $active): void
     {
-        if (!$this->securityUser->isAllowed('user', 'edit')) {
-            throw new InsufficientPrivilegesException();
-        }
+        $this->assertAllowed(UserPermission::Edit);
 
         if (!$active && $this->isCurrentUser($id)) {
             throw new CannotModifySelfException();
@@ -109,14 +112,31 @@ class UserFacade
     }
 
 
+    public function canAssignRoles(): bool
+    {
+        return $this->securityUser->isAllowed(AclPermission::RoleAssign);
+    }
+
+
     public function isCurrentUser(int $id): bool
     {
-        return (int) $this->securityUser->getId() === $id;
+        return $this->securityUser->getUserId() === $id;
     }
 
 
     public function emailExists(string $email, ?int $excludeId = null): bool
     {
         return $this->userService->userExistsByEmail($email, $excludeId);
+    }
+
+
+    /**
+     * @throws InsufficientPrivilegesException
+     */
+    private function assertAllowed(PermissionDefinition $permission): void
+    {
+        if (!$this->securityUser->isAllowed($permission)) {
+            throw new InsufficientPrivilegesException();
+        }
     }
 }

@@ -6,7 +6,10 @@ use App\Domain\Email\SentEmailFacade;
 use App\Presentation\Components\Admin\Email\ComposeEmailForm\ComposeEmailFormFactory;
 use App\Presentation\Components\Admin\Email\SentEmailGrid\SentEmailGridFactory;
 use App\Presentation\Modules\Admin\BaseAdminPresenter;
+use App\Domain\Email\EmailPermission;
+use App\Presentation\Accessory\RequiresPermission;
 
+#[RequiresPermission(EmailPermission::ListAll)]
 class EmailPresenter extends BaseAdminPresenter
 {
     public function __construct(
@@ -24,12 +27,14 @@ class EmailPresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(EmailPermission::Send)]
     public function actionCompose(): void
     {
         $this->addComponent($this->composeFormFactory->create(), 'composeEmailForm');
     }
 
 
+    #[RequiresPermission(EmailPermission::Resend)]
     public function handleResend(int $id): void
     {
         try {
@@ -43,6 +48,7 @@ class EmailPresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(EmailPermission::Detail)]
     public function actionDetail(int $id): void
     {
         /** @var EmailDetailTemplate $template */

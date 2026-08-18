@@ -1,0 +1,24 @@
+{block #pageTitle}Role a oprávnění{/block}
+
+{block #content}
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h3 class="card-title mb-0">Přehled rolí</h3>
+        <a n:href="create" class="btn btn-sm btn-primary ms-auto">
+            <i class="bi bi-plus-lg"></i> Nová role
+        </a>
+    </div>
+    <div class="card-body">
+        <p class="text-muted small">
+            Oprávnění se skládají vzestupně podle priority — vyšší priorita přepisuje nižší.
+            Výchozí role s prioritou 0 platí všem uživatelům včetně těch bez jakékoli role
+            a nelze ji přiřadit ani smazat.
+        </p>
+    </div>
+    <div class="card-body p-0">
+        {control userRoleGrid}
+    </div>
+</div>
+
+{/block}

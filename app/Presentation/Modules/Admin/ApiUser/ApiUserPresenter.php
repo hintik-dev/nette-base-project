@@ -5,7 +5,10 @@ use App\Domain\ApiUser\ApiUserFacade;
 use App\Presentation\Components\Admin\ApiUser\ApiUserForm\ApiUserFormFactory;
 use App\Presentation\Components\Admin\ApiUser\ApiUserGrid\ApiUserGridFactory;
 use App\Presentation\Modules\Admin\BaseAdminPresenter;
+use App\Domain\ApiUser\ApiUserPermission;
+use App\Presentation\Accessory\RequiresPermission;
 
+#[RequiresPermission(ApiUserPermission::ListAll)]
 class ApiUserPresenter extends BaseAdminPresenter
 {
     public function __construct(
@@ -23,12 +26,14 @@ class ApiUserPresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(ApiUserPermission::Create)]
     public function actionCreate(): void
     {
         $this->addComponent($this->apiUserFormFactory->create(null), 'apiUserForm');
     }
 
 
+    #[RequiresPermission(ApiUserPermission::Edit)]
     public function actionEdit(int $id): void
     {
         /** @var ApiUserEditTemplate $template */
@@ -38,6 +43,7 @@ class ApiUserPresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(ApiUserPermission::RegenerateToken)]
     public function handleRegenerateToken(int $id): void
     {
         $this->apiUserFacade->regenerateToken($id);
@@ -46,6 +52,7 @@ class ApiUserPresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(ApiUserPermission::Delete)]
     public function handleDelete(int $id): void
     {
         $this->apiUserFacade->delete($id);

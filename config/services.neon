@@ -15,9 +15,25 @@ services:
 
 	# Security ================
 	security.passwords: App\Model\Security\Passwords
-	security.user: App\Model\Security\SecurityUser
+	security.user:
+		factory: App\Model\Security\SecurityUser
+		setup:
+			- setPermissionEvaluator(@App\Model\Security\Permission\PermissionEvaluator)
+			- setScopeResolverRegistry(@App\Model\Security\Permission\ScopeResolverRegistry)
 	security.authenticator: App\Model\Security\Authenticator\UserAuthenticator
-	security.authorizator: App\Model\Security\Authorizator\StaticAuthorizator
+
+	# ACL — oprávnění jsou v databázi, rozhoduje o nich PermissionEvaluator nad
+	# celou sadou rolí najednou. Nette\Security\Permission se nepoužívá: vyžaduje
+	# předregistraci rolí i resources a jeho dědičnost má váhovou, ne prioritní
+	# sémantiku. Ani jedna třída neodpovídá vzorům v sekci `search`.
+	- App\Model\Security\Permission\PermissionRegistry
+	- App\Model\Security\Permission\PermissionEvaluator
+	- App\Model\Security\Permission\ScopeResolverRegistry(typed(App\Model\Security\Permission\ScopeResolver))
+
+	# Menu se ptá na oprávnění cílového presenteru, aby nebylo zapsané dvakrát.
+	- App\Presentation\Components\Admin\Menu\MenuPermissionReader
+	- App\Presentation\Components\Admin\Menu\MenuPermissionResolver
+
 	security.userStorage:
 		factory: App\Model\Security\Storage\DbUserStorage
 		setup:
@@ -46,6 +62,7 @@ search:
 			- *Repository
 			- *Service
 			- *Mapper
+			- *Resolver
 	-	in: %appDir%/Command
 		classes:
 			- *Command

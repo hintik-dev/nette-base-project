@@ -1,0 +1,17 @@
+{templateType App\Presentation\Modules\Admin\UserRole\UserRoleEditTemplate}
+
+{block #pageTitle}Role {$userRole->name}{/block}
+
+{block #content}
+
+<div class="row g-3">
+    <div class="col-xl-4">
+        {control userRoleForm}
+    </div>
+
+    <div class="col-xl-8">
+        {control userRolePermissionsForm}
+    </div>
+</div>
+
+{/block}

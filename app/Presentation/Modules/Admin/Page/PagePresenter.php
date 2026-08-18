@@ -9,7 +9,10 @@ use Nette\Assets\EntryAsset;
 use Nette\Assets\Registry as AssetsRegistry;
 use Nette\Assets\StyleAsset;
 use Nette\Utils\Json;
+use App\Domain\Page\PagePermission;
+use App\Presentation\Accessory\RequiresPermission;
 
+#[RequiresPermission(PagePermission::ListAll)]
 class PagePresenter extends BaseAdminPresenter
 {
     public function __construct(
@@ -29,12 +32,14 @@ class PagePresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(PagePermission::Create)]
     public function actionCreate(): void
     {
         $this->addComponent($this->pageFormFactory->create(), 'pageForm');
     }
 
 
+    #[RequiresPermission(PagePermission::Edit)]
     public function actionEdit(int $id): void
     {
         /** @var PageEditTemplate $template */
@@ -68,6 +73,7 @@ class PagePresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(PagePermission::Publish)]
     public function handleSave(int $id): void
     {
         /** @var array<string, mixed> $content */

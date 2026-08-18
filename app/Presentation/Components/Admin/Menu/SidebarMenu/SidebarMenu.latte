@@ -1,0 +1,58 @@
+{templateType App\Presentation\Components\Admin\Menu\SidebarMenu\SidebarMenuTemplate}
+
+{var $dark = $adminTheme === \App\Domain\UserSettings\AppearanceTheme::Dark}
+
+<aside class="app-sidebar {if $dark}sidebar-dark-primary{else}sidebar-light-primary{/if}" data-bs-theme="{if $dark}dark{else}light{/if}">
+
+    <div class="sidebar-brand">
+        <a href="{plink :Admin:Home:default}" class="brand-link">
+            <img src="{$basePath}/favicon.ico" alt="logo" width="33" height="33" class="brand-image">
+            <span class="brand-text"><strong>Nette</strong> Admin</span>
+        </a>
+    </div>
+
+    <div class="sidebar-wrapper">
+        <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
+
+                {foreach $sections as $section}
+                    <li n:if="$section->label !== null" class="nav-header">{$section->label}</li>
+
+                    {foreach $section->items as $item}
+                        {if $item->isGroup()}
+                            {var $groupActive = isLinkCurrent($item->activePattern)}
+                            <li class="nav-item {if $groupActive}menu-open{/if}">
+                                <a href="#" class="nav-link {if $groupActive}active{/if}">
+                                    <i class="nav-icon bi bi-{$item->icon}"></i>
+                                    <p>
+                                        {$item->label}
+                                        <i class="nav-arrow bi bi-chevron-right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li n:foreach="$item->children as $child" class="nav-item">
+                                        <a href="{plink $child->destination}"
+                                           class="nav-link ps-4 {if isLinkCurrent($child->activePattern)}active{/if}">
+                                            <i class="nav-icon bi bi-{$child->icon}"></i>
+                                            <p>{$child->label}</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {else}
+                            <li class="nav-item">
+                                <a href="{plink $item->destination}"
+                                   class="nav-link {if isLinkCurrent($item->activePattern)}active{/if}">
+                                    <i class="nav-icon bi bi-{$item->icon}"></i>
+                                    <p>{$item->label}</p>
+                                </a>
+                            </li>
+                        {/if}
+                    {/foreach}
+                {/foreach}
+
+            </ul>
+        </nav>
+    </div>
+
+</aside>

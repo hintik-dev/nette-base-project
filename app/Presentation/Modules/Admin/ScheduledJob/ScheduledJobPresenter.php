@@ -7,7 +7,10 @@ use App\Presentation\Components\Admin\ScheduledJob\ScheduledJobGrid\ScheduledJob
 use App\Presentation\Components\Admin\ScheduledJob\ScheduledJobRunGrid\ScheduledJobRunGridFactory;
 use App\Presentation\Components\Admin\ScheduledJob\ScheduledJobRunOutputGrid\ScheduledJobRunOutputGridFactory;
 use App\Presentation\Modules\Admin\BaseAdminPresenter;
+use App\Domain\ScheduledJob\ScheduledJobPermission;
+use App\Presentation\Accessory\RequiresPermission;
 
+#[RequiresPermission(ScheduledJobPermission::ListAll)]
 class ScheduledJobPresenter extends BaseAdminPresenter
 {
     public function __construct(
@@ -26,6 +29,7 @@ class ScheduledJobPresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(ScheduledJobPermission::RunHistory)]
     public function actionRuns(?int $jobId = null): void
     {
         /** @var ScheduledJobRunsTemplate $template */
@@ -35,6 +39,7 @@ class ScheduledJobPresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(ScheduledJobPermission::RunHistory)]
     public function actionRunDetail(int $id): void
     {
         $run = $this->facade->getRunById($id);
@@ -47,6 +52,7 @@ class ScheduledJobPresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(ScheduledJobPermission::Edit)]
     public function handleSetActive(int $id, bool $active): void
     {
         $this->facade->setActive($id, $active);
@@ -55,6 +61,7 @@ class ScheduledJobPresenter extends BaseAdminPresenter
     }
 
 
+    #[RequiresPermission(ScheduledJobPermission::RunNow)]
     public function handleRunNow(int $id): void
     {
         try {
