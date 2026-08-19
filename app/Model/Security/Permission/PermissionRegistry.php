@@ -11,6 +11,7 @@ use App\Domain\User\UserPermission;
 use App\Domain\UserRole\AclPermission;
 use App\Domain\UserSession\UserSessionPermission;
 use App\Domain\ValueStorage\ValueStoragePermission;
+use Hintik\Collection\Lists\ArrayList;
 
 /**
  * Soupis všech oprávnění, která aplikace zná.
@@ -106,9 +107,11 @@ final class PermissionRegistry
     {
         $all = $this->getAll();
 
-        return array_values(array_filter(
-            $storedKeys,
-            static fn (string $key): bool => !isset($all[$key]),
-        ));
+        /** @var list<string> $orphanKeys ArrayList::toArray() nemá @return typehint, viz hintik/collection */
+        $orphanKeys = ArrayList::fromArray($storedKeys)
+            ->filter(static fn (string $key): bool => !isset($all[$key]))
+            ->toArray();
+
+        return $orphanKeys;
     }
 }

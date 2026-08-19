@@ -5,6 +5,7 @@ namespace App\Domain\Notification;
 use App\Domain\User\ExplorerUserRepository;
 use App\Domain\UserRole\ExplorerUserRoleRepository;
 use DateTimeImmutable;
+use Hintik\Collection\Set\HashSet;
 
 /**
  * Veřejné API pro vytváření notifikací — volá se přímo z ostatních domén
@@ -55,10 +56,9 @@ class NotificationService
      */
     public function notifyByRoles(array $roleIds, NotificationType $type, string $title, string $message, ?string $link = null): void
     {
-        $userIds = array_values(array_intersect(
-            $this->userRoleRepository->getUserIdsForRoles($roleIds),
-            $this->userRepository->getActiveUserIds(),
-        ));
+        $userIds = HashSet::fromArray($this->userRoleRepository->getUserIdsForRoles($roleIds))
+            ->intersect(HashSet::fromArray($this->userRepository->getActiveUserIds()))
+            ->toArray();
 
         $this->notifyUsers($userIds, $type, $title, $message, $link);
     }
