@@ -2,6 +2,9 @@
 namespace App\Domain\UserRole;
 
 use App\Model\Security\Permission\PermissionRegistry;
+use Hintik\Collection\Lists\ArrayList;
+use Hintik\Collection\Map\ArrayMap;
+use Hintik\Collection\Set\HashSet;
 
 /**
  * Business logika nad rolemi. Bez bezpečnostních kontrol — ty dělá UserRoleFacade.
@@ -132,11 +135,9 @@ class UserRoleService
      */
     public function setPermissionsForRole(int $roleId, array $permissions): void
     {
-        $known = array_filter(
-            $permissions,
-            fn (PermissionEffect $effect, string $key): bool => $this->permissionRegistry->has($key),
-            ARRAY_FILTER_USE_BOTH,
-        );
+        $known = ArrayMap::fromArray($permissions)
+            ->filter(fn (PermissionEffect $effect, string $key): bool => $this->permissionRegistry->has($key))
+            ->toArray();
 
         $this->userRoleRepository->replacePermissionsForRole($roleId, $known);
     }
@@ -164,15 +165,15 @@ class UserRoleService
      */
     public function setRolesForUser(int $userId, array $roleIds): void
     {
-        $assignableIds = array_map(
-            static fn (UserRole $role): int => $role->id,
-            $this->userRoleRepository->getAssignable(),
-        );
+        /** @var list<int> $assignableIds ArrayList::toArray() nemá @return typehint, viz hintik/collection */
+        $assignableIds = ArrayList::fromArray($this->userRoleRepository->getAssignable())
+            ->map(static fn (UserRole $role): int => $role->id)
+            ->toArray();
 
-        $this->userRoleRepository->setRolesForUser(
-            $userId,
-            array_values(array_intersect($roleIds, $assignableIds)),
-        );
+        /** @var list<int> $allowedRoleIds HashSet::toArray() vrací array<E>, ne list<E> */
+        $allowedRoleIds = HashSet::fromArray($roleIds)->intersect(HashSet::fromArray($assignableIds))->toArray();
+
+        $this->userRoleRepository->setRolesForUser($userId, $allowedRoleIds);
     }
 
 
@@ -205,7 +206,7 @@ class UserRoleService
     {
         $granting = $this->userRoleRepository->getRoleIdsGranting($permissionKey);
 
-        return array_diff($granting, $roleIdsBeingRevoked) === [];
+        return HashSet::fromArray($granting)->diff(HashSet::fromArray($roleIdsBeingRevoked))->isEmpty();
     }
 
 
