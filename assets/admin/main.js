@@ -9,10 +9,15 @@ window.bootstrap = bootstrap;
 
 import 'admin-lte';
 
-import '../../vendor/ublaboo/datagrid/assets/datagrid-full.ts';
-import './js/datagrid-spinner.js';
-import './js/datagrid-flatpickr.js';
+import './js/naja-init.js';
 
 import './js/toastr-shim.js';
 import './js/confirm.js';
 import './js/theme-preview.js';
+
+// Datagrid (ublaboo) je nejtěžší závislost tohoto bundlu (Sortable, TomSelect,
+// VanillaDatepicker, ...), ale ne každá admin stránka grid má — načte se
+// přes dynamický import() jen tam, kde v DOM reálně existuje.
+if (document.querySelector('[data-datagrid-name]')) {
+    import('./js/datagrid-init.js');
+}

@@ -8,6 +8,8 @@ use App\Model\Security\Permission\AdminPermission;
 use App\Presentation\Accessory\RequiresPermission;
 use App\Presentation\Components\Admin\Menu\SidebarMenu\SidebarMenu;
 use App\Presentation\Components\Admin\Menu\SidebarMenu\SidebarMenuFactory;
+use App\Presentation\Components\Admin\Notification\NotificationsBell\NotificationsBell;
+use App\Presentation\Components\Admin\Notification\NotificationsBell\NotificationsBellFactory;
 use App\Presentation\Modules\Base\BasePresenter;
 use Nette\Http\IResponse;
 use Override;
@@ -28,6 +30,8 @@ class BaseAdminPresenter extends BasePresenter
 
     private SidebarMenuFactory $sidebarMenuFactory;
 
+    private NotificationsBellFactory $notificationsBellFactory;
+
     private ?AppearanceTheme $adminTheme = null;
 
     public function injectUserSettingsFacade(UserSettingsFacade $userSettingsFacade): void
@@ -42,9 +46,21 @@ class BaseAdminPresenter extends BasePresenter
     }
 
 
+    public function injectNotificationsBellFactory(NotificationsBellFactory $notificationsBellFactory): void
+    {
+        $this->notificationsBellFactory = $notificationsBellFactory;
+    }
+
+
     protected function createComponentSidebarMenu(): SidebarMenu
     {
         return $this->sidebarMenuFactory->create($this->getAdminTheme());
+    }
+
+
+    protected function createComponentNotificationsBell(): NotificationsBell
+    {
+        return $this->notificationsBellFactory->create();
     }
 
 

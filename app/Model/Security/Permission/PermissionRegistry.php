@@ -4,12 +4,14 @@ namespace App\Model\Security\Permission;
 use App\Domain\ApiUser\ApiUserPermission;
 use App\Domain\AppSettings\AppSettingsPermission;
 use App\Domain\Email\EmailPermission;
+use App\Domain\Notification\NotificationPermission;
 use App\Domain\Page\PagePermission;
 use App\Domain\ScheduledJob\ScheduledJobPermission;
 use App\Domain\User\UserPermission;
 use App\Domain\UserRole\AclPermission;
 use App\Domain\UserSession\UserSessionPermission;
 use App\Domain\ValueStorage\ValueStoragePermission;
+use Hintik\Collection\Lists\ArrayList;
 
 /**
  * Soupis všech oprávnění, která aplikace zná.
@@ -32,6 +34,7 @@ final class PermissionRegistry
         UserSessionPermission::class,
         PagePermission::class,
         EmailPermission::class,
+        NotificationPermission::class,
         ScheduledJobPermission::class,
         ApiUserPermission::class,
         AppSettingsPermission::class,
@@ -104,9 +107,11 @@ final class PermissionRegistry
     {
         $all = $this->getAll();
 
-        return array_values(array_filter(
-            $storedKeys,
-            static fn (string $key): bool => !isset($all[$key]),
-        ));
+        /** @var list<string> $orphanKeys ArrayList::toArray() nemá @return typehint, viz hintik/collection */
+        $orphanKeys = ArrayList::fromArray($storedKeys)
+            ->filter(static fn (string $key): bool => !isset($all[$key]))
+            ->toArray();
+
+        return $orphanKeys;
     }
 }

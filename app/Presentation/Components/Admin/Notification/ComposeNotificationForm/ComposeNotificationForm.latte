@@ -1,0 +1,41 @@
+{form form}
+<div class="mb-3">
+    <label class="form-label">{label target /}</label>
+    <div n:foreach="$form['target']->getItems() as $value => $label" class="form-check">
+        {input target:$value, class: 'form-check-input'}
+        <label class="form-check-label" n:name="target:$value">{$label}</label>
+    </div>
+    {inputError target}
+</div>
+
+<div id="notification-target-roles" class="mb-3">
+    <label class="form-label">{label roleIds /}</label>
+    {input roleIds, class: 'form-select'}
+    <div class="form-text text-muted">Podržte Ctrl (Cmd) pro výběr více rolí.</div>
+    {inputError roleIds}
+</div>
+
+<div id="notification-target-users" class="mb-3">
+    <label class="form-label">{label userIds /}</label>
+    {input userIds, class: 'form-select'}
+    <div class="form-text text-muted">Podržte Ctrl (Cmd) pro výběr více uživatelů.</div>
+    {inputError userIds}
+</div>
+
+<div class="mb-3">
+    <label class="form-label">{label type /}</label>
+    {input type, class: 'form-select'}
+    {inputError type}
+</div>
+<div class="mb-3">
+    <label class="form-label">{label title /}</label>
+    {input title, class: 'form-control'}
+    {inputError title}
+</div>
+<div class="mb-3">
+    <label class="form-label">{label message /}</label>
+    {input message, class: 'form-control'}
+    {inputError message}
+</div>
+{input submit, class: 'btn btn-primary'}
+{/form}

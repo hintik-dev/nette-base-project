@@ -84,6 +84,26 @@ class AdminMenuFactory
                     ],
                 ),
                 new MenuItem(
+                    label: 'Notifikace',
+                    destination: null,
+                    icon: 'bell-fill',
+                    activePattern: ':Admin:Notification:*',
+                    children: [
+                        new MenuItem(
+                            label: 'Všechny notifikace',
+                            destination: ':Admin:Notification:all',
+                            icon: 'collection-fill',
+                            activePattern: ':Admin:Notification:all',
+                        ),
+                        new MenuItem(
+                            label: 'Nová notifikace',
+                            destination: ':Admin:Notification:compose',
+                            icon: 'megaphone-fill',
+                            activePattern: ':Admin:Notification:compose',
+                        ),
+                    ],
+                ),
+                new MenuItem(
                     label: 'Plánované úlohy',
                     destination: null,
                     icon: 'clock-fill',

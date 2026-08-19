@@ -66,6 +66,38 @@
 
 @import 'scss/datagrid';
 
+// Podbarvení nepřečtené notifikace v dropdownu zvonečku. Vlastní třída bez
+// !important (na rozdíl od utility bg-primary-subtle), aby nad ní vyhrál
+// .dropdown-item:hover a hover zůstal funkční. Barva stejná jako aktivní
+// položka v sidebaru ($lte-sidebar-menu-active-bg) — na bílém pozadí
+// dropdownu je skutečně vidět, na rozdíl od Bootstrap "subtle" varianty,
+// která je navržená jako sotva znatelná (badge/alert kontext).
+// Vlastní :hover/:focus taky, jinak by .dropdown-item:hover (stejná
+// specificita, pozdější v pořadí by jinak vyhrálo náhodně) při najetí
+// myší podbarvení nahradil běžnou bílou/šedou.
+.notification-unread {
+    background-color: $lte-sidebar-menu-active-bg;
+
+    &:hover,
+    &:focus {
+        background-color: rgba(13, 110, 253, 0.2);
+    }
+}
+
+// Počet nepřečtených notifikací na zvonečku v topbaru. Vlastní pozicování
+// místo Bootstrap top-0/start-100/translate-middle (navržené pro větší
+// prvky s víc místem kolem) — bez zmenšení splývalo s okrajem stránky.
+// Velikost/odsazení podobné původnímu AdminLTE .navbar-badge, jen navázané
+// na wrapper těsně kolem ikony, ne na pevné souřadnice vůči celému odkazu.
+.notification-badge {
+    position: absolute;
+    top: -2px;
+    right: -6px;
+    font-size: 0.6rem;
+    padding: 0.2em 0.4em;
+    line-height: 1;
+}
+
 // Barva textu uvnitř primary prvků (bílá, dokud běžíme jen ve světlém tématu)
 .btn-primary,
 .btn-primary:hover,

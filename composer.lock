@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7513c53a923aaf00bb7e5e79b0f70c70",
+    "content-hash": "a410ebf916f36ef27eb5bd1dabf7d4c4",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -1047,6 +1047,48 @@
                 }
             ],
             "time": "2025-08-23T21:21:41+00:00"
+        },
+        {
+            "name": "hintik/collection",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hintik-dev/collection.git",
+                "reference": "274f9bedfab8cc0658971626f4eada62216d2ebd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hintik-dev/collection/zipball/274f9bedfab8cc0658971626f4eada62216d2ebd",
+                "reference": "274f9bedfab8cc0658971626f4eada62216d2ebd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "nette/tester": "^v2.4",
+                "nette/utils": "^3.2 || ^4",
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hintik\\Collection\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Jan Hinterholzinger",
+                    "email": "hintik@hintik.cz"
+                }
+            ],
+            "description": "Kolekce v PHP",
+            "support": {
+                "issues": "https://github.com/hintik-dev/collection/issues",
+                "source": "https://github.com/hintik-dev/collection/tree/v1.0.0"
+            },
+            "time": "2026-03-03T09:44:42+00:00"
         },
         {
             "name": "latte/latte",
