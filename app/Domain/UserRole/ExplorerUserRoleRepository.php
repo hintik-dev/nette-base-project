@@ -344,6 +344,32 @@ class ExplorerUserRoleRepository extends ExplorerRepository
     }
 
 
+    /**
+     * ID uživatelů, kteří mají alespoň jednu z daných rolí (bez duplicit).
+     *
+     * @param list<int> $roleIds
+     * @return list<int>
+     */
+    public function getUserIdsForRoles(array $roleIds): array
+    {
+        if ($roleIds === []) {
+            return [];
+        }
+
+        $ids = [];
+
+        $selection = $this->getTable(self::TABLE_USER_ROLE)
+            ->select('DISTINCT ' . self::COLUMN_USER_ROLE_USER_ID)
+            ->where(self::COLUMN_USER_ROLE_ROLE_ID, $roleIds);
+
+        foreach ($selection as $row) {
+            $ids[] = (int) $row[self::COLUMN_USER_ROLE_USER_ID];
+        }
+
+        return $ids;
+    }
+
+
     /** @return list<UserRole> */
     public function getRolesForUser(int $userId): array
     {

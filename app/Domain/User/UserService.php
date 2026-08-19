@@ -24,6 +24,13 @@ readonly class UserService
     }
 
 
+    /** @return User[] */
+    public function getActiveUsers(): array
+    {
+        return $this->userRepository->getActiveUsers();
+    }
+
+
     public function createUser(string $email, string $passwordHash, bool $active = true): User
     {
         return $this->userRepository->createUser($email, $passwordHash, $active);

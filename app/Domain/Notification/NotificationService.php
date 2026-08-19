@@ -3,6 +3,7 @@
 namespace App\Domain\Notification;
 
 use App\Domain\User\ExplorerUserRepository;
+use App\Domain\UserRole\ExplorerUserRoleRepository;
 use DateTimeImmutable;
 
 /**
@@ -15,6 +16,7 @@ class NotificationService
         private readonly ExplorerNotificationRepository $notificationRepository,
         private readonly ExplorerNotificationRecipientRepository $recipientRepository,
         private readonly ExplorerUserRepository $userRepository,
+        private readonly ExplorerUserRoleRepository $userRoleRepository,
     ) {
     }
 
@@ -44,6 +46,21 @@ class NotificationService
     public function broadcastToActive(NotificationType $type, string $title, string $message, ?string $link = null): void
     {
         $this->notifyUsers($this->userRepository->getActiveUserIds(), $type, $title, $message, $link);
+    }
+
+
+    /**
+     * Aktivní uživatelé mající alespoň jednu z daných rolí.
+     * @param list<int> $roleIds
+     */
+    public function notifyByRoles(array $roleIds, NotificationType $type, string $title, string $message, ?string $link = null): void
+    {
+        $userIds = array_values(array_intersect(
+            $this->userRoleRepository->getUserIdsForRoles($roleIds),
+            $this->userRepository->getActiveUserIds(),
+        ));
+
+        $this->notifyUsers($userIds, $type, $title, $message, $link);
     }
 
 

@@ -34,6 +34,20 @@ class ExplorerUserRepository extends ExplorerRepository
     }
 
 
+    /** @return User[] */
+    public function getActiveUsers(): array
+    {
+        return array_values(array_map(
+            fn(ActiveRow $row): User => $this->userMapper->mapUser($row),
+            iterator_to_array(
+                $this->getTable()
+                    ->where(self::COLUMN_ACTIVE, true)
+                    ->order(self::COLUMN_EMAIL . ' ASC'),
+            ),
+        ));
+    }
+
+
     /**
      * @throws UserNotFoundException
      */
