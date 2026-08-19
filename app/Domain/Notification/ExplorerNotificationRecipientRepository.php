@@ -95,7 +95,7 @@ class ExplorerNotificationRecipientRepository extends ExplorerRepository
     {
         $row = $this->getTable()
             ->select(self::JOINED_COLUMNS)
-            ->where(self::COLUMN_ID, $recipientId)
+            ->where(self::TABLE_NAME . '.' . self::COLUMN_ID, $recipientId)
             ->where(self::COLUMN_USER_ID, $userId)
             ->fetch();
 
@@ -103,11 +103,15 @@ class ExplorerNotificationRecipientRepository extends ExplorerRepository
             return null;
         }
 
+        // Po update() Nette obnoví data řádku jen podle vlastní struktury tabulky
+        // notification_recipient — joinované sloupce (link) by pak zmizely.
+        $link = $row[self::COLUMN_LINK];
+
         $row->update([
             self::COLUMN_READ_AT => (new DateTimeImmutable())->format('Y-m-d H:i:s'),
         ]);
 
-        return $row[self::COLUMN_LINK];
+        return $link;
     }
 
 
