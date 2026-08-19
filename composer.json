@@ -38,7 +38,8 @@
 		"contributte/scheduler": "^0.9.0",
 		"contributte/translation": "^2.0",
 		"ublaboo/datagrid": "7.2.x-dev",
-		"google/recaptcha": "^1.5"
+		"google/recaptcha": "^1.5",
+		"hintik/collection": "^1.0"
 	},
 	"require-dev": {
 		"nette/tester": "^2.6",
