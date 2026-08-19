@@ -72,8 +72,16 @@
 // položka v sidebaru ($lte-sidebar-menu-active-bg) — na bílém pozadí
 // dropdownu je skutečně vidět, na rozdíl od Bootstrap "subtle" varianty,
 // která je navržená jako sotva znatelná (badge/alert kontext).
+// Vlastní :hover/:focus taky, jinak by .dropdown-item:hover (stejná
+// specificita, pozdější v pořadí by jinak vyhrálo náhodně) při najetí
+// myší podbarvení nahradil běžnou bílou/šedou.
 .notification-unread {
     background-color: $lte-sidebar-menu-active-bg;
+
+    &:hover,
+    &:focus {
+        background-color: rgba(13, 110, 253, 0.2);
+    }
 }
 
 // Barva textu uvnitř primary prvků (bílá, dokud běžíme jen ve světlém tématu)
