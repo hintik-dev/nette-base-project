@@ -1,5 +1,4 @@
-{snippet bell}
-<li class="nav-item dropdown">
+<li n:snippet="bell" class="nav-item dropdown">
     <a class="nav-link position-relative" href="#" data-bs-toggle="dropdown">
         <i class="bi bi-bell-fill fs-4"></i>
         <span n:if="$unreadCount > 0" class="navbar-badge badge text-bg-danger">{$unreadCount}</span>
@@ -43,4 +42,3 @@
         <a href="{plink :Admin:Notification:default}" class="dropdown-item text-center small">Zobrazit všechny</a>
     </div>
 </li>
-{/snippet}
