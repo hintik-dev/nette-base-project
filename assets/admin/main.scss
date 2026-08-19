@@ -68,9 +68,12 @@
 
 // Podbarvení nepřečtené notifikace v dropdownu zvonečku. Vlastní třída bez
 // !important (na rozdíl od utility bg-primary-subtle), aby nad ní vyhrál
-// .dropdown-item:hover a hover zůstal funkční.
+// .dropdown-item:hover a hover zůstal funkční. Barva stejná jako aktivní
+// položka v sidebaru ($lte-sidebar-menu-active-bg) — na bílém pozadí
+// dropdownu je skutečně vidět, na rozdíl od Bootstrap "subtle" varianty,
+// která je navržená jako sotva znatelná (badge/alert kontext).
 .notification-unread {
-    background-color: var(--bs-primary-bg-subtle);
+    background-color: $lte-sidebar-menu-active-bg;
 }
 
 // Barva textu uvnitř primary prvků (bílá, dokud běžíme jen ve světlém tématu)
