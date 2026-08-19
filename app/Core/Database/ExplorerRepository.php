@@ -22,6 +22,16 @@ class ExplorerRepository
     }
 
 
+    /**
+     * Umožňuje volajícímu (např. service, který skládá operace nad více repozitáři)
+     * spustit několik DB operací v jedné transakci.
+     */
+    public function transaction(callable $callback): mixed
+    {
+        return $this->database->transaction($callback);
+    }
+
+
     protected function find(int $id): ?ActiveRow
     {
         return $this->getTable()

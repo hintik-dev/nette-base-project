@@ -44,6 +44,11 @@ services:
 
 	# Email
 	- App\Domain\Email\EmailSenderService(fromAddress: %email.from.address%, fromName: %email.from.name%)
+	- App\Domain\Email\MailQueueProcessorService(batchSize: %mail.queue.batchSize%)
+
+	# reCAPTCHA
+	- ReCaptcha\ReCaptcha(%recaptcha.secretKey%)
+	- App\Model\Recaptcha\RecaptchaVerificationService(siteKey: %recaptcha.siteKey%)
 
 	# Page – JSON blocky z Puck editoru se renderují do Latte přes BlockRenderer
 	- App\Domain\Page\BlockRenderer

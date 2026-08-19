@@ -13,7 +13,7 @@ class SentEmailFacade
 {
     public function __construct(
         private readonly ExplorerSentEmailRepository $repository,
-        private readonly EmailSenderService $emailSenderService,
+        private readonly MailQueueService $mailQueueService,
         private readonly SecurityUser $securityUser,
     ) {
     }
@@ -41,7 +41,12 @@ class SentEmailFacade
         $this->assertAllowed(EmailPermission::Resend);
 
         $email = $this->repository->getById($id);
-        $this->emailSenderService->send(
+
+        if ($email->isSensitive) {
+            throw new SensitiveEmailCannotBeResendException($id);
+        }
+
+        $this->mailQueueService->enqueue(
             $email->recipient,
             new RawMail($email->subject, $email->bodyHtml ?? ''),
         );

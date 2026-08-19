@@ -55,6 +55,14 @@ class SentEmailGrid extends BaseGridComponent
             'pending' => 'Čeká',
         ]);
 
+        $grid->addColumnText(ExplorerSentEmailRepository::COLUMN_IS_SENSITIVE, 'Citlivý')
+            ->setFitContent()
+            ->setRenderer(function ($row): Html {
+                return (bool) $row[ExplorerSentEmailRepository::COLUMN_IS_SENSITIVE]
+                    ? Html::el('span')->setAttribute('class', 'badge bg-warning text-dark')->setText('Citlivý')
+                    : Html::el('span');
+            });
+
         $grid->addColumnDateTime(ExplorerSentEmailRepository::COLUMN_CREATED_AT, 'Vytvořeno')
             ->setSortable();
 
@@ -77,6 +85,11 @@ class SentEmailGrid extends BaseGridComponent
             },
         )->setIcon('arrow-repeat')->setClass('btn btn-sm btn-outline-secondary')
          ->setConfirmation(new StringConfirmation('Opravdu chcete e-mail znovu odeslat?'));
+
+        $grid->allowRowsAction(
+            'resend',
+            fn($item) => !(bool) $item[ExplorerSentEmailRepository::COLUMN_IS_SENSITIVE],
+        );
 
         $grid->setDefaultSort([ExplorerSentEmailRepository::COLUMN_CREATED_AT => 'DESC']);
     }

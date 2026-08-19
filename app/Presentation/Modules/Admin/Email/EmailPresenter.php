@@ -4,6 +4,7 @@ namespace App\Presentation\Modules\Admin\Email;
 
 use App\Domain\Email\SentEmailFacade;
 use App\Presentation\Components\Admin\Email\ComposeEmailForm\ComposeEmailFormFactory;
+use App\Presentation\Components\Admin\Email\MailQueueGrid\MailQueueGridFactory;
 use App\Presentation\Components\Admin\Email\SentEmailGrid\SentEmailGridFactory;
 use App\Presentation\Modules\Admin\BaseAdminPresenter;
 use App\Domain\Email\EmailPermission;
@@ -14,6 +15,7 @@ class EmailPresenter extends BaseAdminPresenter
 {
     public function __construct(
         private readonly SentEmailGridFactory $gridFactory,
+        private readonly MailQueueGridFactory $mailQueueGridFactory,
         private readonly ComposeEmailFormFactory $composeFormFactory,
         private readonly SentEmailFacade $facade,
     ) {
@@ -24,6 +26,12 @@ class EmailPresenter extends BaseAdminPresenter
     public function actionList(): void
     {
         $this->addComponent($this->gridFactory->create(), 'sentEmailGrid');
+    }
+
+
+    public function actionQueue(): void
+    {
+        $this->addComponent($this->mailQueueGridFactory->create(), 'mailQueueGrid');
     }
 
 

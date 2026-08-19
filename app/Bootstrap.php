@@ -68,5 +68,6 @@ class Bootstrap
         $this->configurator->addConfig($configDir . '/services.neon');
         $this->configurator->addConfig($configDir . '/local/database.neon');
         $this->configurator->addConfig($configDir . '/local/email.neon');
+        $this->configurator->addConfig($configDir . '/local/recaptcha.neon');
     }
 }

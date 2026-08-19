@@ -15,6 +15,8 @@ class ExplorerSentEmailMapper
             recipient: $row[ExplorerSentEmailRepository::COLUMN_RECIPIENT],
             subject: $row[ExplorerSentEmailRepository::COLUMN_SUBJECT],
             bodyHtml: $row[ExplorerSentEmailRepository::COLUMN_BODY_HTML],
+            mailClass: $row[ExplorerSentEmailRepository::COLUMN_MAIL_CLASS],
+            isSensitive: (bool) $row[ExplorerSentEmailRepository::COLUMN_IS_SENSITIVE],
             status: SentEmailStatus::from($row[ExplorerSentEmailRepository::COLUMN_STATUS]),
             error: $row[ExplorerSentEmailRepository::COLUMN_ERROR],
             sentAt: $row[ExplorerSentEmailRepository::COLUMN_SENT_AT] !== null

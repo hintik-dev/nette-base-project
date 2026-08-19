@@ -1,0 +1,4 @@
+parameters:
+    recaptcha:
+        siteKey: 'your-site-key'
+        secretKey: 'your-secret-key'

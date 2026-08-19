@@ -11,6 +11,12 @@ abstract class BaseMail implements Mail
     abstract protected function getContent(): string;
 
 
+    public function isSensitive(): bool
+    {
+        return false;
+    }
+
+
     final public function getBodyHtml(): string
     {
         $subject = htmlspecialchars($this->getSubject());

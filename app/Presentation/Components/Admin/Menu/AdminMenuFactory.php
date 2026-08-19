@@ -75,6 +75,12 @@ class AdminMenuFactory
                             icon: 'pencil-square',
                             activePattern: ':Admin:Email:compose',
                         ),
+                        new MenuItem(
+                            label: 'Fronta e-mailů',
+                            destination: ':Admin:Email:queue',
+                            icon: 'hourglass-split',
+                            activePattern: ':Admin:Email:queue',
+                        ),
                     ],
                 ),
                 new MenuItem(

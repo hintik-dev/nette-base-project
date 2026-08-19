@@ -144,9 +144,6 @@ readonly class ScheduledJobService
      */
     public function executeRun(int $jobId, int $runId): void
     {
-        $record = $this->repository->getById($jobId);
-        $job = $this->resolveJobInstance($record->class);
-
         $this->runRepository->markRunning($runId);
         $this->outputRepository->insertMany($runId, [
             ['message' => 'Běh byl spuštěn.', 'createdAt' => new \DateTimeImmutable()],
@@ -156,6 +153,9 @@ readonly class ScheduledJobService
         $startMs = (int) round(microtime(true) * 1000);
 
         try {
+            $record = $this->repository->getById($jobId);
+            $job = $this->resolveJobInstance($record->class);
+
             $job->run($output);
 
             $finishedAt = new \DateTimeImmutable();

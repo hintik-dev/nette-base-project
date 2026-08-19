@@ -96,6 +96,19 @@ class ExplorerUserSessionRepository extends ExplorerRepository
     }
 
 
+    /** Odhlásí všechny aktivní session daného uživatele (např. po resetu hesla). */
+    public function markAllActiveAsLoggedOutForUser(int $userId, LogoutReason $reason): void
+    {
+        $this->getTable()
+            ->where(self::COLUMN_USER_ID, $userId)
+            ->where(self::COLUMN_LOGGED_OUT_AT . ' IS NULL')
+            ->update([
+                self::COLUMN_LOGGED_OUT_AT => date('Y-m-d H:i:s'),
+                self::COLUMN_LOGOUT_REASON => $reason->value,
+            ]);
+    }
+
+
     /** @return Selection<ActiveRow> */
     public function getAllSelection(): Selection
     {

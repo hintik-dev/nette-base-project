@@ -2,37 +2,31 @@
 
 namespace App\Domain\Email;
 
-use App\Domain\Email\Mail\Mail;
 use Nette\Mail\Mailer;
 use Nette\Mail\Message;
 
+/**
+ * Čistý SMTP transport — sestaví a odešle zprávu, bez jakékoliv perzistence.
+ * Volá se výhradně z workeru (MailQueueProcessorService), který řeší frontu, retry a log.
+ */
 class EmailSenderService
 {
     public function __construct(
         private readonly Mailer $mailer,
-        private readonly ExplorerSentEmailRepository $repository,
         private readonly string $fromAddress,
         private readonly string $fromName,
     ) {
     }
 
 
-    public function send(string $recipient, Mail $mail): void
+    public function send(string $recipient, string $subject, string $bodyHtml): void
     {
-        $id = $this->repository->insert($recipient, $mail->getSubject(), $mail->getBodyHtml());
+        $message = new Message();
+        $message->setFrom($this->fromAddress, $this->fromName);
+        $message->addTo($recipient);
+        $message->setSubject($subject);
+        $message->setHtmlBody($bodyHtml);
 
-        try {
-            $message = new Message();
-            $message->setFrom($this->fromAddress, $this->fromName);
-            $message->addTo($recipient);
-            $message->setSubject($mail->getSubject());
-            $message->setHtmlBody($mail->getBodyHtml());
-
-            $this->mailer->send($message);
-            $this->repository->markSent($id);
-        } catch (\Throwable $e) {
-            $this->repository->markFailed($id, $e->getMessage());
-            throw $e;
-        }
+        $this->mailer->send($message);
     }
 }

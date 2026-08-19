@@ -8,4 +8,5 @@ enum LogoutReason: string
     case Forced = 'forced';
     case SingleSession = 'single_session';
     case AccessRevoked = 'access_revoked';
+    case PasswordReset = 'password_reset';
 }

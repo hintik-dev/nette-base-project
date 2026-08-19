@@ -11,6 +11,8 @@ readonly class SentEmail
         public string $recipient,
         public string $subject,
         public ?string $bodyHtml,
+        public ?string $mailClass,
+        public bool $isSensitive,
         public SentEmailStatus $status,
         public ?string $error,
         public ?DateTimeImmutable $sentAt,

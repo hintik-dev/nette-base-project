@@ -3,6 +3,9 @@
 parameters:
 	session:
 		inactivityTimeout: null
+	mail:
+		queue:
+			batchSize: 20
 
 
 application:

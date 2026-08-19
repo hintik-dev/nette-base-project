@@ -14,6 +14,8 @@ class ExplorerSentEmailRepository extends ExplorerRepository
     public const string COLUMN_RECIPIENT = 'recipient';
     public const string COLUMN_SUBJECT = 'subject';
     public const string COLUMN_BODY_HTML = 'body_html';
+    public const string COLUMN_MAIL_CLASS = 'mail_class';
+    public const string COLUMN_IS_SENSITIVE = 'is_sensitive';
     public const string COLUMN_STATUS = 'status';
     public const string COLUMN_ERROR = 'error';
     public const string COLUMN_SENT_AT = 'sent_at';
@@ -46,40 +48,34 @@ class ExplorerSentEmailRepository extends ExplorerRepository
     }
 
 
-    public function insert(string $recipient, string $subject, ?string $bodyHtml): int
-    {
+    /**
+     * Vloží záznam s již vyřešeným výsledkem (Sent/Failed) — volá worker po zpracování fronty.
+     * Pro is_sensitive e-maily se $bodyHtml nikdy neukládá (volající předá null).
+     */
+    public function insertResolved(
+        string $recipient,
+        string $subject,
+        ?string $bodyHtml,
+        SentEmailStatus $status,
+        ?string $error,
+        ?string $mailClass,
+        bool $isSensitive,
+        ?DateTimeImmutable $sentAt,
+    ): int {
         $row = $this->getTable()->insert([
-            self::COLUMN_RECIPIENT  => $recipient,
-            self::COLUMN_SUBJECT    => $subject,
-            self::COLUMN_BODY_HTML  => $bodyHtml,
-            self::COLUMN_STATUS     => SentEmailStatus::Pending->value,
-            self::COLUMN_CREATED_AT => (new DateTimeImmutable())->format('Y-m-d H:i:s'),
+            self::COLUMN_RECIPIENT    => $recipient,
+            self::COLUMN_SUBJECT      => $subject,
+            self::COLUMN_BODY_HTML    => $bodyHtml,
+            self::COLUMN_MAIL_CLASS   => $mailClass,
+            self::COLUMN_IS_SENSITIVE => $isSensitive,
+            self::COLUMN_STATUS       => $status->value,
+            self::COLUMN_ERROR        => $error,
+            self::COLUMN_SENT_AT      => $sentAt?->format('Y-m-d H:i:s'),
+            self::COLUMN_CREATED_AT   => (new DateTimeImmutable())->format('Y-m-d H:i:s'),
         ]);
 
         assert($row instanceof \Nette\Database\Table\ActiveRow);
 
         return (int) $row[self::COLUMN_ID];
-    }
-
-
-    public function markSent(int $id): void
-    {
-        $this->getTable()
-            ->get($id)
-            ?->update([
-                self::COLUMN_STATUS  => SentEmailStatus::Sent->value,
-                self::COLUMN_SENT_AT => (new DateTimeImmutable())->format('Y-m-d H:i:s'),
-            ]);
-    }
-
-
-    public function markFailed(int $id, string $error): void
-    {
-        $this->getTable()
-            ->get($id)
-            ?->update([
-                self::COLUMN_STATUS => SentEmailStatus::Failed->value,
-                self::COLUMN_ERROR  => $error,
-            ]);
     }
 }

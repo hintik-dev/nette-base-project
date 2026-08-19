@@ -21,4 +21,10 @@ class RawMail implements Mail
     {
         return $this->bodyHtml;
     }
+
+
+    public function isSensitive(): bool
+    {
+        return false;
+    }
 }
