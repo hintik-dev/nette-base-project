@@ -66,6 +66,13 @@
 
 @import 'scss/datagrid';
 
+// Podbarvení nepřečtené notifikace v dropdownu zvonečku. Vlastní třída bez
+// !important (na rozdíl od utility bg-primary-subtle), aby nad ní vyhrál
+// .dropdown-item:hover a hover zůstal funkční.
+.notification-unread {
+    background-color: var(--bs-primary-bg-subtle);
+}
+
 // Barva textu uvnitř primary prvků (bílá, dokud běžíme jen ve světlém tématu)
 .btn-primary,
 .btn-primary:hover,

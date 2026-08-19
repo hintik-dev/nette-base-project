@@ -16,7 +16,7 @@
         </div>
 
         <div n:foreach="$recentNotifications as $notification"
-             class="dropdown-item d-flex align-items-start gap-2 {if !$notification->isRead()}bg-primary-subtle{/if}">
+             class="dropdown-item d-flex align-items-start gap-2 {if !$notification->isRead()}notification-unread{/if}">
             {if $notification->type === \App\Domain\Notification\NotificationType::Security}
                 <i class="bi bi-shield-lock-fill text-danger mt-1"></i>
             {elseif $notification->type === \App\Domain\Notification\NotificationType::System}
