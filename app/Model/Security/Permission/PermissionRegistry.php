@@ -4,6 +4,7 @@ namespace App\Model\Security\Permission;
 use App\Domain\ApiUser\ApiUserPermission;
 use App\Domain\AppSettings\AppSettingsPermission;
 use App\Domain\Email\EmailPermission;
+use App\Domain\Notification\NotificationPermission;
 use App\Domain\Page\PagePermission;
 use App\Domain\ScheduledJob\ScheduledJobPermission;
 use App\Domain\User\UserPermission;
@@ -32,6 +33,7 @@ final class PermissionRegistry
         UserSessionPermission::class,
         PagePermission::class,
         EmailPermission::class,
+        NotificationPermission::class,
         ScheduledJobPermission::class,
         ApiUserPermission::class,
         AppSettingsPermission::class,

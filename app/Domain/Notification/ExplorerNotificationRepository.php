@@ -5,6 +5,7 @@ namespace App\Domain\Notification;
 use App\Core\Database\ExplorerRepository;
 use DateTimeImmutable;
 use Nette\Database\Table\ActiveRow;
+use Nette\Database\Table\Selection;
 
 class ExplorerNotificationRepository extends ExplorerRepository
 {
@@ -21,6 +22,13 @@ class ExplorerNotificationRepository extends ExplorerRepository
     public function __construct()
     {
         parent::__construct(self::TABLE_NAME);
+    }
+
+
+    /** @return Selection<ActiveRow> */
+    public function getAllSelection(): Selection
+    {
+        return $this->findAll()->order(self::COLUMN_CREATED_AT . ' DESC');
     }
 
 
