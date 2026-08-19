@@ -87,6 +87,16 @@ class ExplorerUserRepository extends ExplorerRepository
     }
 
 
+    /** @return int[] */
+    public function getActiveUserIds(): array
+    {
+        return array_values(array_map(
+            static fn(ActiveRow $row): int => (int) $row[self::COLUMN_ID],
+            iterator_to_array($this->getTable()->where(self::COLUMN_ACTIVE, true)),
+        ));
+    }
+
+
     public function userExistsByEmail(string $email, ?int $excludeId = null): bool
     {
         $selection = $this->getTable()
