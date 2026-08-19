@@ -90,12 +90,6 @@ class AdminMenuFactory
                     activePattern: ':Admin:Notification:*',
                     children: [
                         new MenuItem(
-                            label: 'Moje notifikace',
-                            destination: ':Admin:Notification:default',
-                            icon: 'list-ul',
-                            activePattern: ':Admin:Notification:default',
-                        ),
-                        new MenuItem(
                             label: 'Všechny notifikace',
                             destination: ':Admin:Notification:all',
                             icon: 'collection-fill',
