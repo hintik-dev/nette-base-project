@@ -1,7 +1,9 @@
 <li n:snippet="bell" class="nav-item dropdown">
-    <a class="nav-link d-flex align-items-center position-relative" href="#" data-bs-toggle="dropdown">
-        <i class="bi bi-bell-fill fs-4"></i>
-        <span n:if="$unreadCount > 0" class="navbar-badge badge text-bg-danger">{$unreadCount}</span>
+    <a class="nav-link d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+        <span class="position-relative">
+            <i class="bi bi-bell-fill fs-4"></i>
+            <span n:if="$unreadCount > 0" class="navbar-badge badge text-bg-danger">{$unreadCount}</span>
+        </span>
     </a>
     <div class="dropdown-menu dropdown-menu-end p-0" style="width: 360px; max-height: 420px; overflow-y: auto;">
         <div class="d-flex justify-content-between align-items-center px-3 py-2">
