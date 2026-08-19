@@ -83,5 +83,11 @@ class NotificationGrid extends BaseGridComponent
          ->setConfirmation(new StringConfirmation('Opravdu chcete notifikaci skrýt?'));
 
         $grid->setDefaultSort([ExplorerNotificationRecipientRepository::COLUMN_NOTIFICATION_CREATED_AT => 'DESC']);
+
+        $grid->setRowCallback(function (ActiveRow $item, Html $tr): void {
+            if ($item[ExplorerNotificationRecipientRepository::COLUMN_READ_AT] === null) {
+                $tr->appendAttribute('class', 'table-info');
+            }
+        });
     }
 }
