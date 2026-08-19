@@ -90,14 +90,24 @@ class ExplorerNotificationRecipientRepository extends ExplorerRepository
     }
 
 
-    public function markAsRead(int $recipientId, int $userId): void
+    /** Označí přečtené a vrátí odkaz notifikace (pro případné přesměrování), null pokud záznam neexistuje/nepatří uživateli. */
+    public function markAsRead(int $recipientId, int $userId): ?string
     {
-        $this->getTable()
+        $row = $this->getTable()
+            ->select(self::JOINED_COLUMNS)
             ->where(self::COLUMN_ID, $recipientId)
             ->where(self::COLUMN_USER_ID, $userId)
-            ->update([
-                self::COLUMN_READ_AT => (new DateTimeImmutable())->format('Y-m-d H:i:s'),
-            ]);
+            ->fetch();
+
+        if ($row === null) {
+            return null;
+        }
+
+        $row->update([
+            self::COLUMN_READ_AT => (new DateTimeImmutable())->format('Y-m-d H:i:s'),
+        ]);
+
+        return $row[self::COLUMN_LINK];
     }
 
 

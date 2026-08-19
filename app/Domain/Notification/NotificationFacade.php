@@ -40,9 +40,9 @@ class NotificationFacade
     }
 
 
-    public function markAsRead(int $recipientId): void
+    public function markAsRead(int $recipientId): ?string
     {
-        $this->repository->markAsRead($recipientId, $this->currentUserId());
+        return $this->repository->markAsRead($recipientId, $this->currentUserId());
     }
 
 

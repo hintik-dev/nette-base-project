@@ -19,13 +19,17 @@ class NotificationService
     }
 
 
+    /** @param ?string $link Už vyřešená URL (např. přes LinkGenerator/$presenter->link()), ne presenter destination string. */
     public function notifyUser(int $userId, NotificationType $type, string $title, string $message, ?string $link = null): void
     {
         $this->notifyUsers([$userId], $type, $title, $message, $link);
     }
 
 
-    /** @param int[] $userIds */
+    /**
+     * @param int[] $userIds
+     * @param ?string $link Už vyřešená URL, ne presenter destination string.
+     */
     public function notifyUsers(array $userIds, NotificationType $type, string $title, string $message, ?string $link = null): void
     {
         if ($userIds === []) {

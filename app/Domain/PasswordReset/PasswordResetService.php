@@ -4,6 +4,8 @@ namespace App\Domain\PasswordReset;
 
 use App\Domain\Email\Mail\PasswordResetMail;
 use App\Domain\Email\MailQueueService;
+use App\Domain\Notification\NotificationService;
+use App\Domain\Notification\NotificationType;
 use App\Domain\User\UserNotFoundException;
 use App\Domain\User\UserService;
 use App\Domain\UserSession\ExplorerUserSessionRepository;
@@ -23,6 +25,7 @@ class PasswordResetService
         private readonly MailQueueService $mailQueueService,
         private readonly LinkGenerator $linkGenerator,
         private readonly ExplorerUserSessionRepository $userSessionRepository,
+        private readonly NotificationService $notificationService,
     ) {
     }
 
@@ -83,5 +86,12 @@ class PasswordResetService
         $this->userService->updateUserPasswordHash($token->userId, $this->passwords->hash($newPassword));
         $this->tokenRepository->markUsed($token->id);
         $this->userSessionRepository->markAllActiveAsLoggedOutForUser($token->userId, LogoutReason::PasswordReset);
+
+        $this->notificationService->notifyUser(
+            $token->userId,
+            NotificationType::Security,
+            'Heslo bylo změněno',
+            'Vaše heslo bylo právě změněno. Pokud jste to nebyli vy, kontaktujte administrátora.',
+        );
     }
 }
