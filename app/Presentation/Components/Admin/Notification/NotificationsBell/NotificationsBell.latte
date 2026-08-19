@@ -1,8 +1,12 @@
 <li n:snippet="bell" class="nav-item dropdown">
     <a class="nav-link d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-        <span class="position-relative">
+        <span class="position-relative d-inline-flex">
             <i class="bi bi-bell-fill fs-4"></i>
-            <span n:if="$unreadCount > 0" class="navbar-badge badge text-bg-danger">{$unreadCount}</span>
+            <span n:if="$unreadCount > 0"
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger">
+                {$unreadCount}
+                <span class="visually-hidden">nepřečtených notifikací</span>
+            </span>
         </span>
     </a>
     <div class="dropdown-menu dropdown-menu-end p-0" style="width: 360px; max-height: 420px; overflow-y: auto;">
