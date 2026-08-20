@@ -21,3 +21,10 @@ import './js/theme-preview.js';
 if (document.querySelector('[data-datagrid-name]')) {
     import('./js/datagrid-init.js');
 }
+
+// Dynamický select (hledatelný select/multiselect, viz DynamicSelect/
+// DynamicMultiSelect) — stejně jako datagrid se TomSelect načítá jen tam,
+// kde je v DOM aspoň jeden [data-dynamic-select].
+if (document.querySelector('[data-dynamic-select]')) {
+    import('./js/dynamic-select-init.js');
+}

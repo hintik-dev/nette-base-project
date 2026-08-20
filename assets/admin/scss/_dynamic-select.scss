@@ -1,0 +1,32 @@
+// Dynamický select (viz DynamicSelect/DynamicMultiSelect a
+// assets/admin/js/dynamic-select-init.js) — TomSelect Bootstrap 5 téma už
+// samo o sobě vychází z Bootstrap CSS proměnných (--bs-border-radius,
+// --bs-body-bg, ...), takže se v naprosté většině sladí automaticky včetně
+// dark módu. Doladit stačí fokus (aby odpovídal .form-select/.form-control)
+// a barvu štítků u multiselectu (vendor téma je má natvrdo šedé, ne $primary).
+@import 'tom-select/dist/css/tom-select.bootstrap5.css';
+
+.ts-wrapper.focus .ts-control {
+    border-color: tint-color($primary, 50%);
+    box-shadow: 0 0 0 0.25rem rgba($primary, 0.25);
+}
+
+.ts-wrapper.multi .ts-control > div {
+    background: $primary;
+    color: #fff;
+    border-radius: $border-radius-sm;
+}
+
+.ts-wrapper.multi .ts-control > div.active {
+    background: shade-color($primary, 15%);
+}
+
+// remove_button ".remove" dědí color: inherit (bílá už sedí), jen oddělovací
+// linka a hover pozadí jsou natvrdo šedé — na primary pozadí skoro neviditelné.
+.ts-wrapper.plugin-remove_button:not(.rtl) .item .remove {
+    border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.ts-wrapper.plugin-remove_button .item .remove:hover {
+    background: rgba(0, 0, 0, 0.15);
+}

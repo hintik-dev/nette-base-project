@@ -49,6 +49,25 @@ class ExplorerUserRepository extends ExplorerRepository
 
 
     /**
+     * @param int<0, max> $limit
+     * @return list<User>
+     */
+    public function searchActive(string $query, int $limit): array
+    {
+        return array_values(array_map(
+            fn(ActiveRow $row): User => $this->userMapper->mapUser($row),
+            iterator_to_array(
+                $this->getTable()
+                    ->where(self::COLUMN_ACTIVE, true)
+                    ->where(self::COLUMN_EMAIL . ' LIKE ?', '%' . $query . '%')
+                    ->order(self::COLUMN_EMAIL . ' ASC')
+                    ->limit($limit),
+            ),
+        ));
+    }
+
+
+    /**
      * @throws UserNotFoundException
      */
     public function getUserById(int $id): User
@@ -98,6 +117,25 @@ class ExplorerUserRepository extends ExplorerRepository
         }
 
         return $this->userMapper->mapUser($row);
+    }
+
+
+    /**
+     * @param list<int> $ids
+     * @return list<User>
+     */
+    public function getUsersByIds(array $ids): array
+    {
+        if ($ids === []) {
+            return [];
+        }
+
+        return array_values(array_map(
+            fn(ActiveRow $row): User => $this->userMapper->mapUser($row),
+            iterator_to_array(
+                $this->getTable()->where(self::COLUMN_ID, $ids),
+            ),
+        ));
     }
 
 

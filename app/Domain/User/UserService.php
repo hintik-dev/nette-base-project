@@ -31,6 +31,26 @@ readonly class UserService
     }
 
 
+    /**
+     * @param int<0, max> $limit
+     * @return list<User>
+     */
+    public function searchActiveUsers(string $query, int $limit): array
+    {
+        return $this->userRepository->searchActive($query, $limit);
+    }
+
+
+    /**
+     * @param list<int> $ids
+     * @return list<User>
+     */
+    public function getUsersByIds(array $ids): array
+    {
+        return $this->userRepository->getUsersByIds($ids);
+    }
+
+
     public function createUser(string $email, string $passwordHash, bool $active = true): User
     {
         return $this->userRepository->createUser($email, $passwordHash, $active);

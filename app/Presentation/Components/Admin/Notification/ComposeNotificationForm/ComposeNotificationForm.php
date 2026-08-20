@@ -4,7 +4,7 @@ namespace App\Presentation\Components\Admin\Notification\ComposeNotificationForm
 
 use App\Domain\Notification\NotificationService;
 use App\Domain\Notification\NotificationType;
-use App\Domain\User\UserService;
+use App\Domain\User\UserSelectSource;
 use App\Domain\UserRole\UserRoleService;
 use App\Presentation\Components\Base\BaseComponent;
 use App\Presentation\Control\Form\BaseForm;
@@ -18,7 +18,7 @@ class ComposeNotificationForm extends BaseComponent
 
     public function __construct(
         private readonly NotificationService $notificationService,
-        private readonly UserService $userService,
+        private readonly UserSelectSource $userSelectSource,
         private readonly UserRoleService $userRoleService,
     ) {
     }
@@ -39,7 +39,10 @@ class ComposeNotificationForm extends BaseComponent
         $roleIds->addConditionOn($target, $form::Equal, self::TARGET_ROLES)
             ->addRule($form::Filled, 'Vyberte alespoň jednu roli.');
 
-        $userIds = $form->addMultiSelect('userIds', 'Uživatelé', $this->getUserOptions());
+        // Uživatelů může být tisíce — na rozdíl od rolí (statická data výše)
+        // se nabídka nenačítá celá, ale hledá přes DynamicSelectPresenter.
+        $userIds = $form->addDynamicMultiSelect('userIds', 'Uživatelé')
+            ->setRemoteSource($this->presenter->link(':Admin:DynamicSelect:search', ['source' => $this->userSelectSource->getKey()]));
         $target->addCondition($form::Equal, self::TARGET_USERS)->toggle('notification-target-users');
         $userIds->addConditionOn($target, $form::Equal, self::TARGET_USERS)
             ->addRule($form::Filled, 'Vyberte alespoň jednoho uživatele.');
@@ -108,19 +111,6 @@ class ComposeNotificationForm extends BaseComponent
 
         foreach ($this->userRoleService->getAssignableRoles() as $role) {
             $options[$role->id] = $role->name;
-        }
-
-        return $options;
-    }
-
-
-    /** @return array<int, string> */
-    private function getUserOptions(): array
-    {
-        $options = [];
-
-        foreach ($this->userService->getActiveUsers() as $user) {
-            $options[$user->id] = $user->email;
         }
 
         return $options;
