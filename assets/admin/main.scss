@@ -65,6 +65,7 @@
 }
 
 @import 'scss/datagrid';
+@import 'scss/dynamic-select';
 
 // Podbarvení nepřečtené notifikace v dropdownu zvonečku. Vlastní třída bez
 // !important (na rozdíl od utility bg-primary-subtle), aby nad ní vyhrál
