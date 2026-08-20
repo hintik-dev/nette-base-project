@@ -23,9 +23,9 @@
         </div>
         <div n:if="$canAssignRoles" class="mb-3">
             <label n:name="roleIds" class="form-label">Role</label>
-            {input roleIds, class: 'form-select', size: 6}
+            {input roleIds, class: 'form-select'}
             <div class="form-text">
-                Bez vybrané role platí uživateli jen výchozí role. Držte Ctrl pro výběr více rolí.
+                Bez vybrané role platí uživateli jen výchozí role.
             </div>
             {inputError roleIds}
         </div>
