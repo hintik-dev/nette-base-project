@@ -34,6 +34,9 @@ services:
 	- App\Presentation\Components\Admin\Menu\MenuPermissionReader
 	- App\Presentation\Components\Admin\Menu\MenuPermissionResolver
 
+	# DynamicSelect — zdroje se sbírají přes typed(), stejně jako ScopeResolverRegistry výše.
+	- App\Presentation\Control\Form\DynamicSelect\DynamicSelectSourceRegistry(typed(App\Presentation\Control\Form\DynamicSelect\DynamicSelectSource))
+
 	security.userStorage:
 		factory: App\Model\Security\Storage\DbUserStorage
 		setup:
@@ -68,6 +71,7 @@ search:
 			- *Service
 			- *Mapper
 			- *Resolver
+			- *SelectSource
 	-	in: %appDir%/Command
 		classes:
 			- *Command
