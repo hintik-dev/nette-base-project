@@ -34,7 +34,7 @@ class ComposeNotificationForm extends BaseComponent
             self::TARGET_USERS => 'Konkrétním uživatelům',
         ])->setDefaultValue(self::TARGET_ALL)->setRequired();
 
-        $roleIds = $form->addDynamicMultiSelect('roleIds', 'Role', $this->getRoleOptions());
+        $roleIds = $form->addMultiSelect('roleIds', 'Role', $this->getRoleOptions());
         $target->addCondition($form::Equal, self::TARGET_ROLES)->toggle('notification-target-roles');
         $roleIds->addConditionOn($target, $form::Equal, self::TARGET_ROLES)
             ->addRule($form::Filled, 'Vyberte alespoň jednu roli.');

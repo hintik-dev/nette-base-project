@@ -39,6 +39,18 @@ class DynamicSelect extends SelectBox
 
 
     /**
+     * Přebije výchozí placeholder ("Napište pro vyhledávání…" / "Vyberte nebo
+     * vyhledejte…" podle režimu, viz dynamic-select-init.js).
+     */
+    public function setPlaceholder(string $text): static
+    {
+        $this->setHtmlAttribute('data-dynamic-select-placeholder', $text);
+
+        return $this;
+    }
+
+
+    /**
      * V remote režimu items obsahuje jen předvyplněnou hodnotu — zděděné
      * getValue() by cokoli jiného odeslaného tiše zahodilo (hodnota není
      * v $items). Vrací se tak nevalidovaná odeslaná hodnota; přijímající

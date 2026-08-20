@@ -37,6 +37,17 @@ class DynamicMultiSelect extends MultiSelectBox
 
 
     /**
+     * @see DynamicSelect::setPlaceholder() — stejná pravidla i důvod.
+     */
+    public function setPlaceholder(string $text): static
+    {
+        $this->setHtmlAttribute('data-dynamic-select-placeholder', $text);
+
+        return $this;
+    }
+
+
+    /**
      * @see DynamicSelect::getValue() — stejná pravidla i důvod.
      * @return list<int|string>
      */

@@ -29,6 +29,8 @@ const buildRemoteConfig = (select) => {
     };
 };
 
+const defaultPlaceholder = (isRemote) => (isRemote ? 'Napište pro vyhledávání…' : 'Vyberte nebo vyhledejte…');
+
 export const initDynamicSelects = (root = document) => {
     root.querySelectorAll('[data-dynamic-select]:not([data-dynamic-select-ready])').forEach((select) => {
         select.setAttribute('data-dynamic-select-ready', '1');
@@ -38,6 +40,7 @@ export const initDynamicSelects = (root = document) => {
         new TomSelect(select, {
             plugins: select.multiple ? ['remove_button'] : [],
             maxOptions: isRemote ? undefined : null,
+            placeholder: select.dataset.dynamicSelectPlaceholder ?? defaultPlaceholder(isRemote),
             render: {
                 no_results: () => '<div class="no-results">Nic nenalezeno</div>',
             },
